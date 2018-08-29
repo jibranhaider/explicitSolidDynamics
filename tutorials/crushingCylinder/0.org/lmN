@@ -1,0 +1,51 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       pointVectorField;
+    location    "0";
+    object      lmN;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "../constant/runParameters"
+#include "../constant/mechanicalProperties"
+#include "../system/controlDict"
+
+dimensions      [1 -2 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    fixed
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    free
+    {
+        type            zeroGradient;
+    }
+    symmetric
+    {
+        type            zeroGradient;
+    }
+    loading
+    {
+        type            movingDisplacementNodalLinearMomentum;
+        density         $density;
+        displacement    (0 $displacement 0);
+        endTime         $endTime;
+        value           uniform (0 0 0);
+    }
+}
+
+// ************************************************************************* //

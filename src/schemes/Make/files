@@ -1,0 +1,5 @@
+gradientSchemes/gradientSchemes.C
+interpolationSchemes/interpolationSchemes.C
+angularMomentum/angularMomentum.C
+
+LIB = $(FOAM_USER_LIBBIN)/libSchemes

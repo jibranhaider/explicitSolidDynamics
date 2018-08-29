@@ -1,0 +1,17 @@
+EXE_INC = \
+	-I$(PWD)/../../../src/boundaryConditions/lnInclude \
+	-I$(PWD)/../../../src/schemes/lnInclude \
+	-I$(PWD)/../../../src/models/lnInclude \
+	-I$(LIB_SRC)/finiteVolume/lnInclude \
+	-I$(LIB_SRC)/meshTools/lnInclude \
+	
+
+
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) \
+	-lBoundaryConditions \
+	-lSchemes \
+	-lModels \
+	-L$(FOAM_LIBBIN) \
+	-lfiniteVolume \
+	-lmeshTools

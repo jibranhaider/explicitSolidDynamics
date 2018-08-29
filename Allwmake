@@ -1,0 +1,18 @@
+#!/bin/bash
+
+clear 
+
+cd src/boundaryConditions
+./compile
+
+cd ../models
+./compile
+
+cd ../schemes
+./compile
+
+cd ../../applications/solvers/solidFoam
+./compile
+
+cd ../../utilities/initialConditions
+./compile
