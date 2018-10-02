@@ -1,7 +1,7 @@
 <hr> 
 
 # Explicit solid dynamics in OpenFOAM
-This novel toolkit is based on a cell centred Finite Volume Method to predict large deformation in solids. The governing equations comprise of first order hyperbolic conservation laws for linear momentum and deformation gradient tensor of the system. This helps to bridge the gap between Computational Fluid Dynamics and computational solid dynamics. The governing equations are spatially discretised using a low order cell centred Finite Volume Method along with an upwind Riemann solver. 
+This novel toolkit is based on a cell centred Finite Volume Method to predict large deformation in solids. The governing equations comprise of first order hyperbolic conservation laws for linear momentum and deformation gradient tensor of the system. This helps to bridge the gap between Computational Fluid Dynamics and Computational Solid Dynamics. The governing equations are spatially discretised using a low order cell centred Finite Volume Method along with an upwind Riemann solver. 
 
 ### Key features
 * Second order accuracy for velocities and stresses/strains. 
@@ -12,22 +12,19 @@ More details about this work can be found [here](http://jibranhaider.weebly.com/
 
 
 
+<br/><br/>
+<hr> 
+
+# How to use this toolkit?
+
+Detailed instructions on the usage of the toolkit are provided on this [wiki](https://github.com/jibranhaider/explicitSolidDynamics/wiki/Manual-for-explicit-solid-dynamics-tool-kit) page.
+
 
 
 <br/><br/>
 <hr> 
 
-# How to use this tool-kit?
-
-Detailed instructions on the usage of the toolkit are provided on this [wiki](https://github.com/jibranhaider/explicitSolidDynamics/wiki/Explicit-solid-dynamics-tool-kit) page.
-
-
-
-
-<br/><br/>
-<hr> 
-
-# Results 
+# Applications
 
 ### Implosion of a bottle
 The simulation can be seen [here](https://youtu.be/K6T6OTjlOzQ).
@@ -69,7 +66,7 @@ This toolkit is developed and maintained by [Jibran Haider](http://jibranhaider.
 <hr> 
 
 # Citation
-A journal article has been submitted for publication.
+An article has been submitted for publication in the Journal of Computer Physics Communications.
 
 
 
@@ -77,4 +74,4 @@ A journal article has been submitted for publication.
 <hr> 
 
 # License
-The tool-kit is released under the GNU General Public License (version 3). More details about the license can be found in the [LICENSE](LICENSE) file. 
+This toolkit is released under the GNU General Public License (version 3). More details can be found in the [LICENSE](LICENSE) file. 
