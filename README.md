@@ -65,11 +65,13 @@ An article has been submitted for publication in the Journal of Computer Physics
 <hr> 
 
 # Author
-This toolkit is developed and maintained by [Jibran Haider](http://jibranhaider.weebly.com/) (Swansea University). This work would not have been possible without the support and guidance of the following individuals:
-* [Dr. Chun Hean Lee](https://www.gla.ac.uk/schools/engineering/staff/chunheanlee/) (University of Glasgow) 
-* [Prof. A. J. Gil](https://www.swansea.ac.uk/staff/engineering/a.j.gil/) (Swansea University)
-* [Prof. J. Bonet](https://www.researchgate.net/profile/Javier_Bonet) (Greenwich University)
-* [Prof. A. Huerta](https://www.lacan.upc.edu/huerta/) (UPC BarcelonaTech)
+This toolkit is developed and maintained by [Jibran Haider](http://jibranhaider.weebly.com/) (Swansea University). 
+
+This work would not have been possible without the support and guidance of the following individuals:
+* [Dr. Chun Hean Lee](https://www.gla.ac.uk/schools/engineering/staff/chunheanlee/)  (University of Glasgow) 
+* [Prof. A. J. Gil](https://www.swansea.ac.uk/staff/engineering/a.j.gil/)  (Swansea University)
+* [Prof. J. Bonet](https://www.researchgate.net/profile/Javier_Bonet)  (Greenwich University)
+* [Prof. A. Huerta](https://www.lacan.upc.edu/huerta/)  (UPC BarcelonaTech)
 
 
 
