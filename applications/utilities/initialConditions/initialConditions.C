@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 
@@ -41,7 +41,6 @@ int main(int argc, char *argv[])
     #include "createTime.H"
     #include "createMesh.H"
 
-
     // Read mechanical properties dictionary
     IOdictionary mechanicalProperties
     (
@@ -54,7 +53,6 @@ int main(int argc, char *argv[])
             IOobject::NO_WRITE
         )
     );
-
 
     // Read run parameters dictionary
     IOdictionary runParameters
@@ -69,18 +67,14 @@ int main(int argc, char *argv[])
         )
     );
 
-
     // Test case name
     const word& tutorial( runParameters.lookup("tutorial") );
-
 
     // Read density
     const dimensionedScalar& rho (mechanicalProperties.lookup("rho"));
 
-
     // Cell centre coordinates
     const volVectorField& C = mesh.C();
-
 
     // Read linear momentum field
     volVectorField lm
@@ -90,7 +84,6 @@ int main(int argc, char *argv[])
         dimensionedVector("lm",dimensionSet(1,-2,-1,0,0,0,0),vector::zero)  
     );
 
-
     // Read initial angular velocity
     volVectorField omega
     (
@@ -98,7 +91,6 @@ int main(int argc, char *argv[])
         mesh,
         dimensionedVector( runParameters.lookup("initialAngularVelocity") )   
     );
-
 
     if (tutorial == "twistingColumn")
     {
@@ -114,6 +106,5 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
 
 // ************************************************************************* //
