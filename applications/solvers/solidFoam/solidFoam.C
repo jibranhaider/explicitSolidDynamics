@@ -90,8 +90,8 @@ int main(int argc, char *argv[])
 	}
 
 	Info << "\nExecutionTime = " << runTime.elapsedCpuTime() << " s" 
-		 << "  ClockTime = " << runTime.elapsedClockTime() << " s" 
-	 	 << "\nEnd\n" << endl;
+	     << "  ClockTime = " << runTime.elapsedClockTime() << " s" 
+	     << "\nEnd\n" << endl;
 	
 	return 0;
 }
