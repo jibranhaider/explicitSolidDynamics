@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 
@@ -26,13 +26,9 @@ Application
     solidFoam
 
 Description
-    A solid mechanics solver based on the cell centred Finite Volume Method 
-    to predict large strain deformation. The Total Lagrangian mixed formuation 
-	comprises of conservation laws for linear momentum and deformation gradient 
-	of the system. It utilises an explicit Total Variation Diminishing two-stage 
-    Runge-Kutta time integrator. A discrete angular momentum projection 
-	algorithm based on two global Lagrange Multipliers guarantees angular 
-	momentum conservation.
+    A solid mechanics solver based on a Total Lagrangian mixed formulation 
+    comprising of conservation laws for linear momentum and deformation 
+    gradient of the system.
 
 \*---------------------------------------------------------------------------*/
 
@@ -42,7 +38,6 @@ Description
 #include "angularMomentum.H"
 #include "constitutiveModel.H"
 #include "gradientSchemes.H"
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -55,10 +50,8 @@ int main(int argc, char *argv[])
 	#include "meshData.H" 						
 	#include "createFields.H"												
 
-
 	while (runTime.loop()) 
 	{
-
 		if (timeStepping == "variable")
 		{
 			deltaT = ( cfl*h ) / max(Up_time);
@@ -69,7 +62,6 @@ int main(int argc, char *argv[])
 
 		Info << "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value() << " s"
 			 << "\nTime = " << t.value() << " s" << endl;
-
 
 		RKstage = "first";	
 		#include "gEqns.H"
@@ -105,6 +97,3 @@ int main(int argc, char *argv[])
 }
 
 // ************************************************************************* //
-
-
-
