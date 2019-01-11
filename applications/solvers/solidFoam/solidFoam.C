@@ -43,57 +43,57 @@ Description
 
 int main(int argc, char *argv[])
 { 
-    #include "setRootCase.H"	
+    #include "setRootCase.H"    
     #include "createTime.H"
-    #include "createMesh.H"	 
-    #include "readControls.H"	
-    #include "meshData.H" 						
-    #include "createFields.H"												
+    #include "createMesh.H"  
+    #include "readControls.H"   
+    #include "meshData.H"                       
+    #include "createFields.H"                                               
 
     while (runTime.loop()) 
     {
-	if (timeStepping == "variable")
-	{
-	    deltaT = ( cfl*h ) / max(Up_time);
-	    runTime.setDeltaT(deltaT);
-	}		
+    if (timeStepping == "variable")
+    {
+        deltaT = ( cfl*h ) / max(Up_time);
+        runTime.setDeltaT(deltaT);
+    }       
 
-	t += deltaT; tstep++;	
+    t += deltaT; tstep++;   
 
-	Info << "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value() << " s"
-	     << "\nTime = " << t.value() << " s" << endl;
+    Info << "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value() << " s"
+         << "\nTime = " << t.value() << " s" << endl;
 
-	RKstage = "first";	
-	#include "gEqns.H"
-													
-	RKstage = "second"; 
-	#include "updateVariables.H"	
-	#include "gEqns.H"
+    RKstage = "first";  
+    #include "gEqns.H"
+                                                    
+    RKstage = "second"; 
+    #include "updateVariables.H"    
+    #include "gEqns.H"
 
-	lm = 0.5 * ( lm.oldTime() + lm );
-	F = 0.5 * ( F.oldTime() + F );							
-	x = 0.5 * ( x.oldTime() + x );
-	xF = 0.5 * ( xF.oldTime() + xF );			
-	xN = 0.5 * ( xN.oldTime() + xN );			
+    lm = 0.5 * ( lm.oldTime() + lm );
+    F = 0.5 * ( F.oldTime() + F );                          
+    x = 0.5 * ( x.oldTime() + x );
+    xF = 0.5 * ( xF.oldTime() + xF );           
+    xN = 0.5 * ( xN.oldTime() + xN );           
 
-	#include "updateVariables.H"	
-	uN = xN - xN_0;				
-		
-	if (runTime.outputTime())
-	{
-	    p.write();
-	    uN.write();
-	}
+    #include "updateVariables.H"    
+    uN = xN - xN_0;             
+        
+    if (runTime.outputTime())
+    {
+        p.write();
+        uN.write();
+    }
 
-	Info << "Percentage completed = " 
-	     << (t.value()/runTime.endTime().value())*100 << "%" << endl;	
-	}
+    Info << "Percentage completed = " 
+         << (t.value()/runTime.endTime().value())*100 << "%" << endl;   
+    }
 
-	Info << "\nExecutionTime = " << runTime.elapsedCpuTime() << " s" 
-	     << "  ClockTime = " << runTime.elapsedClockTime() << " s" 
-	     << "\nEnd\n" << endl;
-	
-	return 0;
+    Info << "\nExecutionTime = " << runTime.elapsedCpuTime() << " s" 
+         << "  ClockTime = " << runTime.elapsedClockTime() << " s" 
+         << "\nEnd\n" << endl;
+    
+    return 0;
 }
 
 // ************************************************************************* //

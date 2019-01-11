@@ -3,65 +3,65 @@
 // Strong boundary conditions for nodal linear momentum
 //-----------------------------------------------------
 
-	if (symmetricPatchID != -1)
-	{	
-		forAll (mesh.boundary()[symmetricPatchID],facei) 
-		{
-			const label& faceID = mesh.boundary()[symmetricPatchID].start() + facei;
+    if (symmetricPatchID != -1)
+    {   
+        forAll (mesh.boundary()[symmetricPatchID],facei) 
+        {
+            const label& faceID = mesh.boundary()[symmetricPatchID].start() + facei;
 
-			forAll (mesh.faces()[faceID], node)
-			{
-				const label& nodeID = mesh.faces()[faceID][node];
-				const tensor& iMnCn_ = tensor::I - (N.boundaryField()[symmetricPatchID][facei] * N.boundaryField()[symmetricPatchID][facei]);
-				lmN[nodeID] = iMnCn_ & lmN[nodeID];
-			}
-		}
-	}	
-
-
-	if (symmetricXpatchID != -1)
-	{	
-		forAll (mesh.boundary()[symmetricXpatchID],facei) 
-		{
-			const label& faceID = mesh.boundary()[symmetricXpatchID].start() + facei;
-
-			forAll (mesh.faces()[faceID], node)
-			{
-				const label& nodeID = mesh.faces()[faceID][node];
-				const tensor& iMnCn_ = tensor::I - (N.boundaryField()[symmetricXpatchID][facei] * N.boundaryField()[symmetricXpatchID][facei]);
-				lmN[nodeID] = iMnCn_ & lmN[nodeID];
-			}
-		}
-	}	
+            forAll (mesh.faces()[faceID], node)
+            {
+                const label& nodeID = mesh.faces()[faceID][node];
+                const tensor& iMnCn_ = tensor::I - (N.boundaryField()[symmetricPatchID][facei] * N.boundaryField()[symmetricPatchID][facei]);
+                lmN[nodeID] = iMnCn_ & lmN[nodeID];
+            }
+        }
+    }   
 
 
-	if (symmetricYpatchID != -1)
-	{	
-		forAll (mesh.boundary()[symmetricYpatchID],facei) 
-		{
-			const label& faceID = mesh.boundary()[symmetricYpatchID].start() + facei;
+    if (symmetricXpatchID != -1)
+    {   
+        forAll (mesh.boundary()[symmetricXpatchID],facei) 
+        {
+            const label& faceID = mesh.boundary()[symmetricXpatchID].start() + facei;
 
-			forAll (mesh.faces()[faceID], node)
-			{
-				const label& nodeID = mesh.faces()[faceID][node];
-				const tensor& iMnCn_ = tensor::I - (N.boundaryField()[symmetricYpatchID][facei] * N.boundaryField()[symmetricYpatchID][facei]);
-				lmN[nodeID] = iMnCn_ & lmN[nodeID];
-			}
-		}
-	}
+            forAll (mesh.faces()[faceID], node)
+            {
+                const label& nodeID = mesh.faces()[faceID][node];
+                const tensor& iMnCn_ = tensor::I - (N.boundaryField()[symmetricXpatchID][facei] * N.boundaryField()[symmetricXpatchID][facei]);
+                lmN[nodeID] = iMnCn_ & lmN[nodeID];
+            }
+        }
+    }   
 
 
-	if (symmetricZpatchID != -1)
-	{	
-		forAll (mesh.boundary()[symmetricZpatchID],facei) 
-		{
-			const label& faceID = mesh.boundary()[symmetricZpatchID].start() + facei;
+    if (symmetricYpatchID != -1)
+    {   
+        forAll (mesh.boundary()[symmetricYpatchID],facei) 
+        {
+            const label& faceID = mesh.boundary()[symmetricYpatchID].start() + facei;
 
-			forAll (mesh.faces()[faceID], node)
-			{
-				const label& nodeID = mesh.faces()[faceID][node];
-				const tensor& iMnCn_ = tensor::I - (N.boundaryField()[symmetricZpatchID][facei] * N.boundaryField()[symmetricZpatchID][facei]);
-				lmN[nodeID] = iMnCn_ & lmN[nodeID];
-			}
-		}
-	}
+            forAll (mesh.faces()[faceID], node)
+            {
+                const label& nodeID = mesh.faces()[faceID][node];
+                const tensor& iMnCn_ = tensor::I - (N.boundaryField()[symmetricYpatchID][facei] * N.boundaryField()[symmetricYpatchID][facei]);
+                lmN[nodeID] = iMnCn_ & lmN[nodeID];
+            }
+        }
+    }
+
+
+    if (symmetricZpatchID != -1)
+    {   
+        forAll (mesh.boundary()[symmetricZpatchID],facei) 
+        {
+            const label& faceID = mesh.boundary()[symmetricZpatchID].start() + facei;
+
+            forAll (mesh.faces()[faceID], node)
+            {
+                const label& nodeID = mesh.faces()[faceID][node];
+                const tensor& iMnCn_ = tensor::I - (N.boundaryField()[symmetricZpatchID][facei] * N.boundaryField()[symmetricZpatchID][facei]);
+                lmN[nodeID] = iMnCn_ & lmN[nodeID];
+            }
+        }
+    }
