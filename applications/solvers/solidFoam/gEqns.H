@@ -1,5 +1,3 @@
-
-
 rhsLm = fvc::surfaceIntegrate(tC*magSf);
 
 if (angularMomentumConservation == "yes")

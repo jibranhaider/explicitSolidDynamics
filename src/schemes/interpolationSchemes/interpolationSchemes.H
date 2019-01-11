@@ -80,10 +80,10 @@ public:
     // Member functions
 
 
-		// Surface to cell interpolation 
+        // Surface to cell interpolation 
         volVectorField surfaceToCell  
         (
-			const GeometricField<vector, fvsPatchField, surfaceMesh>&		
+            const GeometricField<vector, fvsPatchField, surfaceMesh>&       
         ) const;
 
 

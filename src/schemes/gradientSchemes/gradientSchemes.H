@@ -51,7 +51,7 @@ class fvMesh;
 class gradientSchemes
 {
     // Private data
-       	const fvMesh& mesh_;
+        const fvMesh& mesh_;
         const labelUList& own_;
         const labelUList& nei_;
         const volVectorField& X_;                            
@@ -75,7 +75,7 @@ private:
 public:
 
     // Declare name of the class and its debug switch
-  		TypeName("gradientSchemes");
+        TypeName("gradientSchemes");
 
 
     // Constructors
@@ -110,20 +110,20 @@ public:
             GeometricField<vector, fvPatchField, volMesh>& Ugrad
         ) const;
 
-		// Least square gradient for a volVectorField
+        // Least square gradient for a volVectorField
         void gradient
         (
             const GeometricField<vector, fvPatchField, volMesh>& U,
-	    	GeometricField<tensor, fvPatchField, volMesh>& Ugrad
+            GeometricField<tensor, fvPatchField, volMesh>& Ugrad
         ) const;
 
-		// Least square gradient for a volTensorField
+        // Least square gradient for a volTensorField
         void gradient
         (
             const GeometricField<tensor, fvPatchField, volMesh>& U,
-	    	GeometricField<tensor, fvPatchField, volMesh>& UgradX,
-			GeometricField<tensor, fvPatchField, volMesh>& UgradY,
-			GeometricField<tensor, fvPatchField, volMesh>& UgradZ
+            GeometricField<tensor, fvPatchField, volMesh>& UgradX,
+            GeometricField<tensor, fvPatchField, volMesh>& UgradY,
+            GeometricField<tensor, fvPatchField, volMesh>& UgradZ
         ) const;
 
         // Local least square gradient for a volVectorField
@@ -145,25 +145,25 @@ public:
             GeometricField<scalar, fvsPatchField, surfaceMesh>& Uplus
         );  
 
-		// Reconstruction of a volVectorField to surfaceVectorField
-		void reconstruct
-		(
+        // Reconstruction of a volVectorField to surfaceVectorField
+        void reconstruct
+        (
             GeometricField<vector, fvPatchField, volMesh>& U,
-	    	const GeometricField<tensor, fvPatchField, volMesh>& Ugrad,
-			GeometricField<vector, fvsPatchField, surfaceMesh>& Uminus,
-			GeometricField<vector, fvsPatchField, surfaceMesh>& Uplus
-		);		
+            const GeometricField<tensor, fvPatchField, volMesh>& Ugrad,
+            GeometricField<vector, fvsPatchField, surfaceMesh>& Uminus,
+            GeometricField<vector, fvsPatchField, surfaceMesh>& Uplus
+        );      
 
-		// Reconstruction for a volTensorField to surfaceTensorField
-		void reconstruct
-		(
-			GeometricField<tensor, fvPatchField, volMesh>& U,
-	    	const GeometricField<tensor, fvPatchField, volMesh>& UxGrad,
-	    	const GeometricField<tensor, fvPatchField, volMesh>& UyGrad,
-	    	const GeometricField<tensor, fvPatchField, volMesh>& UzGrad,
-			GeometricField<tensor, fvsPatchField, surfaceMesh>& Uminus,
-			GeometricField<tensor, fvsPatchField, surfaceMesh>& Uplus
-		);	
+        // Reconstruction for a volTensorField to surfaceTensorField
+        void reconstruct
+        (
+            GeometricField<tensor, fvPatchField, volMesh>& U,
+            const GeometricField<tensor, fvPatchField, volMesh>& UxGrad,
+            const GeometricField<tensor, fvPatchField, volMesh>& UyGrad,
+            const GeometricField<tensor, fvPatchField, volMesh>& UzGrad,
+            GeometricField<tensor, fvsPatchField, surfaceMesh>& Uminus,
+            GeometricField<tensor, fvsPatchField, surfaceMesh>& Uplus
+        );  
 
 
 };

@@ -166,7 +166,6 @@
 // Reconstruction
 //-----------------------------------------------------------------------------------
 
-
     // Reconstruction of linear momentum
     surfaceVectorField lm_M
     (
@@ -298,7 +297,6 @@
     uN.write();
 
 
-
 //-----------------------------------------------------------------------------------
 // Simulation parameters
 //-----------------------------------------------------------------------------------
@@ -322,4 +320,3 @@
 
     const dimensionedScalar& rho = model.density();
     angularMomentum AM(mesh, rho);
-

@@ -74,10 +74,10 @@ public:
 
     // Member functions
 
-		// Angular momentum conservation
+        // Angular momentum conservation
         void AMconservation
         (
-			GeometricField<vector, fvPatchField, volMesh>& ,
+            GeometricField<vector, fvPatchField, volMesh>& ,
             GeometricField<vector, fvPatchField, volMesh>& ,                                      
             const GeometricField<vector, fvPatchField, volMesh>& ,            
             const word& 

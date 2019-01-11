@@ -43,11 +43,11 @@ defineTypeNameAndDebug(constitutiveModel, 0);
 // * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * * //  
 constitutiveModel::constitutiveModel
 (
-	const volTensorField& F,
-    const dictionary& dict	
+    const volTensorField& F,
+    const dictionary& dict  
 )
 :
-	P_
+    P_
     (
         IOobject
         (
@@ -59,9 +59,9 @@ constitutiveModel::constitutiveModel
         ),
         F.mesh(),
         dimensionedTensor("P", dimensionSet(1,-1,-2,0,0,0,0), tensor::zero)
-	),
+    ),
 
-	p_
+    p_
     (
         IOobject
         (
@@ -73,7 +73,7 @@ constitutiveModel::constitutiveModel
         ),
         F.mesh(),
         dimensionedScalar("p", dimensionSet(1,-1,-2,0,0,0,0), 0.0)
-	),
+    ),
 
     Ealgo_
     (
@@ -90,18 +90,18 @@ constitutiveModel::constitutiveModel
     ),
 
 
-	rho_ (dict.lookup("rho")),
-	E_ (dict.lookup("E")),
-	nu_ (dict.lookup("nu")),
+    rho_ (dict.lookup("rho")),
+    E_ (dict.lookup("E")),
+    nu_ (dict.lookup("nu")),
 
-	mu_ (E_ / (2.0*(1.0 + nu_))),
-	lambda_ ( nu_*E_ / ((1.0 + nu_)*(1.0 - 2.0*nu_)) ),
-	kappa_ ( lambda_ + (2.0/3.0)*mu_ ),
+    mu_ (E_ / (2.0*(1.0 + nu_))),
+    lambda_ ( nu_*E_ / ((1.0 + nu_)*(1.0 - 2.0*nu_)) ),
+    kappa_ ( lambda_ + (2.0/3.0)*mu_ ),
 
-	model_ ( dict.lookup("constitutiveModel") ),
+    model_ ( dict.lookup("constitutiveModel") ),
 
-	Up_ ( sqrt( (lambda_+2.0*mu_)/rho_ ) ),
-	Us_ ( sqrt( mu_/rho_ ) )	
+    Up_ ( sqrt( (lambda_+2.0*mu_)/rho_ ) ),
+    Us_ ( sqrt( mu_/rho_ ) )    
 {}
     
 
@@ -116,28 +116,28 @@ void constitutiveModel::correct()
 {
     const fvMesh& mesh_ = P_.mesh();
     const objectRegistry& db = mesh_.thisDb();    
-	const volTensorField& H_ = db.lookupObject<volTensorField> ("H");
-	const volTensorField& F_ = db.lookupObject<volTensorField> ("F");			
-	const volScalarField& J_ = db.lookupObject<volScalarField> ("J");		
+    const volTensorField& H_ = db.lookupObject<volTensorField> ("H");
+    const volTensorField& F_ = db.lookupObject<volTensorField> ("F");           
+    const volScalarField& J_ = db.lookupObject<volScalarField> ("J");       
 
-	if (model_ == "linearElastic")
-	{
-		p_ = kappa_ * (tr(F_)-3.0);
-		P_ = mu_ * ( F_ + F_.T() - ((2.0/3.0)*tr(F_)*tensor::I) ) + p_*tensor::I;
-	}
+    if (model_ == "linearElastic")
+    {
+        p_ = kappa_ * (tr(F_)-3.0);
+        P_ = mu_ * ( F_ + F_.T() - ((2.0/3.0)*tr(F_)*tensor::I) ) + p_*tensor::I;
+    }
 
-	else if (model_ == "neoHookean")
-	{	
-		p_ = kappa_*(J_-1);
-		P_ = mu_*pow(J_,(-2.0/3.0))*F_ - ( (mu_/3.0)*pow(J_,(-5.0/3.0))*(F_ && F_)*H_ ) + p_*H_;
-	}
+    else if (model_ == "neoHookean")
+    {   
+        p_ = kappa_*(J_-1);
+        P_ = mu_*pow(J_,(-2.0/3.0))*F_ - ( (mu_/3.0)*pow(J_,(-5.0/3.0))*(F_ && F_)*H_ ) + p_*H_;
+    }
 
-	else
-	{
-		FatalErrorIn("constitutiveModel.C")   
-		<< "Valid type entries are 'linearElastic' or 'neoHookean' for constitutiveModel"
-		<< abort(FatalError);		
-	}
+    else
+    {
+        FatalErrorIn("constitutiveModel.C")   
+        << "Valid type entries are 'linearElastic' or 'neoHookean' for constitutiveModel"
+        << abort(FatalError);       
+    }
 }
 
 

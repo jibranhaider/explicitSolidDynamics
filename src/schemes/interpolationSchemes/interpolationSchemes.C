@@ -45,7 +45,7 @@ defineTypeNameAndDebug(interpolationSchemes, 0);
 // * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * * //  
 interpolationSchemes::interpolationSchemes(const fvMesh& vm)
 :
-	mesh_(vm)
+    mesh_(vm)
 {}
     
 // * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * * //
@@ -57,18 +57,18 @@ interpolationSchemes::~interpolationSchemes()
 
 volVectorField interpolationSchemes::surfaceToCell     
 (
-	const GeometricField<vector, fvsPatchField, surfaceMesh>& sf		
+    const GeometricField<vector, fvsPatchField, surfaceMesh>& sf        
 ) const
-{	
-	const volVectorField& C = mesh_.C();
-	const surfaceVectorField& Cf = mesh_.Cf();
-	const scalar& maxInteriorFaceID = mesh_.nInternalFaces()-1;
+{   
+    const volVectorField& C = mesh_.C();
+    const surfaceVectorField& Cf = mesh_.Cf();
+    const scalar& maxInteriorFaceID = mesh_.nInternalFaces()-1;
 
     const objectRegistry& db = mesh_.thisDb();
-	const pointVectorField& lmN_ = db.lookupObject<pointVectorField> ("lmN");	
+    const pointVectorField& lmN_ = db.lookupObject<pointVectorField> ("lmN");   
 
 
-	tmp<GeometricField<vector, fvPatchField, volMesh> > tvf_v
+    tmp<GeometricField<vector, fvPatchField, volMesh> > tvf_v
     (
         new GeometricField<vector, fvPatchField, volMesh>
         (
@@ -85,9 +85,9 @@ volVectorField interpolationSchemes::surfaceToCell
         )
     );
 
-	GeometricField<vector, fvPatchField, volMesh> U = tvf_v();
+    GeometricField<vector, fvPatchField, volMesh> U = tvf_v();
 
-	tmp<GeometricField<scalar, fvPatchField, volMesh> > tvf_s
+    tmp<GeometricField<scalar, fvPatchField, volMesh> > tvf_s
     (
         new GeometricField<scalar, fvPatchField, volMesh>
         (
@@ -104,66 +104,66 @@ volVectorField interpolationSchemes::surfaceToCell
         )
     );
 
-	GeometricField<scalar, fvPatchField, volMesh> w = tvf_s();
+    GeometricField<scalar, fvPatchField, volMesh> w = tvf_s();
 
     forAll (mesh_.faces(), faceID)
     {
-    	if (faceID <= maxInteriorFaceID)
-    	{
-			const label& ownID = mesh_.owner()[faceID];
-			const label& neiID = mesh_.neighbour()[faceID];
+        if (faceID <= maxInteriorFaceID)
+        {
+            const label& ownID = mesh_.owner()[faceID];
+            const label& neiID = mesh_.neighbour()[faceID];
 
-			const vector& dOwn = Cf[faceID] - C[ownID];	
-			const vector& dNei = Cf[faceID] - C[neiID];				
+            const vector& dOwn = Cf[faceID] - C[ownID]; 
+            const vector& dNei = Cf[faceID] - C[neiID];             
 
-			U[ownID] += sf[faceID] * (1.0/mag(dOwn));
-			U[neiID] += sf[faceID] * (1.0/mag(dOwn));
+            U[ownID] += sf[faceID] * (1.0/mag(dOwn));
+            U[neiID] += sf[faceID] * (1.0/mag(dOwn));
 
-			w[ownID] += 1.0/mag(dOwn);
-			w[neiID] += 1.0/mag(dNei);
-    	}
-    	else
-    	{
-			const label& patchID = mesh_.boundaryMesh().whichPatch(faceID);			
-			const label& facei = mesh_.boundaryMesh()[patchID].whichFace(faceID);				
-			const label& bCellID = mesh_.boundaryMesh()[patchID].faceCells()[facei];
-			vector d = Cf.boundaryField()[patchID][facei] - C[bCellID];
+            w[ownID] += 1.0/mag(dOwn);
+            w[neiID] += 1.0/mag(dNei);
+        }
+        else
+        {
+            const label& patchID = mesh_.boundaryMesh().whichPatch(faceID);         
+            const label& facei = mesh_.boundaryMesh()[patchID].whichFace(faceID);               
+            const label& bCellID = mesh_.boundaryMesh()[patchID].faceCells()[facei];
+            vector d = Cf.boundaryField()[patchID][facei] - C[bCellID];
 
-			U[bCellID] += sf.boundaryField()[patchID][facei] * (1.0/mag(d));
-			w[bCellID] += 1.0/mag(d);
+            U[bCellID] += sf.boundaryField()[patchID][facei] * (1.0/mag(d));
+            w[bCellID] += 1.0/mag(d);
  
-			if (lmN_.boundaryField().types()[patchID] == "fixedValue")
-			{	
-	    		const pointVectorField& xN_0_ = db.lookupObject<pointVectorField> ("xN_0"); 	
-				const label& faceID = mesh_.boundary()[patchID].start() + facei;
+            if (lmN_.boundaryField().types()[patchID] == "fixedValue")
+            {   
+                const pointVectorField& xN_0_ = db.lookupObject<pointVectorField> ("xN_0");     
+                const label& faceID = mesh_.boundary()[patchID].start() + facei;
 
-				forAll (mesh_.faces()[faceID], nodei)
-				{
-					const label& nodeID = mesh_.faces()[faceID][nodei];				
-			
-					d = xN_0_[nodeID] - C[bCellID];							
-					U[bCellID] += lmN_[nodeID] * (1.0/mag(d));
-					w[bCellID] += (1.0/mag(d));						
-					
-					for (int i=0; i<7; i++)
-					{										
-						d = ( ( ((i+1)*xN_0_[nodeID]) + ((7-i)*Cf.boundaryField()[patchID][facei]) ) / 8.0 ) - C[bCellID];							
-				
-						U[bCellID] += 	lmN_[nodeID] * (1.0/mag(d));
-						w[bCellID] += (1.0/mag(d));					
-					}
-				}
-			}
-    	}
+                forAll (mesh_.faces()[faceID], nodei)
+                {
+                    const label& nodeID = mesh_.faces()[faceID][nodei];             
+            
+                    d = xN_0_[nodeID] - C[bCellID];                         
+                    U[bCellID] += lmN_[nodeID] * (1.0/mag(d));
+                    w[bCellID] += (1.0/mag(d));                     
+                    
+                    for (int i=0; i<7; i++)
+                    {                                       
+                        d = ( ( ((i+1)*xN_0_[nodeID]) + ((7-i)*Cf.boundaryField()[patchID][facei]) ) / 8.0 ) - C[bCellID];                          
+                
+                        U[bCellID] +=   lmN_[nodeID] * (1.0/mag(d));
+                        w[bCellID] += (1.0/mag(d));                 
+                    }
+                }
+            }
+        }
     }
 
-	U.primitiveFieldRef() /= w.internalField();
+    U.primitiveFieldRef() /= w.internalField();
 
 
-	tvf_v.clear();
-	tvf_s.clear();
+    tvf_v.clear();
+    tvf_s.clear();
 
-	return U;
+    return U;
 }
 
 
@@ -177,8 +177,8 @@ void interpolationSchemes::pushUntransformedDataNew
     List<Type>& pointData
 ) const
 {
-    const fvMesh& mesh = mesh_;	
-	
+    const fvMesh& mesh = mesh_; 
+    
     // Transfer onto coupled patch
     const globalMeshData& gmd = mesh.globalData();
     const indirectPrimitivePatch& cpp = gmd.coupledPatch();
@@ -264,7 +264,7 @@ void interpolationSchemes::addSeparatedNew
                      pfi
                  );
          }
-  	}
+    }
 
 }
 
@@ -275,86 +275,86 @@ void interpolationSchemes::addSeparatedNew
 
 void interpolationSchemes::volToPoint   
 (
-	const GeometricField<vector, fvPatchField, volMesh>& U,
-	const GeometricField<tensor, fvPatchField, volMesh>& Ugrad,
-    GeometricField<vector, pointPatchField, pointMesh>& Un  				
+    const GeometricField<vector, fvPatchField, volMesh>& U,
+    const GeometricField<tensor, fvPatchField, volMesh>& Ugrad,
+    GeometricField<vector, pointPatchField, pointMesh>& Un                  
 ) const
 {
-	
-    const fvMesh& mesh = mesh_;	
-	const volVectorField& C = mesh.C();    
+    
+    const fvMesh& mesh = mesh_; 
+    const volVectorField& C = mesh.C();    
 
 
-	if( Pstream::parRun() ) 
-	{			
-		pointScalarField sum
-		(
-			IOobject
-			(
-				"volPointSum",
-				mesh.polyMesh::instance(),
-				mesh
-			),
-			pointMesh::New(mesh),
-			dimensionedScalar("zero", dimless, 0.0)
-		);		
+    if( Pstream::parRun() ) 
+    {           
+        pointScalarField sum
+        (
+            IOobject
+            (
+                "volPointSum",
+                mesh.polyMesh::instance(),
+                mesh
+            ),
+            pointMesh::New(mesh),
+            dimensionedScalar("zero", dimless, 0.0)
+        );      
 
-		forAll (mesh.points(), nodeID)
-		{
-			Un[nodeID] = vector::zero;
-		}	
+        forAll (mesh.points(), nodeID)
+        {
+            Un[nodeID] = vector::zero;
+        }   
 
-		forAll (mesh.points(), nodeID)
-		{
-			forAll (mesh.pointCells()[nodeID], cell)
-			{	
-				const label& cellID = mesh.pointCells()[nodeID][cell];
-				const vector& d = mesh.points()[nodeID] - C[cellID];
-				const vector& recons = U[cellID] + ( Ugrad[cellID] & d );	
-				const scalar& weight = 1;
-				
-				Un[nodeID] += recons;
-				sum[nodeID] += weight;		
-			}
-		}		
+        forAll (mesh.points(), nodeID)
+        {
+            forAll (mesh.pointCells()[nodeID], cell)
+            {   
+                const label& cellID = mesh.pointCells()[nodeID][cell];
+                const vector& d = mesh.points()[nodeID] - C[cellID];
+                const vector& recons = U[cellID] + ( Ugrad[cellID] & d );   
+                const scalar& weight = 1;
+                
+                Un[nodeID] += recons;
+                sum[nodeID] += weight;      
+            }
+        }       
 
-		pointConstraints::syncUntransformedData(mesh, sum, plusEqOp<scalar>());
-		addSeparatedNew(sum);
-		pushUntransformedDataNew(sum);
-	
-		forAll (mesh.points(), nodeID)
-		{		
-			Un[nodeID] = Un[nodeID] / sum[nodeID];
-		}
-	
-		pointConstraints::syncUntransformedData(mesh, Un, plusEqOp<vector>());
-		addSeparatedNew(Un);
-		pushUntransformedDataNew(Un);
-	}
-	
-	else
-	{
-		forAll (mesh.pointCells(), nodeID)
-		{
-			vector sum = vector::zero;
-			scalar weights = 0.0;
-			
-			forAll (mesh.pointCells()[nodeID], cell)
-			{
-				const label& cellID = mesh.pointCells()[nodeID][cell];
-				const vector& d = mesh.points()[nodeID] - C[cellID];
-				const vector& recons = U[cellID] + ( Ugrad[cellID] & d );
-					
-				//sum += recons * (1.0/mag(d));
-				//weights += (1.0/mag(d));
-				
-				sum += recons;
-				weights += 1.0;
-			}
-			
-			Un[nodeID] = sum / weights;	
-		}		
-	}	
+        pointConstraints::syncUntransformedData(mesh, sum, plusEqOp<scalar>());
+        addSeparatedNew(sum);
+        pushUntransformedDataNew(sum);
+    
+        forAll (mesh.points(), nodeID)
+        {       
+            Un[nodeID] = Un[nodeID] / sum[nodeID];
+        }
+    
+        pointConstraints::syncUntransformedData(mesh, Un, plusEqOp<vector>());
+        addSeparatedNew(Un);
+        pushUntransformedDataNew(Un);
+    }
+    
+    else
+    {
+        forAll (mesh.pointCells(), nodeID)
+        {
+            vector sum = vector::zero;
+            scalar weights = 0.0;
+            
+            forAll (mesh.pointCells()[nodeID], cell)
+            {
+                const label& cellID = mesh.pointCells()[nodeID][cell];
+                const vector& d = mesh.points()[nodeID] - C[cellID];
+                const vector& recons = U[cellID] + ( Ugrad[cellID] & d );
+                    
+                //sum += recons * (1.0/mag(d));
+                //weights += (1.0/mag(d));
+                
+                sum += recons;
+                weights += 1.0;
+            }
+            
+            Un[nodeID] = sum / weights; 
+        }       
+    }   
 
 }
 
@@ -364,46 +364,46 @@ void interpolationSchemes::volToPoint
 
 void interpolationSchemes::pointToSurface
 (
-	const GeometricField<vector, pointPatchField, pointMesh>& U,
-	GeometricField<vector, fvsPatchField, surfaceMesh>& Uf					
+    const GeometricField<vector, pointPatchField, pointMesh>& U,
+    GeometricField<vector, fvsPatchField, surfaceMesh>& Uf                  
 ) const
 {
     const fvMesh& mesh = mesh_;
-	const scalar& maxInteriorFaceID = mesh.nInternalFaces()-1;	
+    const scalar& maxInteriorFaceID = mesh.nInternalFaces()-1;  
 
-	forAll (mesh.faces(),faceID)
-	{
-		vector sum = vector::zero;
-		scalar weights = 0.0;
+    forAll (mesh.faces(),faceID)
+    {
+        vector sum = vector::zero;
+        scalar weights = 0.0;
 
-		if (faceID <= maxInteriorFaceID)
-		{	
-			forAll (mesh.faces()[faceID],node)
-			{
-				const label& nodeID = mesh.faces()[faceID][node];
-				sum += U[nodeID];
-				weights += 1.0;								
-			}
-			
-			Uf[faceID] = sum / weights;	
-		}
-		
-		else
-		{
-			const label& patchID = mesh.boundaryMesh().whichPatch(faceID);
-			const label& facei = mesh.boundaryMesh()[patchID].whichFace(faceID);
+        if (faceID <= maxInteriorFaceID)
+        {   
+            forAll (mesh.faces()[faceID],node)
+            {
+                const label& nodeID = mesh.faces()[faceID][node];
+                sum += U[nodeID];
+                weights += 1.0;                             
+            }
+            
+            Uf[faceID] = sum / weights; 
+        }
+        
+        else
+        {
+            const label& patchID = mesh.boundaryMesh().whichPatch(faceID);
+            const label& facei = mesh.boundaryMesh()[patchID].whichFace(faceID);
 
-			forAll (mesh.faces()[faceID],node)
-			{
-				const label& nodeID = mesh.faces()[faceID][node];		
-				sum += U[nodeID];
-				weights += 1.0;								
-			}
-			
-			Uf.boundaryFieldRef()[patchID][facei]= sum / weights;			
-		}	
-	}
-	
+            forAll (mesh.faces()[faceID],node)
+            {
+                const label& nodeID = mesh.faces()[faceID][node];       
+                sum += U[nodeID];
+                weights += 1.0;                             
+            }
+            
+            Uf.boundaryFieldRef()[patchID][facei]= sum / weights;           
+        }   
+    }
+    
 }
 
 
@@ -412,8 +412,8 @@ void interpolationSchemes::pointToSurface
 
 void interpolationSchemes::surfaceToPointConstrained
 (
-	const GeometricField<vector, fvsPatchField, surfaceMesh>& Uf,
-	GeometricField<vector, pointPatchField, pointMesh>& Un 				
+    const GeometricField<vector, fvsPatchField, surfaceMesh>& Uf,
+    GeometricField<vector, pointPatchField, pointMesh>& Un              
 ) const
 {
 

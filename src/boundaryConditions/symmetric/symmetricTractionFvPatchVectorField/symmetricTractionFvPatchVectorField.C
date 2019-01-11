@@ -55,7 +55,7 @@ symmetricTractionFvPatchVectorField
     fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
     tractionValue_ = dict.lookupOrDefault<vector>("tractionValue",vector::zero);
 
-	updateCoeffs();
+    updateCoeffs();
 }
 
 
