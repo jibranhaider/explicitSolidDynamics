@@ -1,26 +1,29 @@
-/*---------------------------------------------------------------------------* \
+/*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
+
     OpenFOAM is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
+
     OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
     for more details.
+
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
 \*---------------------------------------------------------------------------*/
 
 #include "symmetricTractionFvPatchVectorField.H"
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -29,8 +32,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-symmetricTractionFvPatchVectorField::
-symmetricTractionFvPatchVectorField
+symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 (
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF
@@ -41,8 +43,7 @@ symmetricTractionFvPatchVectorField
 {}
 
 
-symmetricTractionFvPatchVectorField::
-symmetricTractionFvPatchVectorField
+symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 (
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF,
@@ -59,8 +60,7 @@ symmetricTractionFvPatchVectorField
 }
 
 
-symmetricTractionFvPatchVectorField::
-symmetricTractionFvPatchVectorField
+symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 (
     const symmetricTractionFvPatchVectorField& ptf,
     const fvPatch& p,
@@ -73,8 +73,7 @@ symmetricTractionFvPatchVectorField
 {}
 
 
-symmetricTractionFvPatchVectorField::
-symmetricTractionFvPatchVectorField
+symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 (
     const symmetricTractionFvPatchVectorField& rifvpvf
 )
@@ -84,8 +83,7 @@ symmetricTractionFvPatchVectorField
 {}
 
 
-symmetricTractionFvPatchVectorField::
-symmetricTractionFvPatchVectorField
+symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 (
     const symmetricTractionFvPatchVectorField& rifvpvf,
     const DimensionedField<vector, volMesh>& iF
@@ -128,9 +126,7 @@ void symmetricTractionFvPatchVectorField::updateCoeffs()
     const fvsPatchField<vector>& t_M_ = patch().lookupPatchField<surfaceVectorField, vector>("t_M");    
     const fvsPatchField<tensor>& nCn_ = patch().lookupPatchField<surfaceTensorField, tensor>("nCn");
     const fvsPatchField<tensor>& iMnCn_ = patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
-
     const fvPatchField<scalar>& Up_ = patch().lookupPatchField<volScalarField, scalar>("Up");
-  
 
     fvsPatchField<vector> t_C(lm_M_);
     t_C = ( nCn_ & (t_M_ - Up_*lm_M_) ) + (iMnCn_ & tractionValue_);     

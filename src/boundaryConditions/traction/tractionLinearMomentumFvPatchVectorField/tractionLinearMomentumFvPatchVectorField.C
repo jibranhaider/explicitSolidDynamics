@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -25,7 +25,6 @@ License
 
 #include "tractionLinearMomentumFvPatchVectorField.H"
 
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
@@ -33,7 +32,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-tractionLinearMomentumFvPatchVectorField::
+tractionLinearMomentumFvPatchVectorField:: 
 tractionLinearMomentumFvPatchVectorField
 (
     const fvPatch& p,
@@ -125,7 +124,6 @@ tractionLinearMomentumFvPatchVectorField
 {}
 
 
-
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 void tractionLinearMomentumFvPatchVectorField::autoMap
@@ -158,13 +156,10 @@ void tractionLinearMomentumFvPatchVectorField::updateCoeffs()
     const fvsPatchField<vector>& t_M_ = patch().lookupPatchField<surfaceVectorField, vector>("t_M");    
     const fvsPatchField<tensor>& nCn_ = patch().lookupPatchField<surfaceTensorField, tensor>("nCn");
     const fvsPatchField<tensor>& iMnCn_ = patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
-
     const fvPatchField<scalar>& Up_ = patch().lookupPatchField<volScalarField, scalar>("Up");
     const fvPatchField<scalar>& Us_ = patch().lookupPatchField<volScalarField, scalar>("Us");    
 
-
     fvsPatchField<vector> lm_C(lm_M_);
-
 
     if (loadingType_ == "none")
     { 
@@ -203,6 +198,7 @@ void tractionLinearMomentumFvPatchVectorField::write(Ostream& os) const
     os.writeKeyword("pressure") << pressure_ << token::END_STATEMENT << nl; 
     writeEntry("value", os);               
 }
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

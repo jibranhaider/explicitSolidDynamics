@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -28,12 +28,19 @@ Description
     Specifies contact traction for a symmetric boundary patch according 
     to the Riemann solver. External boundary traction can also be specified.  
 
+Usage
+    \table
+        Property     | Description             | Required    | Default value
+        tractionValue | traction vector        | no          | vector(0,0,0)
+
+    \endtable
+    
     Example of the boundary condition specification:
     \verbatim
     inlet
     {
         type            symmetricTraction;
-        //tractionValue   (0 0 0); 
+        tractionValue   (10 10 10); 
     }
     \endverbatim
 
@@ -58,20 +65,20 @@ SourceFiles
 #include "surfaceFields.H"
 #include "IOdictionary.H"
 
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-               Class symmetricTractionFvPatchVectorField Declaration
+            Class symmetricTractionFvPatchVectorField Declaration
 \*---------------------------------------------------------------------------*/
 
 class symmetricTractionFvPatchVectorField
 :
     public fixedValueFvPatchVectorField
 {
+
 private:
  
     vector tractionValue_;
@@ -79,9 +86,8 @@ private:
 
 public:
 
-    //- Runtime type information
+    // Runtime type information
     TypeName("symmetricTraction");
-
 
 
     // Constructors
@@ -165,10 +171,10 @@ public:
             );
 
 
-        //- Update the coefficients associated with the patch field
+        // Update the coefficients associated with the patch field
         virtual void updateCoeffs();
 
-        //- Write
+        // Write
         virtual void write(Ostream&) const;
 
 };

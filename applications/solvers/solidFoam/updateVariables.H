@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------------
 // Deformation dependent properties
 //-----------------------------------------------------------------------------------           
@@ -8,12 +7,10 @@
     nCn = n*n;
     iMnCn = (tensor::I)-(nCn);
 
-
     // Strain measures
     Finv = inv(F);       
     H = det(F)*Finv.T();    
     J = det(F); 
-
 
     // Wave speeds
     Up_time = model.Up_nonLinear();     
@@ -25,7 +22,6 @@
     P = model.piola();
     
 
-
 //-----------------------------------------------------------------------------------
 // Linear reconstruction
 //-----------------------------------------------------------------------------------           
@@ -34,7 +30,6 @@
     grad.gradient(lm, lmGrad);      
     grad.gradient(P, PxGrad, PyGrad, PzGrad);
 
-
     // Reconstruction   
     grad.reconstruct( lm, lmGrad, lm_M, lm_P ); 
     grad.reconstruct( P, PxGrad, PyGrad, PzGrad, P_M, P_P) ;
@@ -42,13 +37,11 @@
     t_P = P_P & N;
 
 
-
 //-----------------------------------------------------------------------------------
 // Riemann solver
 //-----------------------------------------------------------------------------------
 
     #include "riemannSolver.H"              
-
 
 
 //-----------------------------------------------------------------------------------
@@ -62,10 +55,5 @@
     #include "strongBCs.H"
     lmN.correctBoundaryConditions();    
     
-
     // Constrained fluxes
     interpolate.pointToSurface(lmN, lmC);
-
-
-
-

@@ -1,17 +1,17 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright held by original author
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
 
-    OpenFOAM is free software; you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by the
-    Free Software Foundation; either version 2 of the License, or (at your
-    option) any later version.
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
     OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -19,8 +19,7 @@ License
     for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenFOAM; if not, write to the Free Software Foundation,
-    Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 \*---------------------------------------------------------------------------*/
 
@@ -39,7 +38,6 @@ defineTypeNameAndDebug(interpolationSchemes, 0);
 
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
-
 
   
 // * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * * //  
@@ -159,7 +157,6 @@ volVectorField interpolationSchemes::surfaceToCell
 
     U.primitiveFieldRef() /= w.internalField();
 
-
     tvf_v.clear();
     tvf_s.clear();
 
@@ -167,9 +164,7 @@ volVectorField interpolationSchemes::surfaceToCell
 }
 
 
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
 
 template<class Type>
 void interpolationSchemes::pushUntransformedDataNew
@@ -218,7 +213,6 @@ void interpolationSchemes::pushUntransformedDataNew
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-
 template<class Type>
 void interpolationSchemes::addSeparatedNew
 (
@@ -265,10 +259,7 @@ void interpolationSchemes::addSeparatedNew
                  );
          }
     }
-
 }
-
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -280,10 +271,9 @@ void interpolationSchemes::volToPoint
     GeometricField<vector, pointPatchField, pointMesh>& Un                  
 ) const
 {
-    
+ 
     const fvMesh& mesh = mesh_; 
     const volVectorField& C = mesh.C();    
-
 
     if( Pstream::parRun() ) 
     {           
@@ -355,9 +345,7 @@ void interpolationSchemes::volToPoint
             Un[nodeID] = sum / weights; 
         }       
     }   
-
 }
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -403,22 +391,6 @@ void interpolationSchemes::pointToSurface
             Uf.boundaryFieldRef()[patchID][facei]= sum / weights;           
         }   
     }
-    
-}
-
-
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-void interpolationSchemes::surfaceToPointConstrained
-(
-    const GeometricField<vector, fvsPatchField, surfaceMesh>& Uf,
-    GeometricField<vector, pointPatchField, pointMesh>& Un              
-) const
-{
-
-
-
 }
 
 

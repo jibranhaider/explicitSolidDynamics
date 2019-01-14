@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -25,46 +25,32 @@ Class
     Foam::movingDisplacementLinearMomentumFvPatchVectorField
 
 Description
-    Prescribes an inlet profile for a circular pipe inlet patch. Flow direction is determined
-    automatically from face normals, only velocity magnitude needs to be provided.
-    \heading Patch usage
+    Specifies contact linear momentum for a moving boundary patch according 
+    to a bell shaped velocity profile.
+
+Usage
     \table
-        Property    		| Description             								| Required  | Default value
-        R           		| pipe radius 											| yes     	|
-        flowSpeed   		| magnitude of flow velocity      						| yes       |
-        deltaByR			| wall function thickness as a fraction of pipe radius  | yes 		|
-        approximationType	| name of approximation profile							| no		| exponential
-        centrePoint			| point on the centreline of the pipe					| no 		| (0 0 0)
-        lambda				| pressure gradient coefficient 						| no 		| 0
+        Property     | Description             | Required    | Default value
+        density      | material density        | yes         | 
+        displacement | Maximum displacement    | yes         |
+        endTime      | Displacement end time   | yes         |
     \endtable
+
     Example of the boundary condition specification:
     \verbatim
-    inlet
-	{
-		// prescribes a parabolic inlet profile
-	    type        prescribedPipeInlet;
-	    // (optional, default exponential) type of profile used for approximation
-	    approximationType exponential;
-	    // pipe radius
-	    R	$Rpipe;
-	    // magnitude of flow velocity into the pipe
-	    flowSpeed	$flowVelocity;
-	    // (optional, defaults at origin) centrepoint of the pipe used to determine the radius of each face
-	    centrepoint	(0 0 0);
-	    // inlet BL thickness as a function of radius
-	    deltaByR $deltaByR;
-	    // (optional, default 0) pressure gradient coefficient (see Polhausen profile literature for explanation)
-	    lambda 0.;
-	    // dummy value overwritten by the BC, used for initialisation only
-	    value		$internalField;
-	}
-	\endverbatim
+    top
+    {
+        density         1000;
+        displacement    (0 0.01 0);
+        endTime         1.0;
+    }
+    \endverbatim
 
 SeeAlso
     Foam::fixedValueFvPatchField
 
 SourceFiles
-    prescribedPipeInletFvPatchVectorField.C
+    movingDisplacementLinearMomentumPatchVectorField.C
 
 \*---------------------------------------------------------------------------*/
 
@@ -85,7 +71,7 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-               Class movingDisplacementLinearMomentumFvPatchVectorField Declaration
+     Class movingDisplacementLinearMomentumFvPatchVectorField Declaration
 \*---------------------------------------------------------------------------*/
 
 class movingDisplacementLinearMomentumFvPatchVectorField
@@ -187,10 +173,10 @@ public:
                 const labelList&
             );
 
-        //- Update the coefficients associated with the patch field
+        // Update the coefficients associated with the patch field
         virtual void updateCoeffs();
 
-        //- Write
+        // Write
         virtual void write(Ostream&) const;
 };
 

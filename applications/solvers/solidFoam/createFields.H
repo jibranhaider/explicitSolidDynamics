@@ -123,7 +123,6 @@
     volScalarField Up_time (model.Up_nonLinear());
 
 
-
 //-----------------------------------------------------------------------------------
 // Gradients
 //-----------------------------------------------------------------------------------
@@ -159,7 +158,6 @@
     volTensorField PyGrad (fvc::grad(Py));
     volTensorField PzGrad (fvc::grad(Pz));
     grad.gradient(P, PxGrad, PyGrad, PzGrad);
-
 
 
 //-----------------------------------------------------------------------------------
@@ -201,7 +199,6 @@
 // Riemann solver
 //-----------------------------------------------------------------------------------
 
-
     // Contact linear momentum
     surfaceVectorField lmC
     (
@@ -240,21 +237,17 @@
     // Constrained class
     interpolationSchemes interpolate(mesh); 
 
-
     // Cell averaged linear momentum
     volVectorField lmR (interpolate.surfaceToCell(lmC));                                     
 
-
     // Local gradient of cell averaged linear momentum
     volTensorField lmRgrad (grad.localGradient(lmR, lmC, AvCinv));  
-
 
     // Constrained fluxes
     interpolate.volToPoint(lmR, lmRgrad, lmN);      
     #include "strongBCs.H"
     lmN.correctBoundaryConditions();
     interpolate.pointToSurface(lmN, lmC);       
-
 
 
 //-----------------------------------------------------------------------------------

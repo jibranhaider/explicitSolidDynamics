@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -35,10 +35,8 @@ namespace Foam
 defineTypeNameAndDebug(gradientSchemes, 0);
 
 
-
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
-  
   
 // * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * * //
   
@@ -48,7 +46,6 @@ gradientSchemes::gradientSchemes
 )
 :
     mesh_(vm),
-
     own_(mesh_.owner()),
     nei_(mesh_.neighbour()),
     X_(mesh_.C()),
@@ -71,9 +68,7 @@ gradientSchemes::gradientSchemes
   {}
 
 
-
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
 
 void gradientSchemes::distanceMatrix
 (
@@ -112,11 +107,8 @@ void gradientSchemes::distanceMatrix
         U.correctBoundaryConditions();
     }
 
-
     U.primitiveFieldRef() = inv(U.internalField());
 }
-
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -189,13 +181,11 @@ void gradientSchemes::distanceMatrixLocal
                     }
                 }
             }       
-
         }
     }
 
     Ainv.primitiveFieldRef() = inv(dCd.internalField());    
 }
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -240,7 +230,6 @@ void gradientSchemes::gradient
 
         Ugrad.correctBoundaryConditions();
     }
-    
 }  
 
 
@@ -271,11 +260,9 @@ void gradientSchemes::gradient
     GeometricField<vector, fvPatchField, volMesh> UgradY = tvf();
     GeometricField<vector, fvPatchField, volMesh> UgradZ = tvf();
 
-
     gradientSchemes::gradient(U.component(0), UgradX);  
     gradientSchemes::gradient(U.component(1), UgradY);
     gradientSchemes::gradient(U.component(2), UgradZ);
-
 
     forAll (mesh_.cells(), cellID)
     {
@@ -288,7 +275,6 @@ void gradientSchemes::gradient
     }
 
     tvf.clear();
-
 }
 
 
@@ -302,7 +288,6 @@ void gradientSchemes::gradient
     GeometricField<tensor, fvPatchField, volMesh>& UgradZ
 )   const
 {
-
     const fvMesh& mesh = mesh_;
 
     tmp<GeometricField<vector, fvPatchField, volMesh> > tvf
@@ -326,7 +311,6 @@ void gradientSchemes::gradient
     GeometricField<vector, fvPatchField, volMesh> Uy = tvf();
     GeometricField<vector, fvPatchField, volMesh> Uz = tvf();
 
-
     forAll (mesh.cells(), cellID)
     {
         Ux[cellID] = vector(U[cellID].xx(), U[cellID].xy(), U[cellID].xz());
@@ -349,7 +333,6 @@ void gradientSchemes::gradient
 }
 
 
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 volTensorField gradientSchemes::localGradient    
@@ -359,14 +342,13 @@ volTensorField gradientSchemes::localGradient
     const GeometricField<tensor, fvPatchField, volMesh>& Ainv       
 ) const
 {   
-    
+
     const volVectorField& C = mesh_.C();
     const surfaceVectorField& Cf = mesh_.Cf();
     const scalar& maxInteriorFaceID = mesh_.nInternalFaces()-1;
 
     const objectRegistry& db = mesh_.thisDb();
     const pointVectorField& lmN_ = db.lookupObject<pointVectorField> ("lmN");
-
 
     tmp<GeometricField<vector, fvPatchField, volMesh> > tvf
     (
@@ -382,7 +364,6 @@ volTensorField gradientSchemes::localGradient
     GeometricField<vector, fvPatchField, volMesh> UgradY = tvf();
     GeometricField<vector, fvPatchField, volMesh> UgradZ = tvf();
 
-
     tmp<GeometricField<tensor, fvPatchField, volMesh> > tvf1
     (
         new GeometricField<tensor, fvPatchField, volMesh>
@@ -394,7 +375,6 @@ volTensorField gradientSchemes::localGradient
     );
 
     GeometricField<tensor, fvPatchField, volMesh> Ugrad = tvf1();
-
 
     forAll (mesh_.faces(), faceID)
     {
@@ -454,20 +434,16 @@ volTensorField gradientSchemes::localGradient
         }
     }
 
-
     forAll (mesh_.cells(), cellID)
     {
         Ugrad[cellID] = tensor (UgradX[cellID], UgradY[cellID], UgradZ[cellID]);    
     }
-
 
     tvf.clear();
     tvf1.clear();
 
     return Ugrad;
 }
-
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -495,7 +471,6 @@ void gradientSchemes::reconstruct
         Uplus[faceID]  = U[neiID] + ( Ugrad[neiID] & (Cf[faceID]-C[neiID]) );
     }
 
-
     forAll(mesh.boundary(), patchID)
     {
         forAll(mesh.boundaryMesh()[patchID],face)
@@ -507,7 +482,6 @@ void gradientSchemes::reconstruct
         }    
     }
 }
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -526,7 +500,6 @@ void gradientSchemes::reconstruct
     const volVectorField& C = mesh.C();
     const surfaceVectorField& Cf = mesh.Cf();
 
-
     forAll (own, faceID)
     {       
         const label& ownID = own[faceID];
@@ -535,7 +508,6 @@ void gradientSchemes::reconstruct
         Uminus[faceID] = U[ownID] + ( Ugrad[ownID] & (Cf[faceID]-C[ownID]) );
         Uplus[faceID]  = U[neiID] + ( Ugrad[neiID] & (Cf[faceID]-C[neiID]) );
     }
-
 
     forAll(mesh.boundary(), patchID)
     {
@@ -546,9 +518,7 @@ void gradientSchemes::reconstruct
             Uminus.boundaryFieldRef()[patchID][face] = U[bCellID] + ( Ugrad[bCellID] & ( Cf.boundaryField()[patchID][face]-C[bCellID] ) );  
         }    
     }
-
 }
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -567,7 +537,6 @@ void gradientSchemes::reconstruct
     const labelUList& own = mesh.owner();
     const volVectorField& C = mesh.C();
     const surfaceVectorField& Cf = mesh.Cf();
-
 
     tmp<GeometricField<vector, fvPatchField, volMesh> > tvf
     (
@@ -597,7 +566,6 @@ void gradientSchemes::reconstruct
         Uz[cellID] = vector( U[cellID].zx(), U[cellID].zy(), U[cellID].zz() );
     }
     
-
     tmp<GeometricField<vector, fvsPatchField, surfaceMesh> > tsf
     (
         new GeometricField<vector, fvsPatchField, surfaceMesh>
@@ -662,8 +630,6 @@ void gradientSchemes::reconstruct
 
     tsf.clear();
 }
-
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

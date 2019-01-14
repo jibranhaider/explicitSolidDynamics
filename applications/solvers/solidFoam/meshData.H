@@ -5,15 +5,13 @@
     // Point Mesh (pMesh)
         pointMesh pMesh(mesh);
 
-
     // Material face area
         const surfaceScalarField& magSf (mesh.magSf());
-
 
     // Material face area normal vector
         const surfaceVectorField& Sf (mesh.Sf());
 
-        
+
 //----------------------------------------------------------------------
 // Mesh coordinates
 //----------------------------------------------------------------------
@@ -40,7 +38,6 @@
         xN.primitiveFieldRef() = mesh.points();
 
 
-
     // Material nodal coordinates
         pointVectorField xN_0
         (
@@ -57,7 +54,6 @@
         surfaceVectorField xF = mesh.Cf();
 
 
-
 //----------------------------------------------------------------------
 // Normals
 //----------------------------------------------------------------------
@@ -68,8 +64,6 @@
             IOobject ("N", runTime.timeName(), mesh, IOobject::NO_READ, IOobject::AUTO_WRITE),
             Sf/mesh.magSf()
         );          
-
-
 
 
 // EDGE TO POINT CONNECTIVITY (edges)
@@ -105,8 +99,6 @@
     }
 
 
-
-
 // BOUNDARY PATCHES
 //-----------------
 
@@ -115,7 +107,6 @@
     const label& symmetricXpatchID = bm.findPatchID("symmetricX");
     const label& symmetricYpatchID = bm.findPatchID("symmetricY");
     const label& symmetricZpatchID = bm.findPatchID("symmetricZ");  
-
 
 
 // A INVERSE FOR CALCULATION OF GRADIENT (Ainv)
@@ -129,12 +120,8 @@
     );
 
 
-    
-
 // Ainv FOR CALCULATION OF GRADIENT FROM CONTACT VALUES (AvCinv)
 //--------------------------------------------------------------
 
     // Initialise AvCinv    
     volTensorField AvCinv(Ainv);
-
-

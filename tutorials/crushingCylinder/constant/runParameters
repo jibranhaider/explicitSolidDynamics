@@ -1,9 +1,9 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  5                                     |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
-|    \\/     M anipulation  |                                                 |
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
@@ -15,9 +15,9 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-tutorial		crushingCylinder;
-meshFile		crushingCylinder_1600.msh;
-density			1000;
-displacement	-0.0045;
+tutorial        crushingCylinder;
+meshFile        crushingCylinder_1600.msh;
+density         1000;
+displacement    -0.0045;
 
 // ************************************************************************* //

@@ -1,17 +1,17 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright held by original author
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
 
-    OpenFOAM is free software; you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by the
-    Free Software Foundation; either version 2 of the License, or (at your
-    option) any later version.
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
     OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -19,13 +19,11 @@ License
     for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenFOAM; if not, write to the Free Software Foundation,
-    Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 \*---------------------------------------------------------------------------*/
 
 #include "constitutiveModel.H"
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -38,9 +36,9 @@ defineTypeNameAndDebug(constitutiveModel, 0);
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
-
   
 // * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * * //  
+
 constitutiveModel::constitutiveModel
 (
     const volTensorField& F,
@@ -88,7 +86,6 @@ constitutiveModel::constitutiveModel
         F.mesh(),
         dimensionedScalar("Ealgo", dimensionSet(1,-1,-2,0,0,0,0), 0.0)  
     ),
-
 
     rho_ (dict.lookup("rho")),
     E_ (dict.lookup("E")),
@@ -173,7 +170,6 @@ volScalarField constitutiveModel::Up_nonLinear()
 
     return (Up_/stretch);
 }
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -304,14 +300,9 @@ void constitutiveModel::eigenStructure(const tensor& ten)
                         v1[j+q*size] = h + s * ( g - h * tau1 );
                     }
                     rot_num = rot_num + 1;
-
                 }
-            
-
             }
-
         }
-
     }
 
 
@@ -349,7 +340,6 @@ void constitutiveModel::eigenStructure(const tensor& ten)
         }
     }
 
-
     // Corrections for calculating inverse
     tensor sub(tensor::zero);
 
@@ -363,10 +353,7 @@ void constitutiveModel::eigenStructure(const tensor& ten)
     }
 
     eigVal_ = d;
-
 }
-
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -398,7 +385,6 @@ surfaceVectorField constitutiveModel::spatialNormal()
 
     return n;
 }
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

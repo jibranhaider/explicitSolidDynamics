@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -25,7 +25,6 @@ License
 
 #include "angularMomentum.H"
 
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
@@ -36,9 +35,8 @@ defineTypeNameAndDebug(angularMomentum, 0);
 
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
-
-
   
+
 // * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * * //  
 angularMomentum::angularMomentum(const fvMesh& vm, const dimensionedScalar& rho)
 :
@@ -46,6 +44,7 @@ angularMomentum::angularMomentum(const fvMesh& vm, const dimensionedScalar& rho)
     rho_(rho)
 {}
     
+
 // * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * * //
 angularMomentum::~angularMomentum()
 {}
@@ -91,7 +90,6 @@ void angularMomentum::AMconservation
     GeometricField<vector, fvPatchField, volMesh> xAM = tvf_x();
 
 
-
     tmp<GeometricField<vector, fvPatchField, volMesh> > tvf_lm
     (
         new GeometricField<vector, fvPatchField, volMesh>
@@ -111,12 +109,9 @@ void angularMomentum::AMconservation
 
     GeometricField<vector, fvPatchField, volMesh> lmAM = tvf_lm();
 
-
-
     if ( RKstage == "first" )
     {
         xAM = x_.oldTime();
-        // xAM = x_.oldTime() + deltaT*(lm_.oldTime()/rho_);
     }
 
     else if ( RKstage == "second" )
@@ -147,38 +142,31 @@ void angularMomentum::AMconservation
         reduce(R_L, sumOp<vector>());           
     }
 
-
     tensor LHS = K_LL - ( (K_LB & K_LB) / K_BB );
     vector RHS = R_L;
 
     vector lambda = inv(LHS) & RHS;
     vector beta = (-K_LB & lambda) / K_BB;
 
-
     forAll ( mesh_.cells(), cellID )
     {   
         rhsLm[cellID] = rhsLm[cellID] + (lambda ^ xAM[cellID]) + beta;
     }
     
-
     if ( RKstage == "first" )
     {       
         rhsLm1 = rhsLm;
     }
 
-
     tvf_x.clear();
     tvf_lm.clear();
-
 
     if( Pstream::parRun() ) 
     {
         rhsLm.correctBoundaryConditions();
         rhsLm1.correctBoundaryConditions();     
     }
-
 }
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -207,7 +195,6 @@ void angularMomentum::printGlobalMomentum
 
     Info << "\nGlobal angular momentum = " << amG << endl;
     Info << "Global linear momentum = " << lmG << endl;
-
 }
 
 

@@ -15,11 +15,11 @@ fluentMeshToFoam $meshFile
 cp -r 0.orig 0
 
 # Run solver
-if [ $nProc -eq 1 ]; then	
-	$solver > log.$solver &
-	tail -f log.$solver
-	
+if [ $nProc -eq 1 ]; then   
+    $solver > log.$solver &
+    tail -f log.$solver
+    
 elif [ $nProc -gt 1 ]; then
-	runApplication decomposePar
-	runParallel $solver &
+    runApplication decomposePar
+    runParallel $solver &
 fi

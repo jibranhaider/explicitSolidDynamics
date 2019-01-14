@@ -1,9 +1,9 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  5                                     |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
-|    \\/     M anipulation  |                                                 |
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
@@ -15,8 +15,8 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-tutorial				twistingColumn;
-meshFile				twistingColumn_384.msh;
-initialAngularVelocity 	omega [0 0 -1 0 0 0 0]  (0 105 0);
+tutorial                twistingColumn;
+meshFile                twistingColumn_384.msh;
+initialAngularVelocity  omega [0 0 -1 0 0 0 0]  (0 105 0);
 
 // ************************************************************************* //

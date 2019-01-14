@@ -4,8 +4,6 @@ EXE_INC = \
     -I$(PWD)/../../../src/models/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
-    
-
 
 EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) \

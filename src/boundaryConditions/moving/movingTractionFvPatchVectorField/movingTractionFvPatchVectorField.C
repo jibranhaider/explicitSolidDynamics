@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -24,7 +24,6 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "movingTractionFvPatchVectorField.H"
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -130,11 +129,9 @@ void movingTractionFvPatchVectorField::updateCoeffs()
     const fvPatchField<scalar>& Up_ = patch().lookupPatchField<volScalarField, scalar>("Up");
     const fvPatchField<scalar>& Us_ = patch().lookupPatchField<volScalarField, scalar>("Us");    
 
-
     fvsPatchField<vector> t_C(lm_M_);
  
     t_C = t_M_ + ( (Up_*nCn_ + Us_*iMnCn_) & (linearMomentum_ - lm_M_) );  
-
 
     this->operator==(t_C);
     fixedValueFvPatchVectorField::updateCoeffs();

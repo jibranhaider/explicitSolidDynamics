@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -28,14 +28,22 @@ Description
     Specifies contact traction for a traction boundary patch according to 
     the Riemann solver. External boundary traction can also be specified.  
 
+Usage
+    \table
+        Property     | Description             | Required    | Default value
+        density      | material density        | yes         | 
+        displacement | Maximum displacement    | yes         |
+        endTime      | Displacement end time   | yes         |
+    \endtable
+
     Example of the boundary condition specification:
     \verbatim
     inlet
 	{
 	    type           movingDisplacementTraction;
-        density        0;                
-        displacement   (0 0 0);       
-        endTime        0;   
+        density        1000;                
+        displacement   (0 0.01 0);       
+        endTime        1.0;   
 	}
 	\endverbatim
 
@@ -43,6 +51,7 @@ SeeAlso
     Foam::fixedValueFvPatchField
 
 SourceFiles
+    movingTractionFvPatchVectorField.C    
     movingDisplacementTractionFvPatchVectorField.C
 
 \*---------------------------------------------------------------------------*/
@@ -59,7 +68,7 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-             Class movingDisplacementTractionFvPatchVectorField Declaration
+        Class movingDisplacementTractionFvPatchVectorField Declaration
 \*---------------------------------------------------------------------------*/
 
 class movingDisplacementTractionFvPatchVectorField
@@ -81,7 +90,7 @@ private:
 
 public:
 
-    //- Runtime type information
+    // Runtime type information
     TypeName("movingDisplacementTraction");
 
 
@@ -164,10 +173,10 @@ public:
                 const labelList&
             );
 
-        //- Update the coefficients associated with the patch field
+        // Update the coefficients associated with the patch field
         virtual void updateCoeffs();
 
-        //- Write
+        // Write
         virtual void write(Ostream&) const;
 
 };

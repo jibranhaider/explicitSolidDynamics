@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -21,7 +21,6 @@ License
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-
 Class
     Foam::angularMomentum
 
@@ -31,7 +30,6 @@ Description
 SourceFiles
     angularMomentum.C
 
-
 \*---------------------------------------------------------------------------*/
 
 #ifndef angularMomentum_H
@@ -39,38 +37,37 @@ SourceFiles
 
 #include "volFields.H"
 
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-
 class angularMomentum
 {
     // Private data
 
-    //- mesh
-         const fvMesh& mesh_;  
+        // Mesh
+        const fvMesh& mesh_;  
 
-         dimensionedScalar rho_;       
+        // Material density
+        dimensionedScalar rho_;       
 
-    //- Disallow default bitwise copy construct
+        // Disallow default bitwise copy construct
         angularMomentum(const angularMomentum&);
 
-    //- Disallow default bitwise assignment
+        // Disallow default bitwise assignment
         void operator=(const angularMomentum&);
 
 public:
 
     // Declare name of the class and its debug switch
-        TypeName("angularMomentum");
+    TypeName("angularMomentum");
 
     // Constructors
-        explicit angularMomentum(const fvMesh&, const dimensionedScalar&);
+    explicit angularMomentum(const fvMesh&, const dimensionedScalar&);
 
     // Destructor
-        virtual ~angularMomentum();
+    virtual ~angularMomentum();
 
     // Member functions
 
@@ -92,7 +89,6 @@ public:
         ) const;
 
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -24,7 +24,6 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "movingDisplacementNodalLinearMomentumPointPatchVectorField.H"
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -109,7 +108,6 @@ movingDisplacementNodalLinearMomentumPointPatchVectorField
 {}
 
 
-
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 void movingDisplacementNodalLinearMomentumPointPatchVectorField::autoMap
@@ -173,6 +171,5 @@ makePointPatchTypeField
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
-
 
 // ************************************************************************* //

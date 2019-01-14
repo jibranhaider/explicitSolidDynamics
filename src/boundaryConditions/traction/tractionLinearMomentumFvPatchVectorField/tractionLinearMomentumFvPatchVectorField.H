@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -26,17 +26,32 @@ Class
 
 Description
     Specifies contact linear momentum for a traction boundary patch according 
-    to the Riemann solver. External boundary traction can also be specified.  
+    to the Riemann solver. External boundary traction or pressure can also 
+    be specified.  
+
+Usage
+    \table
+        Property     | Description             | Required    | Default value
+        loadingType  | nature of loading: none,| no          | none
+                     | traction or pressure_   |             |
+        traction     | traction vector         | no          | vector(0,0,0)
+        pressure     | pressure                | no          | 0.0
+    \endtable
 
     Example of the boundary condition specification:
     \verbatim
-    inlet
+    free
     {
         type           tractionLinearMomentum;
-        //loadingType    traction;         // pressure, none
-        //traction       (0 0 0); 
-        //pressure       0.0; 
+        loadingType    traction;
+        traction       (0 0 0);
     }
+    free
+    {
+        type           tractionLinearMomentum;
+        loadingType    pressure;
+        Pressure       0.0;
+    }    
     \endverbatim
 
 SeeAlso
@@ -60,32 +75,35 @@ SourceFiles
 #include "surfaceFields.H"
 #include "IOdictionary.H"
 
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-//class fvMesh;
-
 /*---------------------------------------------------------------------------*\
-               Class tractionLinearMomentumFvPatchVectorField Declaration
+         Class tractionLinearMomentumFvPatchVectorField Declaration
 \*---------------------------------------------------------------------------*/
 
 class tractionLinearMomentumFvPatchVectorField
 :
     public fixedValueFvPatchVectorField
-{    
+{
+
 private:
 
+    // Type of loading
     word    loadingType_; 
+
+    // Applied traction
     vector  traction_;
+
+    // Applied pressure
     scalar  pressure_;
 
 
 public:
 
-    //- Runtime type information
+    // Runtime type information
     TypeName("tractionLinearMomentum");
 
     // Constructors
@@ -149,6 +167,7 @@ public:
             );
         }
 
+
     // Member functions
 
         // Access
@@ -168,7 +187,6 @@ public:
                 return pressure_;
             } 
 
-
         // Mapping functions
 
             //- Map (and resize as needed) from self given a mapping object
@@ -184,13 +202,12 @@ public:
                 const labelList&
             );
 
-
-        //- Update the coefficients associated with the patch field
+        // Update the coefficients associated with the patch field
         virtual void updateCoeffs();
 
-        //- Write
+        // Write
         virtual void write(Ostream&) const;
-
+        
 };
 
 

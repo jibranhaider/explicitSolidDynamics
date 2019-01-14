@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -28,12 +28,18 @@ Description
     Specifies contact traction for a traction boundary patch according to 
     the Riemann solver. External boundary traction can also be specified.  
 
+Usage
+    \table
+        Property     | Description             | Required    | Default value
+        linearMomentum  | boundary momentum    | no          | vector(0,0,0)
+    \endtable
+
     Example of the boundary condition specification:
     \verbatim
     inlet
     {
-        type           movingTraction;
-        //loadingType    uniform (0 0 0);        
+        TypeName            movingTraction;
+        linearMomentum      (10,0 0);
     }
     \endverbatim
 
@@ -58,14 +64,13 @@ SourceFiles
 #include "surfaceFields.H"
 #include "IOdictionary.H"
 
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-               Class prescribedPipeInletFvPatchVectorField Declaration
+            Class movingTractionFvPatchVectorField Declaration
 \*---------------------------------------------------------------------------*/
 
 class movingTractionFvPatchVectorField
@@ -79,7 +84,7 @@ private:
 
 public:
 
-    //- Runtime type information
+    // Runtime type information
     TypeName("movingTraction");
 
 
@@ -168,13 +173,12 @@ public:
                 const labelList&
             );
 
-        //- Update the coefficients associated with the patch field
+        // Update the coefficients associated with the patch field
         virtual void updateCoeffs();
 
-        //- Write
+        // Write
         virtual void write(Ostream&) const;
-
-
+        
 };
 
 

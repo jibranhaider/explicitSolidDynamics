@@ -1,9 +1,9 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  5.x                                   |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
-|    \\/     M anipulation  |                                                 |
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
@@ -23,25 +23,24 @@ boundaryField
 {
     symmetricY
     {
-        type            zeroGradient;
+        type        zeroGradient;
     }
     free
     {
-        type            zeroGradient;
+        type        zeroGradient;
     }
     free_loading
     {
-        type            zeroGradient;
+        type        zeroGradient;
     }
     symmetricX
     {
-        type            zeroGradient;
+        type        zeroGradient;
     }
     symmetricZ
     {
-        type            zeroGradient;
+        type        zeroGradient;
     }
 }
-
 
 // ************************************************************************* //

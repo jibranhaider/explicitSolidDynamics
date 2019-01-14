@@ -1,8 +1,4 @@
-//-------------------------
-// ACOUSTIC RIEMANN SOLVER 
-//------------------------- 
-
-
+// Acoustic Riemann solver
 lmC = 0.5*(lm_M+lm_P) + ( 0.5 * ((nCn/fvc::interpolate(Up)) + (iMnCn/fvc::interpolate(Us))) & (t_P-t_M) );  
 tC  = 0.5*(t_M+t_P) + ( 0.5 * ((fvc::interpolate(Up)*nCn) + (fvc::interpolate(Us)*iMnCn)) & (lm_P-lm_M) );
 
@@ -22,6 +18,7 @@ if( Pstream::parRun() )
 
     forAll(mesh.boundary(), patchID)
     {
+        // Riemann solver for inter-processor boundaries        
         if (mesh.boundary()[patchID].coupled())             
         {           
             vectorField lm_nei = lm.boundaryField()[patchID].patchNeighbourField();
@@ -78,8 +75,7 @@ if( Pstream::parRun() )
 }
 
 
-
-
+// Compute boundary values
 lm_b.correctBoundaryConditions();
 t_b.correctBoundaryConditions();
 

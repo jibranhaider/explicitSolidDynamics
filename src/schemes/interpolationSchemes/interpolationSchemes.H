@@ -1,17 +1,17 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright held by original author
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
 
-    OpenFOAM is free software; you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by the
-    Free Software Foundation; either version 2 of the License, or (at your
-    option) any later version.
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
     OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -19,8 +19,7 @@ License
     for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenFOAM; if not, write to the Free Software Foundation,
-    Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
     Foam::interpolationSchemes
@@ -41,7 +40,6 @@ SourceFiles
 #include "surfaceFields.H"
 #include "pointFields.H"
 #include "pointConstraints.H"
-
 #include "volPointInterpolation.H"
 #include "fvPatchFields.H"
 
@@ -52,33 +50,31 @@ namespace Foam
 
 class fvMesh;
 
-
 class interpolationSchemes
 {
     // Private data
 
-    //- mesh
+        // Mesh
          const fvMesh& mesh_;         
 
-    //- Disallow default bitwise copy construct
+        // Disallow default bitwise copy construct
         interpolationSchemes(const interpolationSchemes&);
 
-    //- Disallow default bitwise assignment
+        // Disallow default bitwise assignment
         void operator=(const interpolationSchemes&);
 
 public:
 
     // Declare name of the class and its debug switch
-        TypeName("interpolationSchemes");
+    TypeName("interpolationSchemes");
 
     // Constructors
-        explicit interpolationSchemes(const fvMesh&);
+    explicit interpolationSchemes(const fvMesh&);
 
     // Destructor
-        virtual ~interpolationSchemes();
+    virtual ~interpolationSchemes();
 
     // Member functions
-
 
         // Surface to cell interpolation 
         volVectorField surfaceToCell  
@@ -97,7 +93,6 @@ public:
             GeometricField<Type, pointPatchField, pointMesh>&
         ) const;
 
-
         // Volume to point interpolation for vectorField
         void volToPoint
         (
@@ -106,24 +101,13 @@ public:
             GeometricField<vector, pointPatchField, pointMesh>& Un                               
         ) const;
 
-
         // Point to surface interpolation for vectorField
         void pointToSurface   
         (
             const GeometricField<vector, pointPatchField, pointMesh>& U,
             GeometricField<vector, fvsPatchField, surfaceMesh>& Uf                   
         ) const;
-
-
-        // Constrained surface to point interpolation for vectorField
-        void surfaceToPointConstrained
-        (
-            const GeometricField<vector, fvsPatchField, surfaceMesh>& Uf,
-            GeometricField<vector, pointPatchField, pointMesh>& Un                  
-        ) const;
 };
-
-
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

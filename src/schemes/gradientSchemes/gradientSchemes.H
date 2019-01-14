@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -51,43 +51,46 @@ class fvMesh;
 class gradientSchemes
 {
     // Private data
+
+        // Mesh
         const fvMesh& mesh_;
+        
+        // Owner list
         const labelUList& own_;
+        
+        // Neighbour list
         const labelUList& nei_;
-        const volVectorField& X_;                            
+        
+        // Cell centre coordinates
+        const volVectorField& X_; 
 
+        // Inverse of distance matrix                           
         volTensorField Ainv_;
-
-
-
-    // Private member functions
 
 
 private:
 
-        //- Disallow default bitwise copy construct
+        // Disallow default bitwise copy construct
         gradientSchemes(const gradientSchemes&);
 
-        //- Disallow default bitwise assignment
+        // Disallow default bitwise assignment
         void operator=(const gradientSchemes&);
 
 
 public:
 
     // Declare name of the class and its debug switch
-        TypeName("gradientSchemes");
-
+    TypeName("gradientSchemes");
 
     // Constructors
-        gradientSchemes(const fvMesh&);
+    gradientSchemes(const fvMesh&);
 
 
     // Destructor
-        virtual ~gradientSchemes();
+    virtual ~gradientSchemes();
 
 
     // Member functions
-
 
         // Inverse distance matrix for gradient
         void distanceMatrix
@@ -100,7 +103,6 @@ public:
         (
             GeometricField<tensor, fvPatchField, volMesh>&
         ) const;
-
 
 
         // Least square gradient for a volScalarField
@@ -135,7 +137,6 @@ public:
         ) const;
 
 
-
         // Reconstruction of a volScalarField to surfaceScalarField
         void reconstruct
         (
@@ -164,7 +165,6 @@ public:
             GeometricField<tensor, fvsPatchField, surfaceMesh>& Uminus,
             GeometricField<tensor, fvsPatchField, surfaceMesh>& Uplus
         );  
-
 
 };
 

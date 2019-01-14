@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2017 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -26,17 +26,32 @@ Class
 
 Description
     Specifies contact traction for a traction boundary patch according to 
-    the Riemann solver. External boundary traction can also be specified.  
+    the Riemann solver. External boundary traction or pressure can also be 
+    specified according to type of loading.   
+
+Usage
+    \table
+        Property     | Description             | Required    | Default value
+        loadingType  | nature of loading: none,| no          | none
+                     | traction or pressure_   |             |
+        traction     | traction vector         | no          | vector(0,0,0)
+        pressure     | pressure                | no          | 0.0
+    \endtable
 
     Example of the boundary condition specification:
     \verbatim
-    inlet
+    free
 	{
 	    type           tractionTraction;
-	    //loadingType    traction;         // pressure, none
-        //traction       (0 0 0); 
-        //pressure       0.0; 
+	    loadingType    traction;
+        traction       (0 10 0); 
 	}
+    free
+    {
+        type           tractionTraction;
+        loadingType    pressure;
+        pressure       5.0; 
+    }    
 	\endverbatim
 
 SeeAlso
@@ -179,10 +194,10 @@ public:
                 const labelList&
             );
 
-        //- Update the coefficients associated with the patch field
+        // Update the coefficients associated with the patch field
         virtual void updateCoeffs();
 
-        //- Write
+        // Write
         virtual void write(Ostream&) const;
 
 };
