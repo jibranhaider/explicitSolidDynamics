@@ -1,0 +1,4 @@
+operations/operations.C
+mechanics/mechanics.C
+
+LIB = $(FOAM_USER_LIBBIN)/libMathematics
