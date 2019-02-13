@@ -1,86 +1,95 @@
+Info << "Reading dictionaries ..." << endl;
 
-// MECHANICAL PROPERTIES DICTIONARY
-//---------------------------------
-    IOdictionary mechanicalProperties
+// Mechanical properties
+IOdictionary mechanicalProperties
+(
+     IOobject
     (
-        IOobject
-        (
-            "mechanicalProperties",
-            runTime.constant(),
-            mesh,
-            IOobject::MUST_READ_IF_MODIFIED,
-            IOobject::NO_WRITE
-        )
-    );
+        "mechanicalProperties",
+        runTime.constant(),
+        mesh,
+        IOobject::MUST_READ_IF_MODIFIED,
+        IOobject::NO_WRITE
+    )
+);
 
-
-    IOdictionary runParameters
+// Run parameters dictionary
+IOdictionary runParameters
+(
+    IOobject
     (
-        IOobject
-        (
-            "runParameters",
-            runTime.constant(),
-            mesh,
-            IOobject::MUST_READ_IF_MODIFIED,
-            IOobject::NO_WRITE
-        )
-    );
+        "runParameters",
+        runTime.constant(),
+        mesh,
+        IOobject::MUST_READ_IF_MODIFIED,
+        IOobject::NO_WRITE
+    )
+);
 
-
-    IOdictionary controlDict
+// Control dictionary
+IOdictionary controlDict
+(
+    IOobject
     (
-        IOobject
-        (
-            "controlDict",
-            runTime.system(),
-            mesh,
-            IOobject::MUST_READ_IF_MODIFIED,
-            IOobject::NO_WRITE
-        )
-    );
+        "controlDict",
+        runTime.system(),
+        mesh,
+        IOobject::MUST_READ_IF_MODIFIED,
+        IOobject::NO_WRITE
+    )
+);
 
-
-    IOdictionary fvSolution
+// Finite volume solution dictionary
+IOdictionary fvSolution
+(
+    IOobject
     (
-        IOobject
-        (
-            "fvSolution",
-            runTime.system(),
-            mesh,
-            IOobject::MUST_READ_IF_MODIFIED,
-            IOobject::NO_WRITE
-        )
-    );
+        "fvSolution",
+        runTime.system(),
+        mesh,
+        IOobject::MUST_READ_IF_MODIFIED,
+        IOobject::NO_WRITE
+    )
+);
 
 
+Info << "Reading data from dictionaries ..." << endl;
 
 // Type of time stepping
-    const word& timeStepping( controlDict.lookup("timeStepping") );
+const word& timeStepping = controlDict.lookup("timeStepping");
 
-    if ( timeStepping != "constant" && timeStepping != "variable" )
-    {
-        FatalErrorIn("simPara.H") << "Valid type entries are 'constant' or 'variable' for timeStepping" << abort(FatalError);
-    }
-
+if (timeStepping != "constant" && timeStepping != "variable")
+{
+    FatalErrorIn("readControls.H")
+        << "Valid type entries are 'constant' or 'variable' for timeStepping"
+        << abort(FatalError);
+}
 
 // Courant-Friedrichs-Lewy Number
-    const scalar& cfl (readScalar(controlDict.lookup("cfl")));
+const scalar& cfl = readScalar(controlDict.lookup("cfl"));
 
-    if ( cfl <= 0.0 || cfl > 1.0 )
-    {
-        FatalErrorIn("simPara.H") << "Valid type entries are '<= 1' or '> 0' for cfl" << abort(FatalError);
-    }
-
+if (cfl <= 0.0 || cfl > 1.0)
+{
+    FatalErrorIn("readControls.H")
+        << "Valid type entries are '<= 1' or '> 0' for cfl"
+        << abort(FatalError);
+}
 
 // Stabilisation parameter for near incompressibility
-    const scalar& beta (readScalar(fvSolution.lookup("incompressiblilityCoefficient")));        
-
+const scalar& beta =
+    readScalar(fvSolution.lookup("incompressiblilityCoefficient"));
 
 // Angular momentum conservation
+const word& angularMomentumConservation =
+    fvSolution.lookup("angularMomentumConservation");
 
-    const word& angularMomentumConservation( fvSolution.lookup("angularMomentumConservation") );
-    
-    if ( angularMomentumConservation != "yes" && angularMomentumConservation != "no" )
-    {
-        FatalErrorIn("simPara.H") << "Valid type entries are 'yes' or 'no' for angularMomentumConservation" << abort(FatalError);           
-    }   
+if
+(
+    angularMomentumConservation != "yes" && angularMomentumConservation != "no"
+)
+{
+    FatalErrorIn("readControls.H")
+        << "Valid type entries are 'yes' or 'no' "
+        << "for angularMomentumConservation"
+        << abort(FatalError);
+}
