@@ -46,49 +46,66 @@ class angularMomentum
 {
     // Private data
 
-        // Mesh
-        const fvMesh& mesh_;  
+        //- Mesh
+        const fvMesh& mesh_;
 
-        // Material density
-        dimensionedScalar rho_;       
+        //- Material density
+        dimensionedScalar rho_;
 
-        // Disallow default bitwise copy construct
+private:
+
+    // Private Member Functions
+
+        //- Disallow default bitwise copy construct
         angularMomentum(const angularMomentum&);
 
-        // Disallow default bitwise assignment
+        //- Disallow default bitwise assignment
         void operator=(const angularMomentum&);
 
 public:
 
-    // Declare name of the class and its debug switch
+    //- Runtime type information
     TypeName("angularMomentum");
 
-    // Constructors
-    explicit angularMomentum(const fvMesh&, const dimensionedScalar&);
 
-    // Destructor
+    // Constructors
+
+        //- Construct from mesh and dictionary
+        explicit angularMomentum
+        (
+            const fvMesh&,
+            const dictionary&
+        );
+
+
+    //- Destructor
     virtual ~angularMomentum();
+
 
     // Member functions
 
-        // Angular momentum conservation
-        void AMconservation
-        (
-            GeometricField<vector, fvPatchField, volMesh>& ,
-            GeometricField<vector, fvPatchField, volMesh>& ,                                      
-            const GeometricField<vector, fvPatchField, volMesh>& ,            
-            const word& 
-        ) const;
+        // Edit
 
+            //- Angular momentum conservation
+            void AMconservation
+            (
+                GeometricField<vector, fvPatchField, volMesh>&,
+                GeometricField<vector, fvPatchField, volMesh>&,
+                const GeometricField<vector, fvPatchField, volMesh>&,
+                const word&
+            ) const;
 
-        // Print global momentum
-        void printGlobalMomentum
-        (
-            GeometricField<vector, fvPatchField, volMesh>& ,
-            GeometricField<vector, fvPatchField, volMesh>&                        
-        ) const;
+        // Print
+
+            //- Print global momentum
+            void printGlobalMomentum
+            (
+                const GeometricField<vector, fvPatchField, volMesh>&,
+                const GeometricField<vector, fvPatchField, volMesh>&
+            ) const;
 
 };
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
