@@ -395,8 +395,6 @@ volTensorField gradientSchemes::localGradient
     const GeometricField<vector, fvsPatchField, surfaceMesh>& Unei
 ) const
 {
-    const scalar& maxInteriorFaceID = mesh_.nInternalFaces()-1;
-
     const objectRegistry& db = mesh_.thisDb();
     const pointVectorField& lmN_ = db.lookupObject<pointVectorField> ("lmN");
 
