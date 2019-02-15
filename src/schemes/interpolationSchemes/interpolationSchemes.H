@@ -25,7 +25,7 @@ Class
     Foam::interpolationSchemes
 
 Description
-    Define various interpolation schemes
+    Define interpolation schemes.
 
 SourceFiles
     interpolationSchemes.C
@@ -35,7 +35,6 @@ SourceFiles
 #ifndef interpolationSchemes_H
 #define interpolationSchemes_H
 
-#include "fvMesh.H"
 #include "volFields.H"
 #include "surfaceFields.H"
 #include "pointFields.H"
@@ -48,67 +47,86 @@ SourceFiles
 namespace Foam
 {
 
-class fvMesh;
-
 class interpolationSchemes
 {
     // Private data
 
-        // Mesh
-         const fvMesh& mesh_;         
+        //- Mesh
+        const fvMesh& mesh_;
 
-        // Disallow default bitwise copy construct
+        //- Cell owners
+        const labelUList& own_;
+
+        //- Material cell centre coordinates
+        const volVectorField& X_;
+
+        //- Material face centre coordinates
+        const surfaceVectorField& XF_;
+
+        //- Material nodal coordinates
+        const pointField& XN_;
+
+private:
+
+    // Private member functions
+
+        //- Disallow default bitwise copy construct
         interpolationSchemes(const interpolationSchemes&);
 
-        // Disallow default bitwise assignment
+        //- Disallow default bitwise assignment
         void operator=(const interpolationSchemes&);
 
 public:
 
-    // Declare name of the class and its debug switch
+    //- Runtime type information
     TypeName("interpolationSchemes");
 
     // Constructors
-    explicit interpolationSchemes(const fvMesh&);
 
-    // Destructor
+        //- Construct from mesh
+            explicit interpolationSchemes(const fvMesh&);
+
+    //- Destructor
     virtual ~interpolationSchemes();
+
 
     // Member functions
 
-        // Surface to cell interpolation 
-        volVectorField surfaceToCell  
-        (
-            const GeometricField<vector, fvsPatchField, surfaceMesh>&       
-        ) const;
+        // Edit
 
+            //- Surface to volume interpolation
+            volVectorField surfaceToVol
+            (
+                const GeometricField<vector, fvsPatchField, surfaceMesh>&
+            ) const;
 
-        template<class Type>
-        void pushUntransformedDataNew(List<Type>&) const;
+            //- Helper: push master point data to collocated points
+            //  (Borrowed from volPointInterpolation class in OpenFOAM)
+            template<class Type>
+            void pushUntransformedData(List<Type>&) const;
 
+            //- Add separated contributions
+            //  (Borrowed from volPointInterpolation class in OpenFOAM)
+            template<class Type>
+            void addSeparated
+            (
+                GeometricField<Type, pointPatchField, pointMesh>&
+            ) const;
 
-        template<class Type>
-        void addSeparatedNew
-        (
-            GeometricField<Type, pointPatchField, pointMesh>&
-        ) const;
+            // Volume to point interpolation for vectorField
+            void volToPoint
+            (
+                const GeometricField<vector, fvPatchField, volMesh>& U,
+                const GeometricField<tensor, fvPatchField, volMesh>& Ugrad,
+                GeometricField<vector, pointPatchField, pointMesh>& Un
+            ) const;
 
-        // Volume to point interpolation for vectorField
-        void volToPoint
-        (
-            const GeometricField<vector, fvPatchField, volMesh>& U,
-            const GeometricField<tensor, fvPatchField, volMesh>& Ugrad,
-            GeometricField<vector, pointPatchField, pointMesh>& Un                               
-        ) const;
-
-        // Point to surface interpolation for vectorField
-        void pointToSurface   
-        (
-            const GeometricField<vector, pointPatchField, pointMesh>& U,
-            GeometricField<vector, fvsPatchField, surfaceMesh>& Uf                   
-        ) const;
+            //- Point to surface interpolation
+            surfaceVectorField pointToSurface
+            (
+                const GeometricField<vector, pointPatchField, pointMesh>& U
+            ) const;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
