@@ -221,6 +221,25 @@ void operations::decomposeTensor
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+void operations::decomposeTensor
+(
+    const GeometricField<tensor, fvsPatchField, surfaceMesh>& T,
+    GeometricField<vector, fvsPatchField, surfaceMesh>& Vx,
+    GeometricField<vector, fvsPatchField, surfaceMesh>& Vy,
+    GeometricField<vector, fvsPatchField, surfaceMesh>& Vz
+) const
+{
+    forAll(mesh_.owner(), faceID)
+    {
+        Vx[faceID] = vector(T[faceID].xx(), T[faceID].xy(), T[faceID].xz());
+        Vy[faceID] = vector(T[faceID].yx(), T[faceID].yy(), T[faceID].yz());
+        Vz[faceID] = vector(T[faceID].zx(), T[faceID].zy(), T[faceID].zz());
+    }
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 volVectorField operations::decomposeTensorX
 (
     const GeometricField<tensor, fvPatchField, volMesh>& T

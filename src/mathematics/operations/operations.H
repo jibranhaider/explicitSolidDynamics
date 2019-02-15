@@ -36,6 +36,7 @@ SourceFiles
 #define operations_H
 
 #include "volFields.H"
+#include "surfaceFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -118,13 +119,22 @@ public:
             //- Tensor cross product of two tensors
             tensor tensorProduct(const tensor&, const tensor&) const;
 
-            //- Decompose tensor
+            //- Decompose a volField tensor
             void decomposeTensor
             (
                 const GeometricField<tensor, fvPatchField, volMesh>&,
                 GeometricField<vector, fvPatchField, volMesh>&,
                 GeometricField<vector, fvPatchField, volMesh>&,
                 GeometricField<vector, fvPatchField, volMesh>&
+            ) const;
+
+            //- Decompose a surfaceField tensor
+            void decomposeTensor
+            (
+                const GeometricField<tensor, fvsPatchField, surfaceMesh>&,
+                GeometricField<vector, fvsPatchField, surfaceMesh>&,
+                GeometricField<vector, fvsPatchField, surfaceMesh>&,
+                GeometricField<vector, fvsPatchField, surfaceMesh>&
             ) const;
 
             //- Decompose tensor and return x row
