@@ -101,7 +101,9 @@ solidModel::solidModel
 
     Up_ (sqrt((lambda_+2.0*mu_)/rho_)),
     Us_ (sqrt(mu_/rho_))
-{}
+{
+    p_.write();
+}
 
 
 // * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * * //
