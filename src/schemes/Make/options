@@ -1,6 +1,10 @@
 EXE_INC = \
-    -I$(LIB_SRC)/finiteVolume/lnInclude 
+    -I$(PWD)/../mathematics/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude
 
 
 LIB_LIBS = \
-    -lfiniteVolume 
+    -L$(FOAM_USER_LIBBIN) \
+    -lMathematics \
+    -L$(FOAM_LIBBIN) \
+    -lfiniteVolume
