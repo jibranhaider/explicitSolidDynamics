@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-constitutiveModel neoHookean;
+solidModel neoHookean;
 
 rho     rho [1 -3 0 0 0 0 0]  1100;
 E       E   [1 -1 -2 0 0 0 0] 50.05e3;
