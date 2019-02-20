@@ -342,7 +342,7 @@ surfaceVectorField interpolationSchemes::pointToSurface
     const GeometricField<vector, pointPatchField, pointMesh>& U
 ) const
 {
-    vector d = vector::zero;
+    // vector d = vector::zero;
     vector sum = vector::zero;
     scalar weights = 0.0;
 
@@ -372,9 +372,11 @@ surfaceVectorField interpolationSchemes::pointToSurface
         forAll(mesh_.faces()[faceID], node)
         {
             const label& nodeID = mesh_.faces()[faceID][node];
-            d = XN_[nodeID] - XF_[faceID];
-            sum += U[nodeID]*(1.0/mag(d));
-            weights += 1.0/mag(d);
+            // d = XN_[nodeID] - XF_[faceID];
+            // sum += U[nodeID]*(1.0/mag(d));
+            // weights += 1.0/mag(d);
+            sum += U[nodeID];
+            weights += 1.0;
         }
 
         Uf[faceID] = sum/weights;
@@ -391,9 +393,11 @@ surfaceVectorField interpolationSchemes::pointToSurface
             forAll(mesh_.faces()[faceID], node)
             {
                 const label& nodeID = mesh_.faces()[faceID][node];
-                d = XN_[nodeID] - XF_.boundaryField()[patchID][facei];
-                sum += U[nodeID]*(1.0/mag(d));
-                weights += 1.0/mag(d);
+                // d = XN_[nodeID] - XF_.boundaryField()[patchID][facei];
+                // sum += U[nodeID]*(1.0/mag(d));
+                // weights += 1.0/mag(d);
+                sum += U[nodeID];
+                weights += 1.0;
             }
 
             Uf.boundaryFieldRef()[patchID][facei] = sum/weights;
