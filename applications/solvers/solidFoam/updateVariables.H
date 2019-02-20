@@ -1,22 +1,22 @@
 // Spatial normals
-n = model.spatialNormal();
+n = mech.spatialNormal();
 nCn = n*n;
 iMnCn = tensor::I-nCn;
 
 // Strain measures
-Finv = inv(F);
-H = det(F)*Finv.T();
+H = det(F)*op.invT(F);
 J = det(F);
 
 // Wave speeds
-Up_time = model.Up_nonLinear();
+Up_time = model.Up()/mech.stretch();
 
 // Constitutive model
 model.correct();
 P = model.piola();
+op.decomposeTensor(P, Px, Py, Pz);
 
 // Cell gradients
-grad.gradient(lm, lmGrad);
+lmGrad = grad.gradient(lm);
 grad.gradient(P, PxGrad, PyGrad, PzGrad);
 
 // Reconstruction
@@ -29,11 +29,11 @@ t_P = P_P & N;
 #include "riemannSolver.H"
 
 // Nodal linear momentum
-lmR = interpolate.surfaceToCell(lmC);
-lmRgrad = grad.localGradient(lmR, lmC, AvCinv);
+lmR = interpolate.surfaceToVol(lmC);
+lmRgrad = grad.localGradient(lmR, lmC);
 interpolate.volToPoint(lmR, lmRgrad, lmN);
 #include "strongBCs.H"
 lmN.correctBoundaryConditions();
 
 // Constrained fluxes
-interpolate.pointToSurface(lmN, lmC);
+lmC = interpolate.pointToSurface(lmN);

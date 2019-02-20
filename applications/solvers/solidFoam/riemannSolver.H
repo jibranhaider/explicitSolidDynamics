@@ -13,18 +13,6 @@ lm_b.correctBoundaryConditions();
 t_b.correctBoundaryConditions();
 
 
-forAll (mesh.cells(), cellID)
-{
-    Px[cellID] = vector(P[cellID].xx(), P[cellID].xy(), P[cellID].xz());
-    Py[cellID] = vector(P[cellID].yx(), P[cellID].yy(), P[cellID].yz());
-    Pz[cellID] = vector(P[cellID].zx(), P[cellID].zy(), P[cellID].zz());
-}
-
-Px.correctBoundaryConditions();
-Py.correctBoundaryConditions();
-Pz.correctBoundaryConditions();
-
-
 forAll(mesh.boundary(), patchi)
 {
     // Riemann solver for inter-processor boundaries

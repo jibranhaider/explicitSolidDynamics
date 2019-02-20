@@ -34,10 +34,12 @@ Description
 
 #include "fvCFD.H"
 #include "pointFields.H"
+#include "operations.H"
+#include "solidModel.H"
+#include "mechanics.H"
+#include "gradientSchemes.H"
 #include "interpolationSchemes.H"
 #include "angularMomentum.H"
-#include "constitutiveModel.H"
-#include "gradientSchemes.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -47,7 +49,6 @@ int main(int argc, char *argv[])
     #include "createTime.H"
     #include "createMesh.H"
     #include "readControls.H"
-    #include "meshData.H"
     #include "createFields.H"
 
     while (runTime.loop())
@@ -82,10 +83,12 @@ int main(int argc, char *argv[])
     {
         uN = xN - xN_0;
         uN.write();
+
+        p = model.pressure();
         p.write();
     }
 
-    Info << "Percentage completed = "
+    Info << "Percent completed = "
          << (t.value()/runTime.endTime().value())*100 << "%" << endl;
     }
 
