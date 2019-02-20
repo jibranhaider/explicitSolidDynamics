@@ -20,7 +20,7 @@ License
 
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
-    
+
 \*---------------------------------------------------------------------------*/
 
 #include "movingTractionFvPatchVectorField.H"
@@ -51,10 +51,13 @@ movingTractionFvPatchVectorField::movingTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(p, iF),
-	linearMomentum_(dict.lookupOrDefault<vector>("linearMomentum",vector::zero))
+	linearMomentum_(dict.lookupOrDefault<vector>
+    (
+        "linearMomentum",
+        vector::zero)
+    )
 {
     fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
-
 	updateCoeffs();
 }
 
@@ -121,17 +124,26 @@ void movingTractionFvPatchVectorField::updateCoeffs()
         return;
     }
 
-    const fvsPatchField<vector>& lm_M_ = patch().lookupPatchField<surfaceVectorField, vector>("lm_M");
-    const fvsPatchField<vector>& t_M_ = patch().lookupPatchField<surfaceVectorField, vector>("t_M");    
-    const fvsPatchField<tensor>& nCn_ = patch().lookupPatchField<surfaceTensorField, tensor>("nCn");
-    const fvsPatchField<tensor>& iMnCn_ = patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
+    const fvsPatchField<vector>& lm_M_ =
+        patch().lookupPatchField<surfaceVectorField, vector>("lm_M");
 
-    const fvPatchField<scalar>& Up_ = patch().lookupPatchField<volScalarField, scalar>("Up");
-    const fvPatchField<scalar>& Us_ = patch().lookupPatchField<volScalarField, scalar>("Us");    
+    const fvsPatchField<vector>& t_M_ =
+        patch().lookupPatchField<surfaceVectorField, vector>("t_M");
+
+    const fvsPatchField<tensor>& nCn_ =
+        patch().lookupPatchField<surfaceTensorField, tensor>("nCn");
+
+    const fvsPatchField<tensor>& iMnCn_ =
+        patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
+
+    const fvPatchField<scalar>& Up_ =
+        patch().lookupPatchField<volScalarField, scalar>("Up");
+
+    const fvPatchField<scalar>& Us_ =
+        patch().lookupPatchField<volScalarField, scalar>("Us");
 
     fvsPatchField<vector> t_C(lm_M_);
- 
-    t_C = t_M_ + ( (Up_*nCn_ + Us_*iMnCn_) & (linearMomentum_ - lm_M_) );  
+    t_C = t_M_ + ((Up_*nCn_ + Us_*iMnCn_) & (linearMomentum_ - lm_M_));
 
     this->operator==(t_C);
     fixedValueFvPatchVectorField::updateCoeffs();
@@ -141,7 +153,8 @@ void movingTractionFvPatchVectorField::updateCoeffs()
 void movingTractionFvPatchVectorField::write(Ostream& os) const
 {
     fvPatchVectorField::write(os);
-    os.writeKeyword("linearMomentum_") << linearMomentum_ << token::END_STATEMENT << nl;
+    os.writeKeyword("linearMomentum_") << linearMomentum_
+        << token::END_STATEMENT << nl;
     writeEntry("value", os);
 }
 

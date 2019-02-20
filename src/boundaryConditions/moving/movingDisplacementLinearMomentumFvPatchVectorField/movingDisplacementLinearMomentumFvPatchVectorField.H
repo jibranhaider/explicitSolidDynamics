@@ -25,13 +25,13 @@ Class
     Foam::movingDisplacementLinearMomentumFvPatchVectorField
 
 Description
-    Specifies contact linear momentum for a moving boundary patch according 
+    Specifies contact linear momentum for a moving boundary patch according
     to a bell shaped velocity profile.
 
 Usage
     \table
         Property     | Description             | Required    | Default value
-        density      | material density        | yes         | 
+        density      | Material density        | yes         |
         displacement | Maximum displacement    | yes         |
         endTime      | Displacement end time   | yes         |
     \endtable
@@ -57,13 +57,11 @@ SourceFiles
 #ifndef movingDisplacementLinearMomentumFvPatchVectorField_H
 #define movingDisplacementLinearMomentumFvPatchVectorField_H
 
-#include "fvPatchFields.H"
 #include "fixedValueFvPatchFields.H"
 #include "fvsPatchFields.H"
 #include "addToRunTimeSelectionTable.H"
 #include "volFields.H"
 #include "surfaceFields.H"
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -78,6 +76,7 @@ class movingDisplacementLinearMomentumFvPatchVectorField
 :
     public fixedValueFvPatchVectorField
 {
+
 private:
 
     // Density
@@ -112,8 +111,8 @@ public:
             const dictionary&
         );
 
-        //- Construct by mapping given movingDisplacementLinearMomentumFvPatchVectorField
-        //  onto a new patch
+        //- Construct by mapping given
+        //  movingDisplacementLinearMomentumFvPatchVectorField onto a new patch
         movingDisplacementLinearMomentumFvPatchVectorField
         (
             const movingDisplacementLinearMomentumFvPatchVectorField&,
@@ -152,7 +151,11 @@ public:
         {
             return tmp<fvPatchVectorField>
             (
-                new movingDisplacementLinearMomentumFvPatchVectorField(*this, iF)
+                new movingDisplacementLinearMomentumFvPatchVectorField
+                (
+                    *this,
+                    iF
+                )
             );
         }
 

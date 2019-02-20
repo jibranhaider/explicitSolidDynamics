@@ -25,13 +25,13 @@ Class
     Foam::movingDisplacementNodalLinearMomentumPointPatchVectorField
 
 Description
-    Specifies nodal linear momentum for a moving boundary patch according 
+    Specifies nodal linear momentum for a moving boundary patch according
     to a bell shaped velocity profile.
 
 Usage
     \table
         Property     | Description             | Required    | Default value
-        density      | material density        | yes         | 
+        density      | material density        | yes         |
         displacement | Maximum displacement    | yes         |
         endTime      | Displacement end time   | yes         |
     \endtable
@@ -57,17 +57,12 @@ SourceFiles
 #ifndef movingDisplacementNodalLinearMomentumPointPatchVectorField_H
 #define movingDisplacementNodalLinearMomentumPointPatchVectorField_H
 
-#include "fvPatchFields.H"
 #include "pointPatchFields.H"
 #include "fixedValueFvPatchFields.H"
 #include "fvsPatchFields.H"
-#include "fixedValueFvsPatchFields.H"
 #include "fixedValuePointPatchFields.H"
-#include "Switch.H"
 #include "addToRunTimeSelectionTable.H"
 #include "volFields.H"
-#include "surfaceFields.H"
-#include "IOdictionary.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -84,7 +79,7 @@ class movingDisplacementNodalLinearMomentumPointPatchVectorField
 {
 
 private:
- 
+
     // Density
     scalar density_;
 
@@ -92,7 +87,7 @@ private:
     vector displacement_;
 
     // End time for displacement
-    scalar endTime_;      
+    scalar endTime_;
 
 public:
 
@@ -106,7 +101,7 @@ public:
         movingDisplacementNodalLinearMomentumPointPatchVectorField
         (
             const pointPatch&,
-            const DimensionedField<vector, pointMesh>&        
+            const DimensionedField<vector, pointMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
@@ -114,30 +109,33 @@ public:
         (
             const pointPatch&,
             const DimensionedField<vector, pointMesh>&,
-            const dictionary&            
+            const dictionary&
         );
 
-        //- Construct by mapping given movingDisplacementNodalLinearMomentumPointPatchVectorField
-        //  onto a new patch
+        //- Construct by mapping given
+        //  movingDisplacementNodalLinearMomentumPointPatchVectorField onto a new patch
         movingDisplacementNodalLinearMomentumPointPatchVectorField
         (
             const movingDisplacementNodalLinearMomentumPointPatchVectorField&,
             const pointPatch&,
             const DimensionedField<vector, pointMesh>&,
-            const pointPatchFieldMapper&            
+            const pointPatchFieldMapper&
         );
 
         //- Construct as copy
         movingDisplacementNodalLinearMomentumPointPatchVectorField
         (
-            const movingDisplacementNodalLinearMomentumPointPatchVectorField&      
+            const movingDisplacementNodalLinearMomentumPointPatchVectorField&
         );
 
         virtual autoPtr<pointPatchVectorField> clone() const
         {
             return autoPtr<pointPatchVectorField>
             (
-                new movingDisplacementNodalLinearMomentumPointPatchVectorField(*this)
+                new movingDisplacementNodalLinearMomentumPointPatchVectorField
+                (
+                    *this
+                )
             );
         }
 
@@ -155,7 +153,11 @@ public:
         {
             return autoPtr<pointPatchVectorField>
             (
-                new movingDisplacementNodalLinearMomentumPointPatchVectorField(*this,iF)
+                new movingDisplacementNodalLinearMomentumPointPatchVectorField
+                (
+                    *this,
+                    iF
+                )
             );
         }
 

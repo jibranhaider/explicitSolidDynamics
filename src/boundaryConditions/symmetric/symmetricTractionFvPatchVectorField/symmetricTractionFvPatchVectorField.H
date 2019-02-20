@@ -25,8 +25,8 @@ Class
     Foam::symmetricTractionFvPatchVectorField
 
 Description
-    Specifies contact traction for a symmetric boundary patch according 
-    to the Riemann solver. External boundary traction can also be specified.  
+    Specifies contact traction for a symmetric boundary patch according
+    to the Riemann solver. External boundary traction can also be specified.
 
 Usage
     \table
@@ -34,13 +34,13 @@ Usage
         tractionValue | traction vector        | no          | vector(0,0,0)
 
     \endtable
-    
+
     Example of the boundary condition specification:
     \verbatim
     inlet
     {
         type            symmetricTraction;
-        tractionValue   (10 10 10); 
+        tractionValue   (10 10 10);
     }
     \endverbatim
 
@@ -55,15 +55,11 @@ SourceFiles
 #ifndef symmetricTractionFvPatchVectorField_H
 #define symmetricTractionFvPatchVectorField_H
 
-#include "fvPatchFields.H"
 #include "fixedValueFvPatchFields.H"
-#include "fvsPatchFields.H"
 #include "fixedValueFvsPatchFields.H"
-#include "Switch.H"
 #include "addToRunTimeSelectionTable.H"
 #include "volFields.H"
 #include "surfaceFields.H"
-#include "IOdictionary.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -80,7 +76,7 @@ class symmetricTractionFvPatchVectorField
 {
 
 private:
- 
+
     vector tractionValue_;
 
 
