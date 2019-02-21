@@ -1,7 +1,7 @@
 # Travis CI setup for explicitSolidDynamics toolkit
 
 sudo: required
-dist: trusty
+dist: xenial
 language: cpp
 
 matrix:
@@ -28,3 +28,7 @@ before_script:
 
 script:
 - ./Allwmake -j
+
+branches:    
+    only:
+- master
