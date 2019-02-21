@@ -25,13 +25,13 @@ Class
     Foam::movingDisplacementTractionFvPatchVectorField
 
 Description
-    Specifies contact traction for a traction boundary patch according to 
-    the Riemann solver. External boundary traction can also be specified.  
+    Specifies contact traction for a traction boundary patch according to
+    the Riemann solver. External boundary traction can also be specified.
 
 Usage
     \table
         Property     | Description             | Required    | Default value
-        density      | material density        | yes         | 
+        density      | material density        | yes         |
         displacement | Maximum displacement    | yes         |
         endTime      | Displacement end time   | yes         |
     \endtable
@@ -41,9 +41,9 @@ Usage
     inlet
 	{
 	    type           movingDisplacementTraction;
-        density        1000;                
-        displacement   (0 0.01 0);       
-        endTime        1.0;   
+        density        1000;
+        displacement   (0 0.01 0);
+        endTime        1.0;
 	}
 	\endverbatim
 
@@ -51,7 +51,7 @@ SeeAlso
     Foam::fixedValueFvPatchField
 
 SourceFiles
-    movingTractionFvPatchVectorField.C    
+    movingTractionFvPatchVectorField.C
     movingDisplacementTractionFvPatchVectorField.C
 
 \*---------------------------------------------------------------------------*/
@@ -60,7 +60,6 @@ SourceFiles
 #define movingDisplacementTractionFvPatchVectorField_H
 
 #include "movingTractionFvPatchVectorField.H"
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -77,7 +76,7 @@ class movingDisplacementTractionFvPatchVectorField
 {
 
 private:
- 
+
     // Density
     scalar density_;
 
@@ -111,8 +110,8 @@ public:
             const dictionary&
         );
 
-        //- Construct by mapping given movingDisplacementTractionFvPatchVectorField
-        //  onto a new patch
+        //- Construct by mapping given
+        //  movingDisplacementTractionFvPatchVectorField onto a new patch
         movingDisplacementTractionFvPatchVectorField
         (
             const movingDisplacementTractionFvPatchVectorField&,

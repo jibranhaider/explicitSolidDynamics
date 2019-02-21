@@ -25,9 +25,9 @@ Class
     Foam::tractionTractionFvPatchVectorField
 
 Description
-    Specifies contact traction for a traction boundary patch according to 
-    the Riemann solver. External boundary traction or pressure can also be 
-    specified according to type of loading.   
+    Specifies contact traction for a traction boundary patch according to
+    the Riemann solver. External boundary traction or pressure can also be
+    specified according to type of loading.
 
 Usage
     \table
@@ -44,14 +44,14 @@ Usage
 	{
 	    type           tractionTraction;
 	    loadingType    traction;
-        traction       (0 10 0); 
+        traction       (0 10 0);
 	}
     free
     {
         type           tractionTraction;
         loadingType    pressure;
-        pressure       5.0; 
-    }    
+        pressure       5.0;
+    }
 	\endverbatim
 
 SeeAlso
@@ -69,7 +69,6 @@ SourceFiles
 #include "addToRunTimeSelectionTable.H"
 #include "surfaceFields.H"
 
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
@@ -85,9 +84,14 @@ class tractionTractionFvPatchVectorField
 {
 
 private:
- 
+
+    // Type of loading
     word    loadingType_;
+
+    // Applied traction
     vector  traction_;
+
+    // Applied pressure
     scalar  pressure_;
 
 
@@ -166,18 +170,17 @@ public:
             virtual word& loading()
             {
                 return loadingType_;
-            } 
+            }
 
             virtual vector& traction()
             {
                 return traction_;
-            }        
+            }
 
             virtual scalar& pressure()
             {
                 return pressure_;
-            }  
-  
+            }
 
         // Mapping functions
 

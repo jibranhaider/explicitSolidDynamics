@@ -22,56 +22,57 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::angularMomentum
+    Foam::mechanics
 
 Description
-    Angular momentum preservation algorithm
+    Evaluate quantities widely used in continuum mechanics.
 
 SourceFiles
-    angularMomentum.C
+    mechanics.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef angularMomentum_H
-#define angularMomentum_H
+#ifndef mechanics_H
+#define mechanics_H
 
-#include "volFields.H"
+#include "fvc.H"
+#include "operations.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-class angularMomentum
+class mechanics
 {
     // Private data
 
         //- Mesh
-        const fvMesh& mesh_;
+         const fvMesh& mesh_;
 
-        //- Material density
-        dimensionedScalar rho_;
+        //- Eigen-values
+        vector  eigVal_;
+
+        //- Eigen-vectors
+        tensor  eigVec_;
 
 private:
 
-    // Private Member Functions
+    //- Disallow default bitwise copy construct
+        mechanics(const mechanics&);
 
-        //- Disallow default bitwise copy construct
-        angularMomentum(const angularMomentum&);
-
-        //- Disallow default bitwise assignment
-        void operator=(const angularMomentum&);
+    //- Disallow default bitwise assignment
+        void operator=(const mechanics&);
 
 public:
 
     //- Runtime type information
-    TypeName("angularMomentum");
-
+    TypeName("mechanics");
 
     // Constructors
 
         //- Construct from mesh and dictionary
-        explicit angularMomentum
+        mechanics
         (
             const fvMesh&,
             const dictionary&
@@ -79,30 +80,23 @@ public:
 
 
     //- Destructor
-    virtual ~angularMomentum();
+    virtual ~mechanics();
 
 
     // Member functions
 
         // Edit
 
-            //- Angular momentum conservation
-            void AMconservation
-            (
-                GeometricField<vector, fvPatchField, volMesh>&,
-                GeometricField<vector, fvPatchField, volMesh>&,
-                const GeometricField<vector, fvPatchField, volMesh>&,
-                const word&
-            ) const;
+            //- Compute stretch
+            volScalarField stretch();
 
-        // Print
+            //- Computes spatial surface normals
+            surfaceVectorField spatialNormal();
 
-            //- Print global momentum
-            void printGlobalMomentum
-            (
-                const GeometricField<vector, fvPatchField, volMesh>&,
-                const GeometricField<vector, fvPatchField, volMesh>&
-            ) const;
+        // Output
+
+            //- Print centroid of geometry
+            void printCentroid () const;
 
 };
 

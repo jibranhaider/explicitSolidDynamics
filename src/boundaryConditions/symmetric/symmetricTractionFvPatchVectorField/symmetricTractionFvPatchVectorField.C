@@ -54,7 +54,9 @@ symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
     tractionValue_(vector::zero)
 {
     fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
-    tractionValue_ = dict.lookupOrDefault<vector>("tractionValue",vector::zero);
+
+    tractionValue_ =
+        dict.lookupOrDefault<vector>("tractionValue", vector::zero);
 
     updateCoeffs();
 }
@@ -79,7 +81,7 @@ symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(rifvpvf),
-    tractionValue_(rifvpvf.tractionValue_)    
+    tractionValue_(rifvpvf.tractionValue_)
 {}
 
 
@@ -90,7 +92,7 @@ symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(rifvpvf, iF),
-    tractionValue_(rifvpvf.tractionValue_)   
+    tractionValue_(rifvpvf.tractionValue_)
 {}
 
 
@@ -122,14 +124,23 @@ void symmetricTractionFvPatchVectorField::updateCoeffs()
         return;
     }
 
-    const fvsPatchField<vector>& lm_M_ = patch().lookupPatchField<surfaceVectorField, vector>("lm_M");
-    const fvsPatchField<vector>& t_M_ = patch().lookupPatchField<surfaceVectorField, vector>("t_M");    
-    const fvsPatchField<tensor>& nCn_ = patch().lookupPatchField<surfaceTensorField, tensor>("nCn");
-    const fvsPatchField<tensor>& iMnCn_ = patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
-    const fvPatchField<scalar>& Up_ = patch().lookupPatchField<volScalarField, scalar>("Up");
+    const fvsPatchField<vector>& lm_M_ =
+        patch().lookupPatchField<surfaceVectorField, vector>("lm_M");
+
+    const fvsPatchField<vector>& t_M_ =
+        patch().lookupPatchField<surfaceVectorField, vector>("t_M");
+
+    const fvsPatchField<tensor>& nCn_ =
+        patch().lookupPatchField<surfaceTensorField, tensor>("nCn");
+
+    const fvsPatchField<tensor>& iMnCn_ =
+        patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
+
+    const fvPatchField<scalar>& Up_ =
+        patch().lookupPatchField<volScalarField, scalar>("Up");
 
     fvsPatchField<vector> t_C(lm_M_);
-    t_C = ( nCn_ & (t_M_ - Up_*lm_M_) ) + (iMnCn_ & tractionValue_);     
+    t_C = (nCn_ & (t_M_ - Up_*lm_M_)) + (iMnCn_ & tractionValue_);
 
     this->operator==(t_C);
     fixedValueFvPatchVectorField::updateCoeffs();
@@ -139,7 +150,8 @@ void symmetricTractionFvPatchVectorField::updateCoeffs()
 void symmetricTractionFvPatchVectorField::write(Ostream& os) const
 {
     fvPatchVectorField::write(os);
-    os.writeKeyword("tractionValue") << tractionValue_ << token::END_STATEMENT << nl;   
+    os.writeKeyword("tractionValue") << tractionValue_ << token::END_STATEMENT
+        << nl;
     writeEntry("value", os);
 }
 

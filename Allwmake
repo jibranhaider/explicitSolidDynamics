@@ -5,6 +5,9 @@ clear
 cd src/boundaryConditions
 ./compile
 
+cd ../mathematics
+./compile
+
 cd ../models
 ./compile
 

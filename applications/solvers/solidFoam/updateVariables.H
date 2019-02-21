@@ -1,59 +1,39 @@
-//-----------------------------------------------------------------------------------
-// Deformation dependent properties
-//-----------------------------------------------------------------------------------           
+// Spatial normals
+n = mech.spatialNormal();
+nCn = n*n;
+iMnCn = tensor::I-nCn;
 
-    // Spatial normals  
-    n = model.spatialNormal();
-    nCn = n*n;
-    iMnCn = (tensor::I)-(nCn);
+// Strain measures
+H = det(F)*op.invT(F);
+J = det(F);
 
-    // Strain measures
-    Finv = inv(F);       
-    H = det(F)*Finv.T();    
-    J = det(F); 
+// Wave speeds
+Up_time = model.Up()/mech.stretch();
 
-    // Wave speeds
-    Up_time = model.Up_nonLinear();     
+// Constitutive model
+model.correct();
+P = model.piola();
+op.decomposeTensor(P, Px, Py, Pz);
 
+// Cell gradients
+lmGrad = grad.gradient(lm);
+grad.gradient(P, PxGrad, PyGrad, PzGrad);
 
-    // Constitutive model
-    model.correct();
-    p = model.pressure();
-    P = model.piola();
-    
+// Reconstruction
+grad.reconstruct(lm, lmGrad, lm_M, lm_P);
+grad.reconstruct(P, PxGrad, PyGrad, PzGrad, P_M, P_P);
+t_M = P_M & N;
+t_P = P_P & N;
 
-//-----------------------------------------------------------------------------------
-// Linear reconstruction
-//-----------------------------------------------------------------------------------           
-
-    // Cell gradients
-    grad.gradient(lm, lmGrad);      
-    grad.gradient(P, PxGrad, PyGrad, PzGrad);
-
-    // Reconstruction   
-    grad.reconstruct( lm, lmGrad, lm_M, lm_P ); 
-    grad.reconstruct( P, PxGrad, PyGrad, PzGrad, P_M, P_P) ;
-    t_M = P_M & N;
-    t_P = P_P & N;
-
-
-//-----------------------------------------------------------------------------------
 // Riemann solver
-//-----------------------------------------------------------------------------------
+#include "riemannSolver.H"
 
-    #include "riemannSolver.H"              
+// Nodal linear momentum
+lmR = interpolate.surfaceToVol(lmC);
+lmRgrad = grad.localGradient(lmR, lmC);
+interpolate.volToPoint(lmR, lmRgrad, lmN);
+#include "strongBCs.H"
+lmN.correctBoundaryConditions();
 
-
-//-----------------------------------------------------------------------------------
-// Constrained approach
-//-----------------------------------------------------------------------------------
-
-    // Nodal linear momentum                    
-    lmR = interpolate.surfaceToCell(lmC);
-    lmRgrad = grad.localGradient(lmR, lmC, AvCinv);
-    interpolate.volToPoint(lmR, lmRgrad, lmN);  
-    #include "strongBCs.H"
-    lmN.correctBoundaryConditions();    
-    
-    // Constrained fluxes
-    interpolate.pointToSurface(lmN, lmC);
+// Constrained fluxes
+lmC = interpolate.pointToSurface(lmN);

@@ -25,9 +25,9 @@ Class
     Foam::tractionLinearMomentumFvPatchVectorField
 
 Description
-    Specifies contact linear momentum for a traction boundary patch according 
-    to the Riemann solver. External boundary traction or pressure can also 
-    be specified.  
+    Specifies contact linear momentum for a traction boundary patch according
+    to the Riemann solver. External boundary traction or pressure can also
+    be specified.
 
 Usage
     \table
@@ -51,7 +51,7 @@ Usage
         type           tractionLinearMomentum;
         loadingType    pressure;
         Pressure       0.0;
-    }    
+    }
     \endverbatim
 
 SeeAlso
@@ -65,15 +65,11 @@ SourceFiles
 #ifndef tractionLinearMomentumFvPatchVectorField_H
 #define tractionLinearMomentumFvPatchVectorField_H
 
-#include "fvPatchFields.H"
 #include "fixedValueFvPatchFields.H"
-#include "fvsPatchFields.H"
 #include "fixedValueFvsPatchFields.H"
-#include "Switch.H"
 #include "addToRunTimeSelectionTable.H"
 #include "volFields.H"
 #include "surfaceFields.H"
-#include "IOdictionary.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -92,19 +88,20 @@ class tractionLinearMomentumFvPatchVectorField
 private:
 
     // Type of loading
-    word    loadingType_; 
+    word loadingType_;
 
     // Applied traction
-    vector  traction_;
+    vector traction_;
 
     // Applied pressure
-    scalar  pressure_;
+    scalar pressure_;
 
 
 public:
 
     // Runtime type information
     TypeName("tractionLinearMomentum");
+
 
     // Constructors
 
@@ -114,7 +111,7 @@ public:
             const fvPatch&,
             const DimensionedField<vector, volMesh>&
         );
-        
+
         //- Construct from patch, internal field and dictionary
         tractionLinearMomentumFvPatchVectorField
         (
@@ -123,7 +120,7 @@ public:
             const dictionary&
         );
 
-        //- Construct by mapping given tractionLinearMomentumFvPatchVectorField 
+        //- Construct by mapping given tractionLinearMomentumFvPatchVectorField
         //  onto a new patch
         tractionLinearMomentumFvPatchVectorField
         (
@@ -171,21 +168,21 @@ public:
     // Member functions
 
         // Access
- 
+
             virtual word& loading()
             {
                 return loadingType_;
-            }   
+            }
 
             virtual vector& traction()
             {
                 return traction_;
-            }        
+            }
 
             virtual scalar& pressure()
             {
                 return pressure_;
-            } 
+            }
 
         // Mapping functions
 
@@ -207,7 +204,7 @@ public:
 
         // Write
         virtual void write(Ostream&) const;
-        
+
 };
 
 

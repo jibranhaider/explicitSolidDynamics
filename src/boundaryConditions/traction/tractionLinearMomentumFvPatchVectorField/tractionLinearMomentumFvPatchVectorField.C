@@ -32,7 +32,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-tractionLinearMomentumFvPatchVectorField:: 
+tractionLinearMomentumFvPatchVectorField::
 tractionLinearMomentumFvPatchVectorField
 (
     const fvPatch& p,
@@ -42,7 +42,7 @@ tractionLinearMomentumFvPatchVectorField
     fixedValueFvPatchVectorField(p, iF),
     loadingType_("none"),
     traction_(vector::zero),
-    pressure_(0.0) 
+    pressure_(0.0)
 {}
 
 
@@ -57,27 +57,29 @@ tractionLinearMomentumFvPatchVectorField
     fixedValueFvPatchVectorField(p, iF),
     loadingType_(dict.lookupOrDefault<word>("loadingType", "none")),
     traction_(dict.lookupOrDefault("traction", vector::zero)),
-    pressure_(dict.lookupOrDefault("pressure", 0.0))        
+    pressure_(dict.lookupOrDefault("pressure", 0.0))
 {
-    fvPatchVectorField::operator=(vectorField("value", dict, p.size()));  
-    
+    fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
+
     if (loadingType_ == "traction" && !dict.found("traction") == 1)
     {
-        FatalErrorIn ("tractionLinearMomentumFvPatchVectorField")   
-        << "Keyword 'traction' is undefined in dictionary '" 
-        << iF.name() << ".boundaryField." << p.name() << "' for patch type '" << this->type() << "'." << nl 
-        << exit(FatalError);
+        FatalErrorIn("tractionLinearMomentumFvPatchVectorField")
+            << "Keyword 'traction' is undefined in dictionary '"
+            << iF.name() << ".boundaryField." << p.name()
+            << "' for patch type '" << this->type() << "'." << nl
+            << exit(FatalError);
     }
 
     if (loadingType_ == "pressure" && !dict.found("pressure") == 1)
     {
-        FatalErrorIn ("tractionLinearMomentumFvPatchVectorField")   
-        << "Keyword 'pressure' is undefined in dictionary '" 
-        << iF.name() << ".boundaryField." << p.name() << "' for patch type '" << this->type() << "'." << nl 
-        << exit(FatalError);
+        FatalErrorIn ("tractionLinearMomentumFvPatchVectorField")
+            << "Keyword 'pressure' is undefined in dictionary '"
+            << iF.name() << ".boundaryField." << p.name()
+            << "' for patch type '" << this->type() << "'." << nl
+            << exit(FatalError);
     }
 
-    updateCoeffs();    
+    updateCoeffs();
 }
 
 
@@ -93,7 +95,7 @@ tractionLinearMomentumFvPatchVectorField
     fixedValueFvPatchVectorField(ptf, p, iF, mapper),
     loadingType_(ptf.loadingType_),
     traction_(ptf.traction_),
-    pressure_(ptf.pressure_)    
+    pressure_(ptf.pressure_)
 {}
 
 
@@ -104,9 +106,9 @@ tractionLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(rifvpvf),
-    loadingType_(rifvpvf.loadingType_),    
+    loadingType_(rifvpvf.loadingType_),
     traction_(rifvpvf.traction_),
-    pressure_(rifvpvf.pressure_)            
+    pressure_(rifvpvf.pressure_)
 {}
 
 
@@ -117,10 +119,10 @@ tractionLinearMomentumFvPatchVectorField
     const DimensionedField<vector, volMesh>& iF
 )
 :
-    fixedValueFvPatchVectorField(rifvpvf, iF),   
-    loadingType_(rifvpvf.loadingType_),    
+    fixedValueFvPatchVectorField(rifvpvf, iF),
+    loadingType_(rifvpvf.loadingType_),
     traction_(rifvpvf.traction_),
-    pressure_(rifvpvf.pressure_) 
+    pressure_(rifvpvf.pressure_)
 {}
 
 
@@ -152,37 +154,53 @@ void tractionLinearMomentumFvPatchVectorField::updateCoeffs()
         return;
     }
 
-    const fvsPatchField<vector>& lm_M_ = patch().lookupPatchField<surfaceVectorField, vector>("lm_M");
-    const fvsPatchField<vector>& t_M_ = patch().lookupPatchField<surfaceVectorField, vector>("t_M");    
-    const fvsPatchField<tensor>& nCn_ = patch().lookupPatchField<surfaceTensorField, tensor>("nCn");
-    const fvsPatchField<tensor>& iMnCn_ = patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
-    const fvPatchField<scalar>& Up_ = patch().lookupPatchField<volScalarField, scalar>("Up");
-    const fvPatchField<scalar>& Us_ = patch().lookupPatchField<volScalarField, scalar>("Us");    
+    const fvsPatchField<vector>& lm_M_ =
+        patch().lookupPatchField<surfaceVectorField, vector>("lm_M");
+
+    const fvsPatchField<vector>& t_M_ =
+        patch().lookupPatchField<surfaceVectorField, vector>("t_M");
+
+    const fvsPatchField<tensor>& nCn_ =
+        patch().lookupPatchField<surfaceTensorField, tensor>("nCn");
+
+    const fvsPatchField<tensor>& iMnCn_ =
+        patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
+
+    const fvPatchField<scalar>& Up_ =
+        patch().lookupPatchField<volScalarField, scalar>("Up");
+
+    const fvPatchField<scalar>& Us_ =
+        patch().lookupPatchField<volScalarField, scalar>("Us");
 
     fvsPatchField<vector> lm_C(lm_M_);
 
     if (loadingType_ == "none")
-    { 
-        lm_C = lm_M_ + ( ( (nCn_/Up_) + (iMnCn_/Us_) ) & (-t_M_) ); 
+    {
+        lm_C = lm_M_ + (((nCn_/Up_) + (iMnCn_/Us_)) & (-t_M_));
     }
 
     else if (loadingType_ == "traction")
-    { 
-        lm_C = lm_M_ + ( ( (nCn_/Up_) + (iMnCn_/Us_) ) & ((traction_) - t_M_) );
+    {
+        lm_C = lm_M_ + (((nCn_/Up_) + (iMnCn_/Us_)) & ((traction_) - t_M_));
     }
 
     else if (loadingType_ == "pressure")
     {
-        const fvsPatchField<vector>& n_ = patch().lookupPatchField<surfaceVectorField, vector>("n");         
-        lm_C = lm_M_ + ( ( (nCn_/Up_) + (iMnCn_/Us_) ) & ((-pressure_ * n_) - t_M_) ); 
+        const fvsPatchField<vector>& n_ =
+            patch().lookupPatchField<surfaceVectorField, vector>("n");
+
+        lm_C =
+            lm_M_ + (((nCn_/Up_) + (iMnCn_/Us_)) & ((-pressure_*n_) - t_M_));
     }
 
     else
     {
-        FatalErrorIn ("tractionLinearMomentumFvPatchVectorField::updateCoeffs()")   
-        << "Unknown traction type '" << loadingType_ << "'" << nl
-        << "Valid types are: 'none', traction' and 'pressure'" << nl
-        << exit(FatalError);
+        FatalErrorIn
+        (
+            "tractionLinearMomentumFvPatchVectorField::updateCoeffs()"
+        )   << "Unknown traction type '" << loadingType_ << "'" << nl
+            << "Valid types are: 'none', traction' and 'pressure'" << nl
+            << exit(FatalError);
     }
 
     this->operator==(lm_C);
@@ -193,10 +211,11 @@ void tractionLinearMomentumFvPatchVectorField::updateCoeffs()
 void tractionLinearMomentumFvPatchVectorField::write(Ostream& os) const
 {
     fvPatchVectorField::write(os);
-    os.writeKeyword("loadingType") << loadingType_ << token::END_STATEMENT << nl;
+    os.writeKeyword("loadingType") << loadingType_ << token::END_STATEMENT
+        << nl;
     os.writeKeyword("traction") << traction_ << token::END_STATEMENT << nl;
-    os.writeKeyword("pressure") << pressure_ << token::END_STATEMENT << nl; 
-    writeEntry("value", os);               
+    os.writeKeyword("pressure") << pressure_ << token::END_STATEMENT << nl;
+    writeEntry("value", os);
 }
 
 

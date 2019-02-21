@@ -55,12 +55,11 @@ movingDisplacementLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(p, iF),
-    density_( readScalar(dict.lookup("density")) ),  
-    displacement_( dict.lookup("displacement") ), 
-    endTime_( readScalar(dict.lookup("endTime")) )   
+    density_(readScalar(dict.lookup("density"))),
+    displacement_(dict.lookup("displacement")),
+    endTime_(readScalar(dict.lookup("endTime")))
 {
     fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
-
 	updateCoeffs();
 }
 
@@ -75,25 +74,27 @@ movingDisplacementLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(ptf, p, iF, mapper),
-    density_(ptf.density_), 
+    density_(ptf.density_),
     displacement_(ptf.displacement_),
-    endTime_(ptf.endTime_)    
+    endTime_(ptf.endTime_)
 {}
 
 
-movingDisplacementLinearMomentumFvPatchVectorField::movingDisplacementLinearMomentumFvPatchVectorField
+movingDisplacementLinearMomentumFvPatchVectorField::
+movingDisplacementLinearMomentumFvPatchVectorField
 (
     const movingDisplacementLinearMomentumFvPatchVectorField& rifvpvf
 )
 :
     fixedValueFvPatchVectorField(rifvpvf),
-    density_(rifvpvf.density_),    
+    density_(rifvpvf.density_),
     displacement_(rifvpvf.displacement_),
-    endTime_(rifvpvf.endTime_)    
+    endTime_(rifvpvf.endTime_)
 {}
 
 
-movingDisplacementLinearMomentumFvPatchVectorField::movingDisplacementLinearMomentumFvPatchVectorField
+movingDisplacementLinearMomentumFvPatchVectorField::
+movingDisplacementLinearMomentumFvPatchVectorField
 (
     const movingDisplacementLinearMomentumFvPatchVectorField& rifvpvf,
     const DimensionedField<vector, volMesh>& iF
@@ -102,7 +103,7 @@ movingDisplacementLinearMomentumFvPatchVectorField::movingDisplacementLinearMome
     fixedValueFvPatchVectorField(rifvpvf, iF),
     density_(rifvpvf.density_),
     displacement_(rifvpvf.displacement_),
-    endTime_(rifvpvf.endTime_) 
+    endTime_(rifvpvf.endTime_)
 {}
 
 
@@ -134,28 +135,33 @@ void movingDisplacementLinearMomentumFvPatchVectorField::updateCoeffs()
         return;
     }
 
-    const fvsPatchField<vector>& lm_M_ = patch().lookupPatchField<surfaceVectorField, vector>("lm_M");  
+    const fvsPatchField<vector>& lm_M_ =
+        patch().lookupPatchField<surfaceVectorField, vector>("lm_M");
 
     fvsPatchField<vector> lm_C(lm_M_);
-         
+
     const scalar& t = this->db().time().value();
     const scalar A = 3*10;
-    const scalar B = 4*15 / endTime_;
-    const scalar C = 5*6 / pow(endTime_,2);
+    const scalar B = 4*15/endTime_;
+    const scalar C = 5*6/pow(endTime_,2);
 
-    lm_C = density_ * (displacement_/pow(endTime_,3)) * (A - B*t + C*t*t) * pow(t,2);
+    lm_C = density_*(displacement_/pow(endTime_,3))*(A - B*t + C*t*t)*pow(t,2);
 
     this->operator==(lm_C);
     fixedValueFvPatchVectorField::updateCoeffs();
 }
 
 
-void movingDisplacementLinearMomentumFvPatchVectorField::write(Ostream& os) const
+void movingDisplacementLinearMomentumFvPatchVectorField::write
+(
+    Ostream& os
+) const
 {
     fvPatchVectorField::write(os);
     os.writeKeyword("density") << density_ << token::END_STATEMENT << nl;
-    os.writeKeyword("displacement") << displacement_ << token::END_STATEMENT << nl;
-    os.writeKeyword("endTime") << endTime_ << token::END_STATEMENT << nl;           
+    os.writeKeyword("displacement") << displacement_ << token::END_STATEMENT
+        << nl;
+    os.writeKeyword("endTime") << endTime_ << token::END_STATEMENT << nl;
     writeEntry("value", os);
 }
 

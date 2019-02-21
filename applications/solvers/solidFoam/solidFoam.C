@@ -26,73 +26,76 @@ Application
     solidFoam
 
 Description
-    A solid mechanics solver based on a Total Lagrangian mixed formulation 
-    comprising of conservation laws for linear momentum and deformation 
+    A solid mechanics solver based on a Total Lagrangian mixed formulation
+    comprising of conservation laws for linear momentum and deformation
     gradient of the system.
 
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
 #include "pointFields.H"
+#include "operations.H"
+#include "solidModel.H"
+#include "mechanics.H"
+#include "gradientSchemes.H"
 #include "interpolationSchemes.H"
 #include "angularMomentum.H"
-#include "constitutiveModel.H"
-#include "gradientSchemes.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
-{ 
-    #include "setRootCase.H"    
+{
+    #include "setRootCase.H"
     #include "createTime.H"
-    #include "createMesh.H"  
-    #include "readControls.H"   
-    #include "meshData.H"                       
-    #include "createFields.H"                                               
+    #include "createMesh.H"
+    #include "readControls.H"
+    #include "createFields.H"
 
-    while (runTime.loop()) 
+    while (runTime.loop())
     {
     if (timeStepping == "variable")
     {
-        deltaT = ( cfl*h ) / max(Up_time);
+        deltaT = (cfl*h)/max(Up_time);
         runTime.setDeltaT(deltaT);
-    }       
+    }
 
-    t += deltaT; tstep++;   
+    t += deltaT; tstep++;
 
     Info << "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value() << " s"
          << "\nTime = " << t.value() << " s" << endl;
 
-    RKstage = "first";  
-    #include "gEqns.H"
-                                                    
-    RKstage = "second"; 
-    #include "updateVariables.H"    
+    RKstage = "first";
     #include "gEqns.H"
 
-    lm = 0.5 * ( lm.oldTime() + lm );
-    F = 0.5 * ( F.oldTime() + F );                          
-    x = 0.5 * ( x.oldTime() + x );
-    xF = 0.5 * ( xF.oldTime() + xF );           
-    xN = 0.5 * ( xN.oldTime() + xN );           
+    RKstage = "second";
+    #include "updateVariables.H"
+    #include "gEqns.H"
 
-    #include "updateVariables.H"    
-    uN = xN - xN_0;             
-        
+    lm = 0.5*(lm.oldTime() + lm);
+    F = 0.5*(F.oldTime() + F);
+    x = 0.5*(x.oldTime() + x);
+    xF = 0.5*(xF.oldTime() + xF);
+    xN = 0.5*(xN.oldTime() + xN);
+
+    #include "updateVariables.H"
+
     if (runTime.outputTime())
     {
-        p.write();
+        uN = xN - xN_0;
         uN.write();
+
+        p = model.pressure();
+        p.write();
     }
 
-    Info << "Percentage completed = " 
-         << (t.value()/runTime.endTime().value())*100 << "%" << endl;   
+    Info << "Percent completed = "
+         << (t.value()/runTime.endTime().value())*100 << "%" << endl;
     }
 
-    Info << "\nExecutionTime = " << runTime.elapsedCpuTime() << " s" 
-         << "  ClockTime = " << runTime.elapsedClockTime() << " s" 
-         << "\nEnd\n" << endl;
-    
+    Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+        << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+        << nl << endl;
+
     return 0;
 }
 

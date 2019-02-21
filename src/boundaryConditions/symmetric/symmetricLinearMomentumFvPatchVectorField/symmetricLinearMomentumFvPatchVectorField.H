@@ -20,21 +20,20 @@ License
 
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
-    
+
 Class
     Foam::symmetricLinearMomentumFvPatchVectorField
 
 Description
-    Specifies contact linear momentum for a symmetric boundary patch 
+    Specifies contact linear momentum for a symmetric boundary patch
     according to the Riemann solver. External boundary traction can
-    be specified together with a linear ramp function. 
+    be specified together with a linear ramp function.
 
 Usage
     \table
         Property     | Description             | Required    | Default value
         tractionValue | traction vector        | no          | vector(0,0,0)
         rampEndTime  | ramp time for traction  | no          | VSMALL
-
     \endtable
 
     Example of the boundary condition specification:
@@ -43,7 +42,7 @@ Usage
     {
         type            symmetricLinearMomentum;
         tractionValue   (10 10 10);
-        rampEndTime     1.0; 
+        rampEndTime     1.0;
     }
     \endverbatim
 
@@ -58,15 +57,11 @@ SourceFiles
 #ifndef symmetricLinearMomentumFvPatchVectorField_H
 #define symmetricLinearMomentumFvPatchVectorField_H
 
-#include "fvPatchFields.H"
 #include "fixedValueFvPatchFields.H"
-#include "fvsPatchFields.H"
 #include "fixedValueFvsPatchFields.H"
-#include "Switch.H"
 #include "addToRunTimeSelectionTable.H"
 #include "volFields.H"
 #include "surfaceFields.H"
-#include "IOdictionary.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -83,10 +78,10 @@ class symmetricLinearMomentumFvPatchVectorField
 {
 
 private:
- 
+
     // Applied traction
     vector tractionValue_;
-    
+
     // Traction ramp end time
     scalar rampTime_;
 
@@ -114,8 +109,8 @@ public:
             const dictionary&
         );
 
-        //- Construct by mapping given symmetricLinearMomentumFvPatchVectorField
-        //  onto a new patch
+        //- Construct by mapping given
+        //  symmetricLinearMomentumFvPatchVectorField onto a new patch
         symmetricLinearMomentumFvPatchVectorField
         (
             const symmetricLinearMomentumFvPatchVectorField&,

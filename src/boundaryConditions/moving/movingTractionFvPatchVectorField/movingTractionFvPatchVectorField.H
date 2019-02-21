@@ -25,8 +25,8 @@ Class
     Foam::movingTractionFvPatchVectorField
 
 Description
-    Specifies contact traction for a traction boundary patch according to 
-    the Riemann solver. External boundary traction can also be specified.  
+    Specifies contact traction for a traction boundary patch according to
+    the Riemann solver. External boundary traction can also be specified.
 
 Usage
     \table
@@ -54,15 +54,12 @@ SourceFiles
 #ifndef movingTractionFvPatchVectorField_H
 #define movingTractionFvPatchVectorField_H
 
-#include "fvPatchFields.H"
 #include "fixedValueFvPatchFields.H"
 #include "fvsPatchFields.H"
 #include "fixedValueFvsPatchFields.H"
-#include "Switch.H"
 #include "addToRunTimeSelectionTable.H"
 #include "volFields.H"
 #include "surfaceFields.H"
-#include "IOdictionary.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -152,11 +149,11 @@ public:
     // Member functions
 
         // Access
- 
+
             virtual vector& linearMomentum()
             {
                 return linearMomentum_;
-            }   
+            }
 
         // Mapping functions
 
@@ -178,7 +175,7 @@ public:
 
         // Write
         virtual void write(Ostream&) const;
-        
+
 };
 
 

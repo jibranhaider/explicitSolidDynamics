@@ -55,9 +55,9 @@ movingDisplacementNodalLinearMomentumPointPatchVectorField
 )
 :
     fixedValuePointPatchVectorField(p, iF),
-    density_( readScalar(dict.lookup("density")) ),  
-    displacement_( dict.lookup("displacement") ),  
-    endTime_( readScalar(dict.lookup("endTime")) ) 
+    density_(readScalar(dict.lookup("density"))),
+    displacement_(dict.lookup("displacement")),
+    endTime_(readScalar(dict.lookup("endTime")))
 {
     pointPatchVectorField::operator=(vectorField("value", dict, p.size()));
 
@@ -70,14 +70,14 @@ movingDisplacementNodalLinearMomentumPointPatchVectorField
 (
     const movingDisplacementNodalLinearMomentumPointPatchVectorField& ptf,
     const pointPatch& p,
-    const DimensionedField<vector, pointMesh>& iF,   
+    const DimensionedField<vector, pointMesh>& iF,
     const pointPatchFieldMapper& mapper
 )
 :
     fixedValuePointPatchVectorField(ptf, p, iF, mapper),
-    density_(ptf.density_), 
+    density_(ptf.density_),
     displacement_(ptf.displacement_),
-    endTime_(ptf.endTime_)    
+    endTime_(ptf.endTime_)
 {}
 
 
@@ -88,9 +88,9 @@ movingDisplacementNodalLinearMomentumPointPatchVectorField
 )
 :
     fixedValuePointPatchVectorField(rifvpvf),
-    density_(rifvpvf.density_),    
+    density_(rifvpvf.density_),
     displacement_(rifvpvf.displacement_),
-    endTime_(rifvpvf.endTime_)   
+    endTime_(rifvpvf.endTime_)
 {}
 
 
@@ -104,7 +104,7 @@ movingDisplacementNodalLinearMomentumPointPatchVectorField
     fixedValuePointPatchVectorField(rifvpvf, iF),
     density_(rifvpvf.density_),
     displacement_(rifvpvf.displacement_),
-    endTime_(rifvpvf.endTime_) 
+    endTime_(rifvpvf.endTime_)
 {}
 
 
@@ -121,7 +121,7 @@ void movingDisplacementNodalLinearMomentumPointPatchVectorField::autoMap
 
 void movingDisplacementNodalLinearMomentumPointPatchVectorField::rmap
 (
-    const pointPatchVectorField& ptf,    
+    const pointPatchVectorField& ptf,
     const labelList& addr
 )
 {
@@ -137,25 +137,29 @@ void movingDisplacementNodalLinearMomentumPointPatchVectorField::updateCoeffs()
     }
 
     vectorField lm_N(this->patchInternalField());
-         
+
     const scalar& t = this->db().time().value();
     const scalar A = 3*10;
-    const scalar B = 4*15 / endTime_;
-    const scalar C = 5*6 / pow(endTime_,2);
+    const scalar B = 4*15/endTime_;
+    const scalar C = 5*6/pow(endTime_,2);
 
-    lm_N = density_ * (displacement_/pow(endTime_,3)) * (A - B*t + C*t*t) * pow(t,2);
+    lm_N = density_*(displacement_/pow(endTime_,3))*(A - B*t + C*t*t)*pow(t,2);
 
-    this->operator==(lm_N);   
+    this->operator==(lm_N);
     fixedValuePointPatchVectorField::updateCoeffs();
 }
 
 
-void movingDisplacementNodalLinearMomentumPointPatchVectorField::write(Ostream& os) const
+void movingDisplacementNodalLinearMomentumPointPatchVectorField::write
+(
+    Ostream& os
+) const
 {
     pointPatchVectorField::write(os);
     os.writeKeyword("density") << density_ << token::END_STATEMENT << nl;
-    os.writeKeyword("displacement") << displacement_ << token::END_STATEMENT << nl;
-    os.writeKeyword("endTime") << endTime_ << token::END_STATEMENT << nl;     
+    os.writeKeyword("displacement") << displacement_ << token::END_STATEMENT
+        << nl;
+    os.writeKeyword("endTime") << endTime_ << token::END_STATEMENT << nl;
     writeEntry("value", os);
 }
 
