@@ -99,6 +99,7 @@ The simulation can be seen [here](https://youtu.be/7_0i0FlCHtc).
 
 <br/>
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6c19e99fc1a64008a7576c57ae376401)](https://app.codacy.com/app/jibranhaider/explicitSolidDynamics?utm_source=github.com&utm_medium=referral&utm_content=jibranhaider/explicitSolidDynamics&utm_campaign=Badge_Grade_Dashboard)
 * [![CMAME](https://img.shields.io/badge/DOI-10.1016/j.cma.2018.06.010-blue.svg)](https://doi.org/10.1016/j.cma.2018.06.010)
 
       @article{haider2018upwind,
