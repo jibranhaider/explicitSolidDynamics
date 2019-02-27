@@ -14,7 +14,8 @@ if (symmetricPatchID != -1)
 
             const tensor& iMnCn_ =
                 tensor::I
-              - (N.boundaryField()[symmetricPatchID][facei]*N.boundaryField()[symmetricPatchID][facei]);
+              - (N.boundaryField()[symmetricPatchID][facei]
+               *N.boundaryField()[symmetricPatchID][facei]);
 
             lmN[nodeID] = iMnCn_ & lmN[nodeID];
         }
@@ -35,7 +36,8 @@ if (symmetricXpatchID != -1)
 
             const tensor& iMnCn_ =
                 tensor::I
-              - (N.boundaryField()[symmetricXpatchID][facei]*N.boundaryField()[symmetricXpatchID][facei]);
+              - (N.boundaryField()[symmetricXpatchID][facei]
+               *N.boundaryField()[symmetricXpatchID][facei]);
 
             lmN[nodeID] = iMnCn_ & lmN[nodeID];
         }
@@ -56,7 +58,8 @@ if (symmetricYpatchID != -1)
 
             const tensor& iMnCn_ =
                 tensor::I
-              - (N.boundaryField()[symmetricYpatchID][facei]*N.boundaryField()[symmetricYpatchID][facei]);
+              - (N.boundaryField()[symmetricYpatchID][facei]
+               *N.boundaryField()[symmetricYpatchID][facei]);
 
             lmN[nodeID] = iMnCn_ & lmN[nodeID];
         }
@@ -77,7 +80,8 @@ if (symmetricZpatchID != -1)
 
             const tensor& iMnCn_ =
                 tensor::I
-              - (N.boundaryField()[symmetricZpatchID][facei]*N.boundaryField()[symmetricZpatchID][facei]);
+              - (N.boundaryField()[symmetricZpatchID][facei]
+               *N.boundaryField()[symmetricZpatchID][facei]);
 
             lmN[nodeID] = iMnCn_ & lmN[nodeID];
         }
