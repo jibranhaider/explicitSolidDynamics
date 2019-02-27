@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
     if (runTime.outputTime())
     {
-        uN = xN - xN_0;
+        uN = xN - XN;
         uN.write();
 
         p = model.pressure();

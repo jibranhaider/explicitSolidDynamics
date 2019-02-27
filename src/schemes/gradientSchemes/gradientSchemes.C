@@ -47,6 +47,7 @@ gradientSchemes::gradientSchemes
     nei_(mesh_.neighbour()),
     X_(mesh_.C()),
     XF_(mesh_.Cf()),
+    XN_(mesh_.points()),
 
     Ainv_
     (
@@ -167,9 +168,6 @@ void gradientSchemes::distanceMatrixLocal
 
             if (lmN_.boundaryField().types()[patchID] == "fixedValue")
             {
-                const pointVectorField& xN_0_ =
-                    db.lookupObject<pointVectorField> ("xN_0");
-
                 const label& faceID =
                     mesh_.boundary()[patchID].start() + facei;
 
@@ -177,13 +175,13 @@ void gradientSchemes::distanceMatrixLocal
                 {
                     const label& nodeID = mesh_.faces()[faceID][nodei];
 
-                    d = xN_0_[nodeID] - X_[bCellID];
+                    d = XN_[nodeID] - X_[bCellID];
                     dCd[bCellID] += d * d;
 
                     for (int i=0; i<7; i++)
                     {
                         d =
-                            ((((i+1)*xN_0_[nodeID])
+                            ((((i+1)*XN_[nodeID])
                           + ((7 - i)*XF_.boundaryField()[patchID][facei]))/8.0)
                           - X_[bCellID];
                         dCd[bCellID] += d * d;
@@ -479,16 +477,13 @@ volTensorField gradientSchemes::localGradient
 
             if (lmN_.boundaryField().types()[patchID] == "fixedValue")
             {
-                const pointVectorField& xN_0_ =
-                    db.lookupObject<pointVectorField> ("xN_0");
-
                 const label& faceID =
                     mesh_.boundary()[patchID].start() + facei;
 
                 forAll(mesh_.faces()[faceID], nodei)
                 {
                     const label& nodeID = mesh_.faces()[faceID][nodei];
-                    vector d = xN_0_[nodeID] - X_[bCellID];
+                    vector d = XN_[nodeID] - X_[bCellID];
 
                     UgradX[bCellID] +=
                         AinvLocal_[bCellID]
@@ -505,7 +500,7 @@ volTensorField gradientSchemes::localGradient
                     for (int i=0; i<7; i++)
                     {
                         d =
-                            ((((i+1)*xN_0_[nodeID])
+                            ((((i+1)*XN_[nodeID])
                           + ((7-i)*XF_.boundaryField()[patchID][facei]))/8.0)
                           - X_[bCellID];
 
