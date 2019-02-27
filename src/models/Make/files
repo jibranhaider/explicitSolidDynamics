@@ -1,3 +1,4 @@
 solidModel/solidModel.C
+plasticityModel/plasticityModel.C
 
 LIB = $(FOAM_USER_LIBBIN)/libModels
