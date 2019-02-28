@@ -17,6 +17,6 @@ FoamFile
 
 tutorial                twistingColumn;
 meshFile                twistingColumn_384.msh;
-initialAngularVelocity  omega [0 0 -1 0 0 0 0]  (0 105 0);
+initialAngularVelocity  omega [0 0 -1 0 0 0 0] (0 105 0);
 
 // ************************************************************************* //

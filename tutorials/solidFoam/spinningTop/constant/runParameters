@@ -15,8 +15,8 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-tutorial                spinningTop;
-meshFile                spinningTop_3904.msh;
-initialAngularVelocity  omega [0 0 -1 0 0 0 0]  (0 0 40);
+tutorial        spinningTop;
+meshFile        spinningTop_3904.msh;
+initialAngularVelocity  omega [0 0 -1 0 0 0 0] (0 0 40);
 
 // ************************************************************************* //
