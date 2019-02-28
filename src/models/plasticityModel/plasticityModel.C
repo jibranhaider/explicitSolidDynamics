@@ -124,7 +124,7 @@ plasticityModel::plasticityModel
         )
     ),
 
-    model_(dict.lookup("constitutiveModel")),
+    model_(dict.lookup("plasticityModel")),
 
     rho_(dict.lookup("rho")),
     E_(dict.lookup("E")),
@@ -153,6 +153,7 @@ plasticityModel::plasticityModel
     Up_(sqrt((lambda_ + 2.0*mu_)/rho_)),
     Us_(sqrt(mu_/rho_))
 {
+    p_.write();
     vMises_.write();
     strain_p_.write();
     Ys_.write();
@@ -211,7 +212,7 @@ void plasticityModel::correct()
             scalar plasticM = 0.0;
 
             double f =
-                sqrt( (3.0/2.0)*(tauDevT&tauDevT) )
+                sqrt((3.0/2.0)*(tauDevT&tauDevT))
               - (Ys0_.value() + Hm_.value()*strain_p_[cellID]);
 
             vector tauDev = tauDevT;
