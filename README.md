@@ -11,7 +11,7 @@
   <a href="https://github.com/jibranhaider/explicitSolidDynamics/blob/master/LICENSE">
     <img alt="GPLv3 license" src="https://img.shields.io/badge/License-GPLv3-orange.svg"> &nbsp;
   </a> 
-  <a href="https://github.com/jibranhaider/explicitSolidDynamics/wiki/Manual-for-explicitSolidDynamics-toolkit">
+  <a href="https://github.com/jibranhaider/explicitSolidDynamics/wiki">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-Wiki-red.svg?label=Documentation"> &nbsp;
   </a>
   <a href="https://doi.org/10.5281/zenodo.2577032">
