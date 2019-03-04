@@ -41,8 +41,8 @@ tractionTractionFvPatchVectorField
 :
     fixedValueFvPatchVectorField(p, iF),
     loadingType_("none"),
-    traction_(vector::zero),
-    pressure_(0.0)
+    t_P_(vector::zero),
+    p_P_(0.0)
 {}
 
 
@@ -56,8 +56,8 @@ tractionTractionFvPatchVectorField
 :
     fixedValueFvPatchVectorField(p, iF),
     loadingType_(dict.lookupOrDefault<word>("loadingType", "none")),
-    traction_(dict.lookupOrDefault("traction", vector::zero)),
-    pressure_(dict.lookupOrDefault("pressure", 0.0))
+    t_P_(dict.lookupOrDefault("traction", vector::zero)),
+    p_P_(dict.lookupOrDefault("pressure", 0.0))
 {
     fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
 
@@ -94,8 +94,8 @@ tractionTractionFvPatchVectorField
 :
     fixedValueFvPatchVectorField(ptf, p, iF, mapper),
     loadingType_(ptf.loadingType_),
-    traction_(ptf.traction_),
-    pressure_(ptf.pressure_)
+    t_P_(ptf.t_P_),
+    p_P_(ptf.p_P_)
 {}
 
 
@@ -107,8 +107,8 @@ tractionTractionFvPatchVectorField
 :
     fixedValueFvPatchVectorField(rifvpvf),
     loadingType_(rifvpvf.loadingType_),
-    traction_(rifvpvf.traction_),
-    pressure_(rifvpvf.pressure_)
+    t_P_(rifvpvf.t_P_),
+    p_P_(rifvpvf.p_P_)
 {}
 
 
@@ -121,8 +121,8 @@ tractionTractionFvPatchVectorField
 :
     fixedValueFvPatchVectorField(rifvpvf, iF),
     loadingType_(rifvpvf.loadingType_),
-    traction_(rifvpvf.traction_),
-    pressure_(rifvpvf.pressure_)
+    t_P_(rifvpvf.t_P_),
+    p_P_(rifvpvf.p_P_)
 {}
 
 
@@ -166,7 +166,7 @@ void tractionTractionFvPatchVectorField::updateCoeffs()
 
     else if (loadingType_ == "traction")
     {
-        t_C = traction_;
+        t_C = t_P_;
     }
 
     else if (loadingType_ == "pressure")
@@ -174,7 +174,7 @@ void tractionTractionFvPatchVectorField::updateCoeffs()
         const fvsPatchField<vector>& n_
             = patch().lookupPatchField<surfaceVectorField, vector>("n");
 
-        t_C = -pressure_ * n_;
+        t_C = -p_P_*n_;
     }
 
     else
@@ -195,8 +195,8 @@ void tractionTractionFvPatchVectorField::write(Ostream& os) const
     fvPatchVectorField::write(os);
     os.writeKeyword("loadingType") << loadingType_ << token::END_STATEMENT
         << nl;
-    os.writeKeyword("traction") << traction_ << token::END_STATEMENT << nl;
-    os.writeKeyword("pressure") << pressure_ << token::END_STATEMENT << nl;
+    os.writeKeyword("traction") << t_P_ << token::END_STATEMENT << nl;
+    os.writeKeyword("pressure") << p_P_ << token::END_STATEMENT << nl;
     writeEntry("value", os);
 }
 

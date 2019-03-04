@@ -40,8 +40,8 @@ symmetricLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(p, iF),
-    tractionValue_(vector::zero),
-    rampTime_(VSMALL)
+    t_P_(vector::zero),
+    tRamp_(VSMALL)
 {}
 
 
@@ -54,16 +54,13 @@ symmetricLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(p, iF),
-    tractionValue_(vector::zero),
-    rampTime_(VSMALL)
+    t_P_(vector::zero),
+    tRamp_(VSMALL)
 {
 
     fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
-
-    tractionValue_ =
-        dict.lookupOrDefault<vector>("tractionValue", vector::zero);
-
-    rampTime_ = dict.lookupOrDefault("rampEndTime", VSMALL);
+    t_P_ = dict.lookupOrDefault<vector>("traction", vector::zero);
+    tRamp_ = dict.lookupOrDefault("rampEndTime", VSMALL);
 
     updateCoeffs();
 }
@@ -79,8 +76,8 @@ symmetricLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(ptf, p, iF, mapper),
-    tractionValue_(ptf.tractionValue_),
-    rampTime_(ptf.rampTime_)
+    t_P_(ptf.t_P_),
+    tRamp_(ptf.tRamp_)
 {}
 
 
@@ -91,8 +88,8 @@ symmetricLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(rifvpvf),
-    tractionValue_(rifvpvf.tractionValue_),
-    rampTime_(rifvpvf.rampTime_)
+    t_P_(rifvpvf.t_P_),
+    tRamp_(rifvpvf.tRamp_)
 {}
 
 
@@ -104,8 +101,8 @@ symmetricLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(rifvpvf, iF),
-    tractionValue_(rifvpvf.tractionValue_),
-    rampTime_(rifvpvf.rampTime_)
+    t_P_(rifvpvf.t_P_),
+    tRamp_(rifvpvf.tRamp_)
 {}
 
 
@@ -151,13 +148,13 @@ void symmetricLinearMomentumFvPatchVectorField::updateCoeffs()
 
     fvsPatchField<vector> lm_C(lm_M_);
 
-    scalar ramp = this->db().time().value()/rampTime_;
-    if (this->db().time().value() >= rampTime_)
+    scalar ramp = this->db().time().value()/tRamp_;
+    if (this->db().time().value() >= tRamp_)
     {
         ramp = 1.0;
     }
 
-    lm_C = iMnCn_ & ( lm_M_ + (((ramp*tractionValue_) - t_M_)/Us_));
+    lm_C = iMnCn_ & (lm_M_ + (((ramp*t_P_) - t_M_)/Us_));
 
     this->operator==(lm_C);
     fixedValueFvPatchVectorField::updateCoeffs();
@@ -167,8 +164,7 @@ void symmetricLinearMomentumFvPatchVectorField::updateCoeffs()
 void symmetricLinearMomentumFvPatchVectorField::write(Ostream& os) const
 {
     fvPatchVectorField::write(os);
-    os.writeKeyword("tractionValue") << tractionValue_ << token::END_STATEMENT
-        << nl;
+    os.writeKeyword("traction") << t_P_ << token::END_STATEMENT << nl;
     writeEntry("value", os);
 }
 

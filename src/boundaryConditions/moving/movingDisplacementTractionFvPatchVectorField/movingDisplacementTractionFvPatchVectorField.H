@@ -78,13 +78,13 @@ class movingDisplacementTractionFvPatchVectorField
 private:
 
     // Density
-    scalar density_;
+    dimensionedScalar rho_;
 
-    // Total displacement
-    vector displacement_;
+    // Maximum displacement
+    vector uMax_;
 
-    // End time for displacement
-    scalar endTime_;
+    // End time for maximum displacement
+    scalar tEnd_;
 
 
 public:

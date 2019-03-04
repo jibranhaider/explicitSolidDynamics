@@ -44,13 +44,13 @@ Usage
     {
         type           tractionLinearMomentum;
         loadingType    traction;
-        traction       (0 0 0);
+        traction       (0 10 0);
     }
     free
     {
         type           tractionLinearMomentum;
         loadingType    pressure;
-        Pressure       0.0;
+        pressure       5.0;
     }
     \endverbatim
 
@@ -90,11 +90,11 @@ private:
     // Type of loading
     word loadingType_;
 
-    // Applied traction
-    vector traction_;
+    // Boundary traction
+    vector t_P_;
 
-    // Applied pressure
-    scalar pressure_;
+    // Boundary pressure
+    scalar p_P_;
 
 
 public:
@@ -176,12 +176,12 @@ public:
 
             virtual vector& traction()
             {
-                return traction_;
+                return t_P_;
             }
 
             virtual scalar& pressure()
             {
-                return pressure_;
+                return p_P_;
             }
 
         // Mapping functions

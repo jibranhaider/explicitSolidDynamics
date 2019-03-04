@@ -39,7 +39,7 @@ movingTractionFvPatchVectorField::movingTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(p, iF),
-	linearMomentum_(vector::zero)
+	lm_P_(vector::zero)
 {}
 
 
@@ -51,7 +51,7 @@ movingTractionFvPatchVectorField::movingTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(p, iF),
-	linearMomentum_(dict.lookupOrDefault<vector>
+	lm_P_(dict.lookupOrDefault<vector>
     (
         "linearMomentum",
         vector::zero)
@@ -71,7 +71,7 @@ movingTractionFvPatchVectorField::movingTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(ptf, p, iF, mapper),
-	linearMomentum_(ptf.linearMomentum_)
+	lm_P_(ptf.lm_P_)
 {}
 
 
@@ -81,7 +81,7 @@ movingTractionFvPatchVectorField::movingTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(rifvpvf),
-    linearMomentum_(rifvpvf.linearMomentum_)
+    lm_P_(rifvpvf.lm_P_)
 {}
 
 
@@ -92,7 +92,7 @@ movingTractionFvPatchVectorField::movingTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(rifvpvf, iF),
-    linearMomentum_(rifvpvf.linearMomentum_)
+    lm_P_(rifvpvf.lm_P_)
 {}
 
 
@@ -143,7 +143,7 @@ void movingTractionFvPatchVectorField::updateCoeffs()
         patch().lookupPatchField<volScalarField, scalar>("Us");
 
     fvsPatchField<vector> t_C(lm_M_);
-    t_C = t_M_ + ((Up_*nCn_ + Us_*iMnCn_) & (linearMomentum_ - lm_M_));
+    t_C = t_M_ + ((Up_*nCn_ + Us_*iMnCn_) & (lm_P_ - lm_M_));
 
     this->operator==(t_C);
     fixedValueFvPatchVectorField::updateCoeffs();
@@ -153,8 +153,7 @@ void movingTractionFvPatchVectorField::updateCoeffs()
 void movingTractionFvPatchVectorField::write(Ostream& os) const
 {
     fvPatchVectorField::write(os);
-    os.writeKeyword("linearMomentum_") << linearMomentum_
-        << token::END_STATEMENT << nl;
+    os.writeKeyword("lm_P_") << lm_P_ << token::END_STATEMENT << nl;
     writeEntry("value", os);
 }
 
