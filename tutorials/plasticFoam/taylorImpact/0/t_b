@@ -24,19 +24,16 @@ boundaryField
     symmetricY
     {
         type            symmetricTraction;
-        tractionValue   (0 0 0);
         value           uniform (0 0 0);
     }
     symmetricZ
     {
         type            symmetricTraction;
-        tractionValue   (0 0 0);
         value           uniform (0 0 0);
     }
     symmetricX
     {
         type            symmetricTraction;
-        tractionValue   (0 0 0);
         value           uniform (0 0 0);
     }
     free

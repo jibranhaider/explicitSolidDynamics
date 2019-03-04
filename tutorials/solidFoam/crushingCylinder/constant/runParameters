@@ -15,9 +15,11 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-tutorial        crushingCylinder;
-meshFile        crushingCylinder_1600.msh;
-density         1000;
-displacement    -0.0045;
+#include "../system/controlDict"
+
+tutorial    crushingCylinder;
+meshFile    crushingCylinder_40000.msh;
+uMax        (0 -0.0045 0);              // Maximum displacement
+tEnd        $endTime;                   // End time for maximum displacement
 
 // ************************************************************************* //

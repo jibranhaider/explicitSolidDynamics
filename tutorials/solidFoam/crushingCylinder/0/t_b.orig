@@ -9,17 +9,16 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       pointVectorField;
+    class       volVectorField;
     location    "0";
-    object      lmN;
+    object      t_b;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #include "../constant/runParameters"
 #include "../constant/mechanicalProperties"
-#include "../system/controlDict"
 
-dimensions      [1 -2 -1 0 0 0 0];
+dimensions      [1 -1 -2 0 0 0 0];
 
 internalField   uniform (0 0 0);
 
@@ -27,23 +26,25 @@ boundaryField
 {
     fixed
     {
-        type            fixedValue;
+        type            movingTraction;
         value           uniform (0 0 0);
     }
     free
     {
-        type            zeroGradient;
+        type            fixedValue;
+        value           uniform (0 0 0);
     }
     symmetric
     {
-        type            zeroGradient;
+        type            symmetricTraction;
+        value           uniform (0 0 0);
     }
     loading
     {
-        type            movingDisplacementNodalLinearMomentum;
-        density         $density;
-        displacement    (0 $displacement 0);
-        endTime         $endTime;
+        type            movingDisplacementTraction;
+        density         $rho;
+        displacement    $uMax;
+        endTime         $tEnd;
         value           uniform (0 0 0);
     }
 }

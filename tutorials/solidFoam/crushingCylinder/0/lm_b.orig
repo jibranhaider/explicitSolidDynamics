@@ -9,11 +9,14 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       pointVectorField;
+    class       volVectorField;
     location    "0";
-    object      lmN;
+    object      lm_b;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "../constant/runParameters"
+#include "../constant/mechanicalProperties"
 
 dimensions      [1 -2 -1 0 0 0 0];
 
@@ -21,25 +24,28 @@ internalField   uniform (0 0 0);
 
 boundaryField
 {
-    symmetricY
+    fixed
     {
-        type        zeroGradient;
+        type            fixedValue;
+        value           uniform (0 0 0);
     }
     free
     {
-        type        zeroGradient;
+        type            tractionLinearMomentum;
+        value           uniform (0 0 0);
     }
-    free_loading
+    symmetric
     {
-        type        zeroGradient;
+        type            symmetricLinearMomentum;
+        value           uniform (0 0 0);
     }
-    symmetricX
+    loading
     {
-        type        zeroGradient;
-    }
-    symmetricZ
-    {
-        type        zeroGradient;
+        type            movingDisplacementLinearMomentum;
+        density         $rho;
+        displacement    $uMax;
+        endTime         $tEnd;
+        value           uniform (0 0 0);
     }
 }
 

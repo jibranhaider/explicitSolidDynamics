@@ -1,10 +1,11 @@
 #!/bin/bash
+cd ${0%/*} || exit 1 # Run from this directory
 
 # OpenFOAM functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 solver=`getApplication`
 
-# Get number of processors 
+# Get number of processors
 nProc=$(foamDictionary -entry numberOfSubdomains -value $nProc system/decomposeParDict)
 
 # Generate mesh
@@ -15,10 +16,10 @@ fluentMeshToFoam $meshFile
 initialConditions
 
 # Run solver
-if [ $nProc -eq 1 ]; then   
+if [ $nProc -eq 1 ]; then
     $solver > log.$solver &
     tail -f log.$solver
-    
+
 elif [ $nProc -gt 1 ]; then
     runApplication decomposePar
     runParallel $solver &
