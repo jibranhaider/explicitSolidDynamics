@@ -23,13 +23,13 @@ boundaryField
 {
     topAndSides
     {
-        type            tractionLinearMomentum;
-        value           uniform (0 0 0);
+        type    tractionLinearMomentum;
+        value   uniform (0 0 0);
     }
     bottom
     {
-        type            fixedValue;
-        value           uniform (0 0 0);
+        type    fixedValue;
+        value   uniform (0 0 0);
     }
 }
 
