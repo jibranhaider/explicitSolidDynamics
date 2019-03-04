@@ -1,6 +1,6 @@
 #!/bin/bash
 
-clear 
+clear
 
 cd src/boundaryConditions
 ./compile
@@ -15,6 +15,9 @@ cd ../schemes
 ./compile
 
 cd ../../applications/solvers/solidFoam
+./compile
+
+cd ../plasticFoam
 ./compile
 
 cd ../../utilities/initialConditions
