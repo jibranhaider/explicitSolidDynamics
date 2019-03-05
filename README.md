@@ -59,7 +59,7 @@ More details about this work can be found [here](http://jibranhaider.weebly.com/
 
 ## 2. How to use this toolkit?
 
-Detailed instructions on the usage of the toolkit are provided on this [wiki](https://github.com/jibranhaider/explicitSolidDynamics/wiki/Manual-for-explicitSolidDynamics-toolkit) page.
+Detailed instructions on the usage of the toolkit are provided on the [wiki](https://github.com/jibranhaider/explicitSolidDynamics/wiki) page.
 
 
 <br/>
