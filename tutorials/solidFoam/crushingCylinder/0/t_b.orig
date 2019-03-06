@@ -1,0 +1,52 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      t_b;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "../constant/runParameters"
+#include "../constant/mechanicalProperties"
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    fixed
+    {
+        type            movingTraction;
+        value           uniform (0 0 0);
+    }
+    free
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    symmetric
+    {
+        type            symmetricTraction;
+        value           uniform (0 0 0);
+    }
+    loading
+    {
+        type            movingDisplacementTraction;
+        density         $rho;
+        displacement    $uMax;
+        endTime         $tEnd;
+        value           uniform (0 0 0);
+    }
+}
+
+// ************************************************************************* //

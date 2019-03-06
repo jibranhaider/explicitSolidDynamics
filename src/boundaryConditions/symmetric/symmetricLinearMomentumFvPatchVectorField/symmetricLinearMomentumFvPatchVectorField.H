@@ -31,9 +31,9 @@ Description
 
 Usage
     \table
-        Property     | Description             | Required    | Default value
-        tractionValue | traction vector        | no          | vector(0,0,0)
-        rampEndTime  | ramp time for traction  | no          | VSMALL
+        Property     | Description              | Required    | Default value
+        traction     | boundary traction        | no          | vector(0,0,0)
+        rampEndTime  | ramp time for traction   | no          | VSMALL
     \endtable
 
     Example of the boundary condition specification:
@@ -41,7 +41,7 @@ Usage
     inlet
     {
         type            symmetricLinearMomentum;
-        tractionValue   (10 10 10);
+        traction        (10 10 10);
         rampEndTime     1.0;
     }
     \endverbatim
@@ -79,11 +79,11 @@ class symmetricLinearMomentumFvPatchVectorField
 
 private:
 
-    // Applied traction
-    vector tractionValue_;
+    // Boundary traction
+    vector t_P_;
 
     // Traction ramp end time
-    scalar rampTime_;
+    scalar tRamp_;
 
 
 public:

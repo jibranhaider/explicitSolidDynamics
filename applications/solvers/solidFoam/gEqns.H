@@ -1,3 +1,4 @@
+// Compute right hand sides
 rhsLm = fvc::surfaceIntegrate(tC*magSf);
 
 if (angularMomentumConservation == "yes")

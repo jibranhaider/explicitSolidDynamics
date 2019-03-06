@@ -30,8 +30,9 @@ Description
 
 Usage
     \table
-        Property     | Description             | Required    | Default value
-        tractionValue | traction vector        | no          | vector(0,0,0)
+        Property    | Description               | Required  | Default value
+        traction    | boundary traction         | no        | vector(0,0,0)
+        rampEndTime | ramp time for traction    | no        | VSMALL
 
     \endtable
 
@@ -40,7 +41,8 @@ Usage
     inlet
     {
         type            symmetricTraction;
-        tractionValue   (10 10 10);
+        traction        (10 10 10);
+        rampEndTime     1.0;
     }
     \endverbatim
 
@@ -77,8 +79,11 @@ class symmetricTractionFvPatchVectorField
 
 private:
 
-    vector tractionValue_;
+    // Boundary traction
+    vector t_P_;
 
+    // Traction ramp end time
+    scalar tRamp_;
 
 public:
 

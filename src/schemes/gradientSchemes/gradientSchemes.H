@@ -64,6 +64,9 @@ class gradientSchemes
         // Face centre coordinates
         const surfaceVectorField& XF_;
 
+        //- Material nodal coordinates
+        const pointField& XN_;
+
         //- Inverse of distance matrix
         volTensorField Ainv_;
 

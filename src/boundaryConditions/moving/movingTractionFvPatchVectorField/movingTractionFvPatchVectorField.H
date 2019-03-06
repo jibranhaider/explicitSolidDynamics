@@ -76,8 +76,8 @@ class movingTractionFvPatchVectorField
 {
 private:
 
-    // Linear momentum
-    vector linearMomentum_;
+    // Boundary linear momentum
+    vector lm_P_;
 
 public:
 
@@ -152,7 +152,7 @@ public:
 
             virtual vector& linearMomentum()
             {
-                return linearMomentum_;
+                return lm_P_;
             }
 
         // Mapping functions

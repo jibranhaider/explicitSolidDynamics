@@ -81,13 +81,13 @@ class movingDisplacementNodalLinearMomentumPointPatchVectorField
 private:
 
     // Density
-    scalar density_;
+    dimensionedScalar rho_;
 
-    // Total displacement
-    vector displacement_;
+    // Maximum displacement
+    vector uMax_;
 
-    // End time for displacement
-    scalar endTime_;
+    // End time for maximum displacement
+    scalar tEnd_;
 
 public:
 
@@ -113,7 +113,8 @@ public:
         );
 
         //- Construct by mapping given
-        //  movingDisplacementNodalLinearMomentumPointPatchVectorField onto a new patch
+        //  movingDisplacementNodalLinearMomentumPointPatchVectorField onto a
+        //  new patch
         movingDisplacementNodalLinearMomentumPointPatchVectorField
         (
             const movingDisplacementNodalLinearMomentumPointPatchVectorField&,

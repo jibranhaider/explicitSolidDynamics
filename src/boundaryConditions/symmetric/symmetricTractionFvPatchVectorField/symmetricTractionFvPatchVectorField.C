@@ -39,7 +39,8 @@ symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(p, iF),
-    tractionValue_(vector::zero)
+    t_P_(vector::zero),
+    tRamp_(VSMALL)
 {}
 
 
@@ -51,12 +52,12 @@ symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(p, iF),
-    tractionValue_(vector::zero)
+    t_P_(vector::zero),
+    tRamp_(VSMALL)
 {
     fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
-
-    tractionValue_ =
-        dict.lookupOrDefault<vector>("tractionValue", vector::zero);
+    t_P_ = dict.lookupOrDefault<vector>("traction", vector::zero);
+    tRamp_ = dict.lookupOrDefault("rampEndTime", VSMALL);
 
     updateCoeffs();
 }
@@ -71,7 +72,8 @@ symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(ptf, p, iF, mapper),
-    tractionValue_(ptf.tractionValue_)
+    t_P_(ptf.t_P_),
+    tRamp_(ptf.tRamp_)
 {}
 
 
@@ -81,7 +83,8 @@ symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(rifvpvf),
-    tractionValue_(rifvpvf.tractionValue_)
+    t_P_(rifvpvf.t_P_),
+    tRamp_(rifvpvf.tRamp_)
 {}
 
 
@@ -92,7 +95,8 @@ symmetricTractionFvPatchVectorField::symmetricTractionFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(rifvpvf, iF),
-    tractionValue_(rifvpvf.tractionValue_)
+    t_P_(rifvpvf.t_P_),
+    tRamp_(rifvpvf.tRamp_)
 {}
 
 
@@ -140,7 +144,14 @@ void symmetricTractionFvPatchVectorField::updateCoeffs()
         patch().lookupPatchField<volScalarField, scalar>("Up");
 
     fvsPatchField<vector> t_C(lm_M_);
-    t_C = (nCn_ & (t_M_ - Up_*lm_M_)) + (iMnCn_ & tractionValue_);
+
+    scalar ramp = this->db().time().value()/tRamp_;
+    if (this->db().time().value() >= tRamp_)
+    {
+        ramp = 1.0;
+    }
+
+    t_C = (nCn_ & (t_M_ - Up_*lm_M_)) + (iMnCn_ & (ramp*t_P_));
 
     this->operator==(t_C);
     fixedValueFvPatchVectorField::updateCoeffs();
@@ -150,8 +161,7 @@ void symmetricTractionFvPatchVectorField::updateCoeffs()
 void symmetricTractionFvPatchVectorField::write(Ostream& os) const
 {
     fvPatchVectorField::write(os);
-    os.writeKeyword("tractionValue") << tractionValue_ << token::END_STATEMENT
-        << nl;
+    os.writeKeyword("traction") << t_P_ << token::END_STATEMENT << nl;
     writeEntry("value", os);
 }
 

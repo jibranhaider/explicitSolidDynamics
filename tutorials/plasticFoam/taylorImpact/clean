@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Source tutorial clean functions
+. $WM_PROJECT_DIR/bin/tools/CleanFunctions
+cleanCase;
+rm 0/lm 0/uN 0/p 0/strain_p 0/vMises 0/Ys
+
+echo Case Cleaned!

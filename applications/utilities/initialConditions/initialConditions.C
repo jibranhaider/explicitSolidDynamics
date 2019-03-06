@@ -68,10 +68,10 @@ int main(int argc, char *argv[])
     );
 
     // Test case name
-    const word& tutorial( runParameters.lookup("tutorial") );
+    const word& tutorial = runParameters.lookup("tutorial");
 
     // Read density
-    const dimensionedScalar& rho (mechanicalProperties.lookup("rho"));
+    const dimensionedScalar& rho = mechanicalProperties.lookup("rho");
 
     // Cell centre coordinates
     const volVectorField& C = mesh.C();
@@ -79,27 +79,62 @@ int main(int argc, char *argv[])
     // Read linear momentum field
     volVectorField lm
     (
-        IOobject ("lm", runTime.timeName(), mesh, IOobject::READ_IF_PRESENT, IOobject::AUTO_WRITE),
+        IOobject
+        (
+            "lm",
+            runTime.timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
         mesh,
-        dimensionedVector("lm",dimensionSet(1,-2,-1,0,0,0,0),vector::zero)  
+        dimensionedVector("lm", dimensionSet(1,-2,-1,0,0,0,0), vector::zero)
     );
 
-    // Read initial angular velocity
-    volVectorField omega
-    (
-        IOobject ("omega", mesh),
-        mesh,
-        dimensionedVector( runParameters.lookup("initialAngularVelocity") )   
-    );
-
+    // Compute linear momentum
     if (tutorial == "twistingColumn")
     {
+        // Read initial angular velocity
+        volVectorField omega
+        (
+            IOobject("omega", mesh),
+            mesh,
+            dimensionedVector(runParameters.lookup("initialAngularVelocity"))
+        );
+
         const scalar& PI = Foam::constant::mathematical::pi;
-        const dimensionedScalar height ("height", dimensionSet(0,1,0,0,0,0,0), 6.0);         
-        omega *= Foam::sin( PI*C.component(1) / (2*height) );
+        const dimensionedScalar height
+        (
+            "height",
+            dimensionSet(0,1,0,0,0,0,0), 6.0
+        );
+
+        omega *= Foam::sin(PI*C.component(1)/(2*height));
+
+        lm = rho*omega ^ C;
     }
 
-    lm = rho * omega ^ C;
+    else if (tutorial == "taylorImpact")
+    {
+        // Read initial velocity
+        volVectorField v
+        (
+            IOobject("v", mesh),
+            mesh,
+            dimensionedVector(runParameters.lookup("initialVelocity"))
+        );
+
+        lm = rho*v;
+    }
+
+    else
+    {
+        FatalErrorIn("initialConditions.C")
+            << "Valid type entries are 'twistingColumn' or 'taylorImpact' "
+            << "for tutorial"
+            << abort(FatalError);
+    }
+
     lm.write();
 
     Info<< "\n end\n";

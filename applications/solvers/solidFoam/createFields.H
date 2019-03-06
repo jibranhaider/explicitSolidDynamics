@@ -45,12 +45,7 @@ pointVectorField xN
 xN.primitiveFieldRef() = mesh.points();
 
 // Material nodal coordinates
-// pointVectorField XN = xN;
-    pointVectorField xN_0
-    (
-        IOobject ("xN_0", runTime.timeName(), mesh, IOobject::NO_READ, IOobject::AUTO_WRITE),
-        xN
-    );
+pointVectorField XN = xN;
 
 // Spatial face center coordinates
 surfaceVectorField xF = mesh.Cf();

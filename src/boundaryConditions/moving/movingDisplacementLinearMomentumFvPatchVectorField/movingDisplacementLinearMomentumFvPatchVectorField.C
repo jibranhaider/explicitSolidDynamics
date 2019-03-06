@@ -40,9 +40,9 @@ movingDisplacementLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(p, iF),
-    density_(0.0),
-    displacement_(vector::zero),
-	endTime_(0.0)
+    rho_(0.0),
+    uMax_(vector::zero),
+    tEnd_(0.0)
 {}
 
 
@@ -55,12 +55,12 @@ movingDisplacementLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(p, iF),
-    density_(readScalar(dict.lookup("density"))),
-    displacement_(dict.lookup("displacement")),
-    endTime_(readScalar(dict.lookup("endTime")))
+    rho_(dict.lookup("density")),
+    uMax_(dict.lookup("displacement")),
+    tEnd_(readScalar(dict.lookup("endTime")))
 {
     fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
-	updateCoeffs();
+    updateCoeffs();
 }
 
 
@@ -74,9 +74,9 @@ movingDisplacementLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(ptf, p, iF, mapper),
-    density_(ptf.density_),
-    displacement_(ptf.displacement_),
-    endTime_(ptf.endTime_)
+    rho_(ptf.rho_),
+    uMax_(ptf.uMax_),
+    tEnd_(ptf.tEnd_)
 {}
 
 
@@ -87,9 +87,9 @@ movingDisplacementLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(rifvpvf),
-    density_(rifvpvf.density_),
-    displacement_(rifvpvf.displacement_),
-    endTime_(rifvpvf.endTime_)
+    rho_(rifvpvf.rho_),
+    uMax_(rifvpvf.uMax_),
+    tEnd_(rifvpvf.tEnd_)
 {}
 
 
@@ -101,9 +101,9 @@ movingDisplacementLinearMomentumFvPatchVectorField
 )
 :
     fixedValueFvPatchVectorField(rifvpvf, iF),
-    density_(rifvpvf.density_),
-    displacement_(rifvpvf.displacement_),
-    endTime_(rifvpvf.endTime_)
+    rho_(rifvpvf.rho_),
+    uMax_(rifvpvf.uMax_),
+    tEnd_(rifvpvf.tEnd_)
 {}
 
 
@@ -142,10 +142,10 @@ void movingDisplacementLinearMomentumFvPatchVectorField::updateCoeffs()
 
     const scalar& t = this->db().time().value();
     const scalar A = 3*10;
-    const scalar B = 4*15/endTime_;
-    const scalar C = 5*6/pow(endTime_,2);
+    const scalar B = 4*15/tEnd_;
+    const scalar C = 5*6/pow(tEnd_,2);
 
-    lm_C = density_*(displacement_/pow(endTime_,3))*(A - B*t + C*t*t)*pow(t,2);
+    lm_C = rho_.value()*(uMax_/pow(tEnd_,3))*(A - B*t + C*t*t)*pow(t,2);
 
     this->operator==(lm_C);
     fixedValueFvPatchVectorField::updateCoeffs();
@@ -158,10 +158,9 @@ void movingDisplacementLinearMomentumFvPatchVectorField::write
 ) const
 {
     fvPatchVectorField::write(os);
-    os.writeKeyword("density") << density_ << token::END_STATEMENT << nl;
-    os.writeKeyword("displacement") << displacement_ << token::END_STATEMENT
-        << nl;
-    os.writeKeyword("endTime") << endTime_ << token::END_STATEMENT << nl;
+    os.writeKeyword("density") << rho_ << token::END_STATEMENT << nl;
+    os.writeKeyword("displacement") << uMax_ << token::END_STATEMENT << nl;
+    os.writeKeyword("endTime") << tEnd_ << token::END_STATEMENT << nl;
     writeEntry("value", os);
 }
 

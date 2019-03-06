@@ -40,9 +40,9 @@ movingDisplacementTractionFvPatchVectorField
 )
 :
     movingTractionFvPatchVectorField(p, iF),
-    density_(0.0),
-    displacement_(vector::zero),
-    endTime_(0.0)
+    rho_(0.0),
+    uMax_(vector::zero),
+    tEnd_(0.0)
 {}
 
 
@@ -55,9 +55,9 @@ movingDisplacementTractionFvPatchVectorField
 )
 :
     movingTractionFvPatchVectorField(p, iF),
-    density_(readScalar(dict.lookup("density"))),
-    displacement_(dict.lookup("displacement")),
-    endTime_(readScalar(dict.lookup("endTime")))
+    rho_(dict.lookup("density")),
+    uMax_(dict.lookup("displacement")),
+    tEnd_(readScalar(dict.lookup("endTime")))
 {}
 
 
@@ -71,9 +71,9 @@ movingDisplacementTractionFvPatchVectorField
 )
 :
     movingTractionFvPatchVectorField(ptf, p, iF, mapper),
-    density_(ptf.density_),
-    displacement_(ptf.displacement_),
-    endTime_(ptf.endTime_)
+    rho_(ptf.rho_),
+    uMax_(ptf.uMax_),
+    tEnd_(ptf.tEnd_)
 {}
 
 
@@ -84,9 +84,9 @@ movingDisplacementTractionFvPatchVectorField
 )
 :
     movingTractionFvPatchVectorField(rifvpvf),
-    density_(rifvpvf.density_),
-    displacement_(rifvpvf.displacement_),
-    endTime_(rifvpvf.endTime_)
+    rho_(rifvpvf.rho_),
+    uMax_(rifvpvf.uMax_),
+    tEnd_(rifvpvf.tEnd_)
 {}
 
 
@@ -98,9 +98,9 @@ movingDisplacementTractionFvPatchVectorField
 )
 :
     movingTractionFvPatchVectorField(rifvpvf, iF),
-    density_(rifvpvf.density_),
-    displacement_(rifvpvf.displacement_),
-    endTime_(rifvpvf.endTime_)
+    rho_(rifvpvf.rho_),
+    uMax_(rifvpvf.uMax_),
+    tEnd_(rifvpvf.tEnd_)
 {}
 
 
@@ -134,11 +134,11 @@ void movingDisplacementTractionFvPatchVectorField::updateCoeffs()
 
     const scalar& t = this->db().time().value();
     const scalar A = 3*10;
-    const scalar B = 4*15/endTime_;
-    const scalar C = 5*6/pow(endTime_,2);
+    const scalar B = 4*15/tEnd_;
+    const scalar C = 5*6/pow(tEnd_,2);
 
     linearMomentum() =
-        density_*(displacement_/pow(endTime_,3))*(A - B*t + C*t*t)*pow(t,2);
+        rho_.value()*(uMax_/pow(tEnd_,3))*(A - B*t + C*t*t)*pow(t,2);
 
     movingTractionFvPatchVectorField::updateCoeffs();
 }
