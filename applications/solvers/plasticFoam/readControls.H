@@ -3,14 +3,14 @@ Info << "Reading dictionaries ..." << endl;
 // Mechanical properties
 IOdictionary mechanicalProperties
 (
-	IOobject
-	(
-		"mechanicalProperties",
-		runTime.constant(),
-		mesh,
-		IOobject::MUST_READ_IF_MODIFIED,
-		IOobject::NO_WRITE
-	)
+    IOobject
+    (
+        "mechanicalProperties",
+        runTime.constant(),
+        mesh,
+        IOobject::MUST_READ_IF_MODIFIED,
+        IOobject::NO_WRITE
+    )
 );
 
 // Run parameters dictionary
@@ -29,27 +29,27 @@ IOdictionary runParameters
 // Control dictionary
 IOdictionary controlDict
 (
-	IOobject
-	(
-		"controlDict",
-		runTime.system(),
-		mesh,
-		IOobject::MUST_READ_IF_MODIFIED,
-		IOobject::NO_WRITE
-	)
+    IOobject
+    (
+        "controlDict",
+        runTime.system(),
+        mesh,
+        IOobject::MUST_READ_IF_MODIFIED,
+        IOobject::NO_WRITE
+    )
 );
 
 // Finite volume solution dictionary
 IOdictionary fvSolution
 (
-	IOobject
-	(
-		"fvSolution",
-		runTime.system(),
-		mesh,
-		IOobject::MUST_READ_IF_MODIFIED,
-		IOobject::NO_WRITE
-	)
+    IOobject
+    (
+        "fvSolution",
+        runTime.system(),
+        mesh,
+        IOobject::MUST_READ_IF_MODIFIED,
+        IOobject::NO_WRITE
+    )
 );
 
 
@@ -60,9 +60,9 @@ const word& timeStepping = controlDict.lookup("timeStepping");
 
 if (timeStepping != "constant" && timeStepping != "variable")
 {
-	FatalErrorIn("readControls.H")
-		<< "Valid type entries are 'constant' or 'variable' for timeStepping"
-		<< abort(FatalError);
+    FatalErrorIn("readControls.H")
+        << "Valid type entries are 'constant' or 'variable' for timeStepping"
+        << abort(FatalError);
 }
 
 // Courant-Friedrichs-Lewy Number
@@ -70,9 +70,9 @@ const scalar& cfl = readScalar(controlDict.lookup("cfl"));
 
 if (cfl <= 0.0 || cfl > 1.0)
 {
-	FatalErrorIn("readControls.H")
-		<< "Valid type entries are '<= 1' or '> 0' for cfl"
-		<< abort(FatalError);
+    FatalErrorIn("readControls.H")
+        << "Valid type entries are '<= 1' or '> 0' for cfl"
+        << abort(FatalError);
 }
 
 // Stabilisation parameter for near incompressibility

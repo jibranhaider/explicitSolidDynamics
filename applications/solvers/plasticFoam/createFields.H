@@ -31,16 +31,16 @@ const volVectorField& C = mesh.C();
 // Spatial cell center coordinates
 volVectorField x
 (
-	IOobject("x", mesh),
-	C
+    IOobject("x", mesh),
+    C
 );
 
 // Spatial nodal coordinates
 pointVectorField xN
 (
-	IOobject("xN", mesh),
-	pMesh,
-	dimensionedVector("xN", dimensionSet(0,1,0,0,0,0,0), vector::zero)
+    IOobject("xN", mesh),
+    pMesh,
+    dimensionedVector("xN", dimensionSet(0,1,0,0,0,0,0), vector::zero)
 );
 xN.primitiveFieldRef() = mesh.points();
 
@@ -59,22 +59,22 @@ const surfaceVectorField N = Sf/mesh.magSf();
 // Spatial normals
 surfaceVectorField n
 (
-	IOobject("n", mesh),
-	N
+    IOobject("n", mesh),
+    N
 );
 
 // Normal projection tensor
 surfaceTensorField nCn
 (
-	IOobject("nCn", mesh),
-	n*n
+    IOobject("nCn", mesh),
+    n*n
 );
 
 // Tangential projection tensor
 surfaceTensorField iMnCn
 (
-	IOobject("iMnCn", mesh),
-	tensor::I - nCn
+    IOobject("iMnCn", mesh),
+    tensor::I - nCn
 );
 
 
@@ -83,29 +83,29 @@ Info << "Creating linear momentum fields ..." << endl;
 // Cell linear momentum
 volVectorField lm
 (
-	IOobject
-	(
-		"lm",
-		runTime.timeName(),
-		mesh,
-		IOobject::MUST_READ,
-		IOobject::AUTO_WRITE
-	),
-	mesh
+    IOobject
+    (
+        "lm",
+        runTime.timeName(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh
 );
 
 // Nodal linear momentum
 pointVectorField lmN
 (
-	IOobject
-	(
-		"lmN",
-		runTime.timeName(),
-		mesh,
-		IOobject::MUST_READ,
-		IOobject::AUTO_WRITE
-	),
-	pMesh
+    IOobject
+    (
+        "lmN",
+        runTime.timeName(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::AUTO_WRITE
+    ),
+    pMesh
 );
 
 
@@ -122,15 +122,15 @@ volTensorField F
 // Cofactor of deformation
 volTensorField H
 (
-	IOobject("H", mesh),
-	det(F)*op.invT(F)
+    IOobject("H", mesh),
+    det(F)*op.invT(F)
 );
 
 // Jacobian of deformation
 volScalarField J
 (
-	IOobject("J", mesh),
-	det(F)
+    IOobject("J", mesh),
+    det(F)
 );
 
 
@@ -161,17 +161,17 @@ mechanics mech(mesh, mechanicalProperties);
 // Longitudinal wave speed
 volScalarField Up
 (
-	IOobject("Up", mesh),
-	mesh,
-	model.Up()/beta
+    IOobject("Up", mesh),
+    mesh,
+    model.Up()/beta
 );
 
 // Shear wave speed
 volScalarField Us
 (
-	IOobject ("Us", mesh),
-	mesh,
-	model.Us()*beta
+    IOobject ("Us", mesh),
+    mesh,
+    model.Us()*beta
 );
 
 // Stretch
@@ -200,16 +200,16 @@ Info << "Creating fields for reconstruction ..." << endl;
 // Reconstruction of linear momentum
 surfaceVectorField lm_M
 (
-	IOobject
-	(
-		"lm_M",
-		runTime.timeName(),
-		mesh,
-		IOobject::NO_READ,
-		IOobject::AUTO_WRITE
-	),
-	mesh,
-	dimensionedVector("lm_M", lm.dimensions(), vector::zero)
+    IOobject
+    (
+        "lm_M",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedVector("lm_M", lm.dimensions(), vector::zero)
 );
 surfaceVectorField lm_P = lm_M;
 grad.reconstruct(lm, lmGrad, lm_M, lm_P);
@@ -217,9 +217,9 @@ grad.reconstruct(lm, lmGrad, lm_M, lm_P);
 // Reconstruction of PK1 stresses
 surfaceTensorField P_M
 (
-	IOobject("P_M", mesh),
-	mesh,
-	dimensionedTensor("P_M", P.dimensions(), tensor::zero)
+    IOobject("P_M", mesh),
+    mesh,
+    dimensionedTensor("P_M", P.dimensions(), tensor::zero)
 );
 surfaceTensorField P_P = P_M;
 grad.reconstruct(P, PxGrad, PyGrad, PzGrad, P_M, P_P);
@@ -227,15 +227,15 @@ grad.reconstruct(P, PxGrad, PyGrad, PzGrad, P_M, P_P);
 // Reconstruction of traction
 surfaceVectorField t_M
 (
-	IOobject
-	(
-		"t_M",
-		runTime.timeName(),
-		mesh,
-		IOobject::NO_READ,
-		IOobject::AUTO_WRITE
-	),
-	P_M & N
+    IOobject
+    (
+        "t_M",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    P_M & N
 );
 surfaceVectorField t_P = P_P & N;
 
@@ -245,41 +245,41 @@ Info << "Creating fields for riemann solver ..." << endl;
 // Contact linear momentum
 surfaceVectorField lmC =
 (
-	0.5*(lm_M + lm_P) + (0.5*((nCn/fvc::interpolate(Up))
+    0.5*(lm_M + lm_P) + (0.5*((nCn/fvc::interpolate(Up))
   + (iMnCn/fvc::interpolate(Us))) & (t_P - t_M))
 );
 
 volVectorField lm_b
 (
-	IOobject
-	(
-		"lm_b",
-		runTime.timeName(),
-		mesh,
-		IOobject::MUST_READ,
-		IOobject::AUTO_WRITE
-	),
-	mesh
+    IOobject
+    (
+        "lm_b",
+        runTime.timeName(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh
 );
 
 // Contact traction
 surfaceVectorField tC =
 (
-	0.5*(t_M + t_P) + (0.5*((fvc::interpolate(Up)*nCn)
+    0.5*(t_M + t_P) + (0.5*((fvc::interpolate(Up)*nCn)
   + (fvc::interpolate(Us)*iMnCn)) & (lm_P - lm_M))
 );
 
 volVectorField t_b
 (
-	IOobject
-	(
-		"t_b",
-		runTime.timeName(),
-		mesh,
-		IOobject::MUST_READ,
-		IOobject::AUTO_WRITE
-	),
-	mesh
+    IOobject
+    (
+        "t_b",
+        runTime.timeName(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh
 );
 
 // Riemann solver
@@ -312,9 +312,9 @@ angularMomentum am(mesh, mechanicalProperties);
 // RHS of linear momentum equation
 volVectorField rhsLm
 (
-	IOobject("rhsLm", mesh),
-	mesh,
-	dimensionedVector("rhsLm", dimensionSet(1,-2,-2,0,0,0,0), vector::zero)
+    IOobject("rhsLm", mesh),
+    mesh,
+    dimensionedVector("rhsLm", dimensionSet(1,-2,-2,0,0,0,0), vector::zero)
 );
 
 // RHS of linear momentum equation (stage 1)
@@ -323,9 +323,9 @@ volVectorField rhsLm1 = rhsLm;
 // RHS of angular momentum equation
 volVectorField rhsAm
 (
-	IOobject("rhsAm", mesh),
-	mesh,
-	dimensionedVector("rhsAm", dimensionSet(1,-1,-2,0,0,0,0), vector::zero)
+    IOobject("rhsAm", mesh),
+    mesh,
+    dimensionedVector("rhsAm", dimensionSet(1,-1,-2,0,0,0,0), vector::zero)
 );
 
 
@@ -334,16 +334,16 @@ Info << "Creating fields for post-processing ..." << endl;
 // Nodal displacements
 pointVectorField uN
 (
-	IOobject
-	(
-		"uN",
-		runTime.timeName(),
-		mesh,
-		IOobject::READ_IF_PRESENT,
-		IOobject::AUTO_WRITE
-	),
-	pMesh,
-	dimensionedVector("uN", dimLength, vector::zero)
+    IOobject
+    (
+        "uN",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    pMesh,
+    dimensionedVector("uN", dimLength, vector::zero)
 );
 uN.write();
 
@@ -361,8 +361,8 @@ dimensionedScalar deltaT("deltaT", dimTime, runTime.deltaTValue());
 
 if (timeStepping == "variable")
 {
-	deltaT = (cfl*h)/max(Up_time);
-	runTime.setDeltaT(deltaT);
+    deltaT = (cfl*h)/max(Up_time);
+    runTime.setDeltaT(deltaT);
 }
 
 // Runge-Kutta stage

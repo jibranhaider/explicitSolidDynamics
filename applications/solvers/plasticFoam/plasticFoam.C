@@ -46,56 +46,56 @@ Description
 
 int main(int argc, char *argv[])
 {
-	#include "setRootCase.H"
-	#include "createTime.H"
-	#include "createMesh.H"
-	#include "readControls.H"
-	#include "createFields.H"
+    #include "setRootCase.H"
+    #include "createTime.H"
+    #include "createMesh.H"
+    #include "readControls.H"
+    #include "createFields.H"
 
-	while (runTime.loop())
-	{
-		if (timeStepping == "variable")
-		{
-			deltaT = (cfl*h)/max(Up_time);
-			runTime.setDeltaT(deltaT);
-		}
+    while (runTime.loop())
+    {
+        if (timeStepping == "variable")
+        {
+            deltaT = (cfl*h)/max(Up_time);
+            runTime.setDeltaT(deltaT);
+        }
 
-		t += deltaT; tstep++;
+        t += deltaT; tstep++;
 
-		Info<< "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value()
+        Info<< "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value()
             << " s" << nl << "Time = " << t.value() << " s" << endl;
 
-		RKstage = "first";
-		#include "gEqns.H"
+        RKstage = "first";
+        #include "gEqns.H"
 
-		RKstage = "second";
-		#include "updateVariables.H"
-		#include "gEqns.H"
+        RKstage = "second";
+        #include "updateVariables.H"
+        #include "gEqns.H"
 
-		lm = 0.5*(lm.oldTime() + lm);
-		F = 0.5*(F.oldTime() + F);
-		x = 0.5*(x.oldTime() + x);
-		xF = 0.5*(xF.oldTime() + xF);
-		xN = 0.5*(xN.oldTime() + xN);
+        lm = 0.5*(lm.oldTime() + lm);
+        F = 0.5*(F.oldTime() + F);
+        x = 0.5*(x.oldTime() + x);
+        xF = 0.5*(xF.oldTime() + xF);
+        xN = 0.5*(xN.oldTime() + xN);
 
-		#include "updateVariables.H"
+        #include "updateVariables.H"
 
-		if (runTime.outputTime())
-		{
+        if (runTime.outputTime())
+        {
             uN = xN - XN;
             uN.write();
             model.writeOutput();
-		}
+        }
 
-		Info<< "Percent completed = "
+        Info<< "Percent completed = "
             << (t.value()/runTime.endTime().value())*100 << "%" << endl;
-	}
+    }
 
     Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
         << "  ClockTime = " << runTime.elapsedClockTime() << " s"
         << nl << endl;
 
-	return 0;
+    return 0;
 }
 
 // ************************************************************************* //

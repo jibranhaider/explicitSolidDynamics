@@ -3,8 +3,8 @@ rhsLm = fvc::surfaceIntegrate(tC*magSf);
 
 if (angularMomentumConservation == "yes")
 {
-	rhsAm = fvc::surfaceIntegrate((xF ^ tC)*magSf);
-	am.AMconservation(rhsLm, rhsLm1, rhsAm, RKstage);
+    rhsAm = fvc::surfaceIntegrate((xF ^ tC)*magSf);
+    am.AMconservation(rhsLm, rhsLm1, rhsAm, RKstage);
 }
 
 // Update coordinates
