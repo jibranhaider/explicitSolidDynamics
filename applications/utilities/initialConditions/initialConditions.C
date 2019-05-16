@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
     );
 
     // Compute linear momentum
-    if (tutorial == "twistingColumn")
+    if (tutorial == "twistingColumn" || tutorial == "spinningTop")
     {
         // Read initial angular velocity
         volVectorField omega
@@ -102,14 +102,17 @@ int main(int argc, char *argv[])
             dimensionedVector(runParameters.lookup("initialAngularVelocity"))
         );
 
-        const scalar& PI = Foam::constant::mathematical::pi;
-        const dimensionedScalar height
-        (
-            "height",
-            dimensionSet(0,1,0,0,0,0,0), 6.0
-        );
+        if (tutorial == "twistingColumn")
+        {
+            const scalar& PI = Foam::constant::mathematical::pi;
+            const dimensionedScalar height
+            (
+                "height",
+                dimensionSet(0,1,0,0,0,0,0), 6.0
+            );
 
-        omega *= Foam::sin(PI*C.component(1)/(2*height));
+            omega *= Foam::sin(PI*C.component(1)/(2*height));
+        }
 
         lm = rho*omega ^ C;
     }
@@ -130,8 +133,8 @@ int main(int argc, char *argv[])
     else
     {
         FatalErrorIn("initialConditions.C")
-            << "Valid type entries are 'twistingColumn' or 'taylorImpact' "
-            << "for tutorial"
+            << "Valid type entries are 'twistingColumn', 'spinningTop'"
+            << "or 'taylorImpact' for tutorial"
             << abort(FatalError);
     }
 
