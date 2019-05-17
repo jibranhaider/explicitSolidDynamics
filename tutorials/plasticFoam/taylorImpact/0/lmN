@@ -25,14 +25,17 @@ boundaryField
     {
         type    zeroGradient;
     }
+
     symmetricZ
     {
         type    zeroGradient;
     }
+
     symmetricX
     {
         type    zeroGradient;
     }
+
     free
     {
         type    zeroGradient;

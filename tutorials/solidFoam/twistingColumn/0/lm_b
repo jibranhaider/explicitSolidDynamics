@@ -26,6 +26,7 @@ boundaryField
         type    tractionLinearMomentum;
         value   uniform (0 0 0);
     }
+
     bottom
     {
         type    fixedValue;

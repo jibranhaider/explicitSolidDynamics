@@ -27,18 +27,21 @@ boundaryField
         tractionValue   (0 0 0);
         value           uniform (0 0 0);
     }
+
     symmetricZ
     {
         type            symmetricLinearMomentum;
         tractionValue   (0 0 0);
         value           uniform (0 0 0);
     }
+
     symmetricX
     {
         type            symmetricLinearMomentum;
         tractionValue   (0 0 0);
         value           uniform (0 0 0);
     }
+
     free
     {
         type            tractionLinearMomentum;

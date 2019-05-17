@@ -29,16 +29,19 @@ boundaryField
         type            fixedValue;
         value           uniform (0 0 0);
     }
+
     free
     {
         type            tractionLinearMomentum;
         value           uniform (0 0 0);
     }
+
     symmetric
     {
         type            symmetricLinearMomentum;
         value           uniform (0 0 0);
     }
+
     loading
     {
         type            movingDisplacementLinearMomentum;

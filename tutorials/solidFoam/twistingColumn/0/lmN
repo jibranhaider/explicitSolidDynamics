@@ -25,6 +25,7 @@ boundaryField
     {
         type    zeroGradient;
     }
+
     bottom
     {
         type    fixedValue;

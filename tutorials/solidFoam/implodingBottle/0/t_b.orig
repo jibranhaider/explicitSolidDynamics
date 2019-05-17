@@ -28,11 +28,13 @@ boundaryField
         type            symmetricTraction;
         value           uniform (0 0 0);
     }
+
     free
     {
         type            fixedValue;
         value           uniform (0 0 0);
     }
+
     free_loading
     {
         type            tractionTraction;
@@ -40,11 +42,13 @@ boundaryField
         pressure        $p;
         value           uniform (0 0 0);
     }
+
     symmetricX
     {
         type            symmetricTraction;
         value           uniform (0 0 0);
     }
+
     symmetricZ
     {
         type            symmetricTraction;

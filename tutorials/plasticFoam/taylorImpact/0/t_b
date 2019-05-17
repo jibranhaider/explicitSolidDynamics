@@ -26,16 +26,19 @@ boundaryField
         type            symmetricTraction;
         value           uniform (0 0 0);
     }
+
     symmetricZ
     {
         type            symmetricTraction;
         value           uniform (0 0 0);
     }
+
     symmetricX
     {
         type            symmetricTraction;
         value           uniform (0 0 0);
     }
+
     free
     {
         type            fixedValue;

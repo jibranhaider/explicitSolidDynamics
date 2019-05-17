@@ -26,6 +26,7 @@ boundaryField
         type    tractionTraction;
         value   uniform (0 0 0);
     }
+
     bottom
     {
         type    movingTraction;

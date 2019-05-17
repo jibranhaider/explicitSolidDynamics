@@ -39,13 +39,13 @@ defineTypeNameAndDebug(plasticityModel, 0);
 
 plasticityModel::plasticityModel
 (
-	const volTensorField& F,
+    const volTensorField& F,
     const dictionary& dict
 )
 :
     b_ (F & F.T()),
 
-	P_
+    P_
     (
         IOobject
         (
@@ -57,7 +57,7 @@ plasticityModel::plasticityModel
         ),
         F.mesh(),
         dimensionedTensor("P", dimensionSet(1,-1,-2,0,0,0,0), tensor::zero)
-	),
+    ),
 
     tau_ (F),
 
