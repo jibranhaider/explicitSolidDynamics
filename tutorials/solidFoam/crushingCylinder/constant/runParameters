@@ -18,7 +18,7 @@ FoamFile
 #include "../system/controlDict"
 
 tutorial    crushingCylinder;
-meshFile    crushingCylinder_40000.msh;
+meshFile    crushingCylinder_1600.msh;
 uMax        (0 -0.0045 0);              // Maximum displacement
 tEnd        $endTime;                   // End time for maximum displacement
 
