@@ -92,7 +92,7 @@ public:
                 GeometricField<vector, fvPatchField, volMesh>&,
                 GeometricField<vector, fvPatchField, volMesh>&,
                 const GeometricField<vector, fvPatchField, volMesh>&,
-                const word&
+                const scalar&
             ) const;
 
         // Print

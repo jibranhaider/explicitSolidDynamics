@@ -366,8 +366,9 @@ if (timeStepping == "variable")
 }
 
 // Runge-Kutta stage
-word RKstage("first");
-
+scalarList RKstages(2);
+RKstages[0] = 0;
+RKstages[1] = 1;
 
 Info << "Printing data ..." << endl;
 

@@ -60,7 +60,7 @@ void angularMomentum::AMconservation
     GeometricField<vector, fvPatchField, volMesh>& rhsLm,
     GeometricField<vector, fvPatchField, volMesh>& rhsLm1,
     const GeometricField<vector, fvPatchField, volMesh>& rhsAm,
-    const word& RKstage
+    const scalar& RKstage
 ) const
 {
     const scalarField& V_ = mesh_.V();
@@ -81,14 +81,14 @@ void angularMomentum::AMconservation
         (
             IOobject
             (
-                "surfaceTocell("+x_.name()+')',
+                "x",
                 x_.instance(),
                 mesh_,
                 IOobject::NO_READ,
                 IOobject::NO_WRITE
             ),
             mesh_,
-            dimensioned<vector>("0", x_.dimensions(), pTraits<vector>::zero)
+            dimensioned<vector>("x", x_.dimensions(), pTraits<vector>::zero)
         )
     );
     GeometricField<vector, fvPatchField, volMesh> xAM = tvf_x();
@@ -99,24 +99,24 @@ void angularMomentum::AMconservation
         (
             IOobject
             (
-                "surfaceTocell("+lm_.name()+')',
+                "lm",
                 lm_.instance(),
                 mesh_,
                 IOobject::NO_READ,
                 IOobject::NO_WRITE
             ),
             mesh_,
-            dimensioned<vector>("0", lm_.dimensions(), pTraits<vector>::zero)
+            dimensioned<vector>("lm", lm_.dimensions(), pTraits<vector>::zero)
         )
     );
     GeometricField<vector, fvPatchField, volMesh> lmAM = tvf_lm();
 
-    if ( RKstage == "first" )
+    if (RKstage == 0)
     {
         xAM = x_.oldTime();
     }
 
-    else if ( RKstage == "second" )
+    else if (RKstage == 1)
     {
         xAM = x_.oldTime() + (deltaT/2.0)*(lm_.oldTime()/rho_);
         lmAM = lm_.oldTime() + (deltaT*rhsLm1);
@@ -134,7 +134,9 @@ void angularMomentum::AMconservation
             V_[cellID]
            *((xAM[cellID] & xAM[cellID])*tensor::I - (xAM[cellID]*xAM[cellID]));
 
-        K_LB += V_[cellID]*tensor(0, -xAM[cellID].z(), xAM[cellID].y(), xAM[cellID].z(), 0, -xAM[cellID].x(), -xAM[cellID].y(), xAM[cellID].x(), 0);
+        K_LB += V_[cellID]
+           *tensor(0, -xAM[cellID].z(), xAM[cellID].y(), xAM[cellID].z(), 0,
+           -xAM[cellID].x(), -xAM[cellID].y(), xAM[cellID].x(), 0);
 
         K_BB += -V_[cellID];
 
@@ -162,7 +164,7 @@ void angularMomentum::AMconservation
         rhsLm[cellID] = rhsLm[cellID] + (lambda ^ xAM[cellID]) + beta;
     }
 
-    if (RKstage == "first")
+    if (RKstage == 0)
     {
         rhsLm1 = rhsLm;
     }
