@@ -53,43 +53,52 @@ int main(int argc, char *argv[])
 
     while (runTime.loop())
     {
-    if (timeStepping == "variable")
-    {
-        deltaT = (cfl*h)/max(Up_time);
-        runTime.setDeltaT(deltaT);
-    }
+        if (timeStepping == "variable")
+        {
+            deltaT = (cfl*h)/max(Up_time);
+            runTime.setDeltaT(deltaT);
+        }
 
-    t += deltaT; tstep++;
+        t += deltaT; tstep++;
 
-    Info << "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value() << " s"
-         << "\nTime = " << t.value() << " s" << endl;
+        Info<< "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value()
+            << " s" << nl << "Time = " << t.value() << " s" << endl;
 
-    RKstage = "first";
-    #include "gEqns.H"
+        lm.oldTime();
+        F.oldTime();
+        x.oldTime();
+        xF.oldTime();
+        xN.oldTime();
 
-    RKstage = "second";
-    #include "updateVariables.H"
-    #include "gEqns.H"
+        forAll(RKstages, stage)
+        {
+            #include "gEqns.H"
 
-    lm = 0.5*(lm.oldTime() + lm);
-    F = 0.5*(F.oldTime() + F);
-    x = 0.5*(x.oldTime() + x);
-    xF = 0.5*(xF.oldTime() + xF);
-    xN = 0.5*(xN.oldTime() + xN);
+            if (RKstages[stage] == 0)
+            {
+                #include "updateVariables.H"
+            }
+        }
 
-    #include "updateVariables.H"
+        lm = 0.5*(lm.oldTime() + lm);
+        F = 0.5*(F.oldTime() + F);
+        x = 0.5*(x.oldTime() + x);
+        xF = 0.5*(xF.oldTime() + xF);
+        xN = 0.5*(xN.oldTime() + xN);
 
-    if (runTime.outputTime())
-    {
-        uN = xN - XN;
-        uN.write();
+        #include "updateVariables.H"
 
-        p = model.pressure();
-        p.write();
-    }
+        if (runTime.outputTime())
+        {
+            uN = xN - XN;
+            uN.write();
 
-    Info << "Percent completed = "
-         << (t.value()/runTime.endTime().value())*100 << "%" << endl;
+            p = model.pressure();
+            p.write();
+        }
+
+        Info<< "Percent completed = "
+            << (t.value()/runTime.endTime().value())*100 << "%" << endl;
     }
 
     Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"

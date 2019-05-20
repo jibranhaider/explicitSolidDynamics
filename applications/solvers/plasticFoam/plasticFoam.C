@@ -65,12 +65,21 @@ int main(int argc, char *argv[])
         Info<< "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value()
             << " s" << nl << "Time = " << t.value() << " s" << endl;
 
-        RKstage = "first";
-        #include "gEqns.H"
+        lm.oldTime();
+        F.oldTime();
+        x.oldTime();
+        xF.oldTime();
+        xN.oldTime();
 
-        RKstage = "second";
-        #include "updateVariables.H"
-        #include "gEqns.H"
+        forAll(RKstages, stage)
+        {
+            #include "gEqns.H"
+
+            if (RKstages[stage] == 0)
+            {
+                #include "updateVariables.H"
+            }
+        }
 
         lm = 0.5*(lm.oldTime() + lm);
         F = 0.5*(F.oldTime() + F);
