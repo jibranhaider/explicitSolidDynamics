@@ -27,7 +27,7 @@ endTime         0.25;
 
 timeStepping    variable;
 
-cfl             0.3;
+cfl             0.7;
 
 deltaT          0;
 
