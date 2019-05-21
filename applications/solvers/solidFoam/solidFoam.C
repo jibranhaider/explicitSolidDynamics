@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     #include "readControls.H"
     #include "createFields.H"
 
-    while (runTime.loop())
+    while (runTime.run())
     {
         if (timeStepping == "variable")
         {
@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
             runTime.setDeltaT(deltaT);
         }
 
+        runTime++;
         t += deltaT; tstep++;
 
         Info<< "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value()
