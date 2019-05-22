@@ -50,11 +50,11 @@ class mechanics
         //- Mesh
          const fvMesh& mesh_;
 
-        //- Eigen-values
-        vector  eigVal_;
+        // //- Eigen-values
+        // vector  eigVal_;
 
-        //- Eigen-vectors
-        tensor  eigVec_;
+        // //- Eigen-vectors
+        // tensor  eigVec_;
 
 private:
 

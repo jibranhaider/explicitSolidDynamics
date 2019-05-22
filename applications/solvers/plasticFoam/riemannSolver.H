@@ -8,17 +8,6 @@ lmC =
   + (0.5*((nCn/fvc::interpolate(Up)) + (iMnCn/fvc::interpolate(Us))) & (t_P - t_M));
 
 
-// tC  =
-//  ((Up_P*t_M + Up_M*t_P)/(Up_M + Up_P) & nCn)
-//   + ((Us_P*t_M + Us_M*t_P)/(Us_M + Us_P) & iMnCn)
-//   + (0.5*((fvc::interpolate(Up)*nCn) + (fvc::interpolate(Us)*iMnCn)) & (lm_P - lm_M));
-
-// lmC =
-//  ((Up_M*lm_M + Up_P*lm_P)/(Up_M + Up_P) & nCn)
-//   + ((Us_M*lm_M + Us_P*lm_P)/(Us_M + Us_P) & iMnCn)
-//   + (0.5*((nCn/fvc::interpolate(Up)) + (iMnCn/fvc::interpolate(Us))) & (t_P - t_M));
-
-
 // Compute boundary values
 lm_b.correctBoundaryConditions();
 t_b.correctBoundaryConditions();

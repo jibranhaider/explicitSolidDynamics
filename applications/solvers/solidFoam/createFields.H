@@ -352,20 +352,11 @@ uN.write();
 
 Info << "Creating variables for time ..." << endl;
 
-// Time
-dimensionedScalar t("t", dimTime, 0.0);
-
 // Time step
 scalar tstep = 0;
 
 // Time increment
 dimensionedScalar deltaT("deltaT", dimTime, runTime.deltaTValue());
-
-if (timeStepping == "variable")
-{
-    deltaT = (cfl*h)/max(Up_time);
-    runTime.setDeltaT(deltaT);
-}
 
 // Runge-Kutta stage
 scalarList RKstages(2);
