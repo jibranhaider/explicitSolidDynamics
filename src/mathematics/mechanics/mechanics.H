@@ -48,13 +48,34 @@ class mechanics
     // Private data
 
         //- Mesh
-         const fvMesh& mesh_;
+        const fvMesh& mesh_;
 
-        // //- Eigen-values
-        // vector  eigVal_;
+        //- Operations class
+        operations op;
 
-        // //- Eigen-vectors
-        // tensor  eigVec_;
+        //- Material normal
+        surfaceVectorField N_;
+
+        //- Spatial normal
+        surfaceVectorField n_;
+
+        //- Stabilisation matrix for linear momentum
+        surfaceTensorField S_lm_;
+
+        //- Stabilisation matrix for traction
+        surfaceTensorField S_t_;
+
+        //- Time stepping
+        word timeStepping_;
+
+        //- CFl number
+        scalar cfl_;
+
+        //- Time step
+        scalar tStep_;
+
+        //- Stretch
+        volScalarField stretch_;
 
 private:
 
@@ -74,7 +95,7 @@ public:
         //- Construct from mesh and dictionary
         mechanics
         (
-            const fvMesh&,
+            const volTensorField&,
             const dictionary&
         );
 
@@ -85,18 +106,53 @@ public:
 
     // Member functions
 
+        // Access
+
+            const surfaceVectorField& spatialNormall() const
+            {
+                return n_;
+            }
+
+            const surfaceTensorField& Smatrix_lm() const
+            {
+                return S_lm_;
+            }
+
+            const surfaceTensorField& Smatrix_t() const
+            {
+                return S_t_;
+            }
+
+            const volScalarField stretch() const
+            {
+                return stretch_;
+            }
+
         // Edit
 
-            //- Compute stretch
-            volScalarField stretch();
-
             //- Computes spatial surface normals
-            surfaceVectorField spatialNormal();
+            surfaceVectorField spatialNormal(const volTensorField&);
+
+            //- Compute stabilisation
+            void correct
+            (
+                const GeometricField<scalar, fvPatchField, volMesh>&,
+                const GeometricField<scalar, fvPatchField, volMesh>&,
+                const GeometricField<tensor, fvPatchField, volMesh>&
+            );
+
+            //-
+            void time
+            (
+                Time&,
+                dimensionedScalar&,
+                dimensionedScalar
+            );
 
         // Output
 
             //- Print centroid of geometry
-            void printCentroid () const;
+            void printCentroid() const;
 
 };
 

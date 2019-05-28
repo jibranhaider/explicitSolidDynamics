@@ -16,4 +16,4 @@ xN += deltaT*(lmN/rho);
 lm += deltaT*rhsLm;
 
 // Update deformation gradient tensor
-F += deltaT * fvc::surfaceIntegrate((lmC/rho)*Sf);
+F += deltaT*fvc::surfaceIntegrate((lmC/rho)*Sf);

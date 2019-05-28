@@ -134,11 +134,8 @@ void symmetricTractionFvPatchVectorField::updateCoeffs()
     const fvsPatchField<vector>& t_M_ =
         patch().lookupPatchField<surfaceVectorField, vector>("t_M");
 
-    const fvsPatchField<tensor>& nCn_ =
-        patch().lookupPatchField<surfaceTensorField, tensor>("nCn");
-
-    const fvsPatchField<tensor>& iMnCn_ =
-        patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
+    const fvsPatchField<vector>& n_ =
+        patch().lookupPatchField<surfaceVectorField, vector>("n");
 
     const fvPatchField<scalar>& Up_ =
         patch().lookupPatchField<volScalarField, scalar>("Up");
@@ -151,7 +148,7 @@ void symmetricTractionFvPatchVectorField::updateCoeffs()
         ramp = 1.0;
     }
 
-    t_C = (nCn_ & (t_M_ - Up_*lm_M_)) + (iMnCn_ & (ramp*t_P_));
+    t_C = ((n_*n_) & (t_M_ - Up_*lm_M_)) + ((tensor::I - n_*n_) & (ramp*t_P_));
 
     this->operator==(t_C);
     fixedValueFvPatchVectorField::updateCoeffs();

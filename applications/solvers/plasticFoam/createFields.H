@@ -57,25 +57,7 @@ Info << "Creating mesh normal fields ..." << endl;
 const surfaceVectorField N = Sf/mesh.magSf();
 
 // Spatial normals
-surfaceVectorField n
-(
-    IOobject("n", mesh),
-    N
-);
-
-// Normal projection tensor
-surfaceTensorField nCn
-(
-    IOobject("nCn", mesh),
-    n*n
-);
-
-// Tangential projection tensor
-surfaceTensorField iMnCn
-(
-    IOobject("iMnCn", mesh),
-    tensor::I - nCn
-);
+surfaceVectorField n = N;
 
 
 Info << "Creating linear momentum fields ..." << endl;
@@ -88,10 +70,11 @@ volVectorField lm
         "lm",
         runTime.timeName(),
         mesh,
-        IOobject::MUST_READ,
+        IOobject::READ_IF_PRESENT,
         IOobject::AUTO_WRITE
     ),
-    mesh
+    mesh,
+    dimensionedVector("lm", dimensionSet(1,-2,-1,0,0,0,0), vector::zero)
 );
 
 // Nodal linear momentum
@@ -116,7 +99,7 @@ volTensorField F
 (
     IOobject("F", mesh),
     mesh,
-    Foam::tensor::I
+    tensor::I
 );
 
 // Cofactor of deformation
@@ -156,7 +139,7 @@ volVectorField Pz = op.decomposeTensorZ(P);
 Info << "Creating fields for wave speeds ..." << endl;
 
 // Continuum mechanics class
-mechanics mech(mesh, mechanicalProperties);
+mechanics mech(F, controlDict);
 
 // Longitudinal wave speed
 volScalarField Up
@@ -174,8 +157,7 @@ volScalarField Us
     model.Us()*beta
 );
 
-// Stretch
-volScalarField stretch = mech.stretch();
+mech.correct(Up, Us, F);
 
 // Wave speed for time increment
 volScalarField Up_time = model.Up()/mech.stretch();
@@ -200,14 +182,7 @@ Info << "Creating fields for reconstruction ..." << endl;
 // Reconstruction of linear momentum
 surfaceVectorField lm_M
 (
-    IOobject
-    (
-        "lm_M",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::AUTO_WRITE
-    ),
+    IOobject("lm_M", mesh),
     mesh,
     dimensionedVector("lm_M", lm.dimensions(), vector::zero)
 );
@@ -227,14 +202,7 @@ grad.reconstruct(P, PxGrad, PyGrad, PzGrad, P_M, P_P);
 // Reconstruction of traction
 surfaceVectorField t_M
 (
-    IOobject
-    (
-        "t_M",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::AUTO_WRITE
-    ),
+    IOobject("t_M", mesh),
     P_M & N
 );
 surfaceVectorField t_P = P_P & N;
@@ -242,18 +210,17 @@ surfaceVectorField t_P = P_P & N;
 
 Info << "Creating fields for riemann solver ..." << endl;
 
-// Contact linear momentum
-surfaceVectorField lmC =
-(
-    0.5*(lm_M + lm_P) + (0.5*((nCn/fvc::interpolate(Up))
-  + (iMnCn/fvc::interpolate(Us))) & (t_P - t_M))
-);
+surfaceTensorField S_lm = mech.Smatrix_lm();
+surfaceTensorField S_t = mech.Smatrix_t();
 
-volVectorField lm_b
+// Contact traction
+surfaceVectorField tC = 0.5*(t_M + t_P) + (0.5*S_lm & (lm_P - lm_M));
+
+volVectorField t_b
 (
     IOobject
     (
-        "lm_b",
+        "t_b",
         runTime.timeName(),
         mesh,
         IOobject::MUST_READ,
@@ -262,18 +229,14 @@ volVectorField lm_b
     mesh
 );
 
-// Contact traction
-surfaceVectorField tC =
-(
-    0.5*(t_M + t_P) + (0.5*((fvc::interpolate(Up)*nCn)
-  + (fvc::interpolate(Us)*iMnCn)) & (lm_P - lm_M))
-);
+// Contact linear momentum
+surfaceVectorField lmC = 0.5*(lm_M + lm_P) + (0.5*S_t & (t_P - t_M));
 
-volVectorField t_b
+volVectorField lm_b
 (
     IOobject
     (
-        "t_b",
+        "lm_b",
         runTime.timeName(),
         mesh,
         IOobject::MUST_READ,
@@ -339,7 +302,7 @@ pointVectorField uN
         "uN",
         runTime.timeName(),
         mesh,
-        IOobject::READ_IF_PRESENT,
+        IOobject::NO_READ,
         IOobject::AUTO_WRITE
     ),
     pMesh,
@@ -350,25 +313,14 @@ uN.write();
 
 Info << "Creating variables for time ..." << endl;
 
-// Time
-dimensionedScalar t("t", dimTime, 0.0);
-
-// Time step
-scalar tstep = 0;
-
 // Time increment
 dimensionedScalar deltaT("deltaT", dimTime, runTime.deltaTValue());
-
-if (timeStepping == "variable")
-{
-    deltaT = (cfl*h)/max(Up_time);
-    runTime.setDeltaT(deltaT);
-}
 
 // Runge-Kutta stage
 scalarList RKstages(2);
 RKstages[0] = 0;
 RKstages[1] = 1;
+
 
 Info << "Printing data ..." << endl;
 

@@ -26,21 +26,20 @@ Application
     mixedPlasticFoam
 
 Description
-    A large strain elasto-plastic solid mechanics solver based on a linear
-    momentum/strains mixed formulation. An explicit Total Lagrangian
-    formulation utilisiing a monolithic Total Variation Diminishing
-    Runge-Kutta time integrator.
+    A large strain elasto-plastic solid mechanics solver based on a Total
+    Lagrangian mixed formulation comprising of conservation laws for linear
+    momentum and deformation gradient of the system.
 
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
 #include "pointFields.H"
+#include "operations.H"
+#include "plasticityModel.H"
+#include "mechanics.H"
 #include "gradientSchemes.H"
 #include "interpolationSchemes.H"
 #include "angularMomentum.H"
-#include "mechanics.H"
-#include "operations.H"
-#include "plasticityModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -52,18 +51,9 @@ int main(int argc, char *argv[])
     #include "readControls.H"
     #include "createFields.H"
 
-    while (runTime.loop())
+    while (runTime.run())
     {
-        if (timeStepping == "variable")
-        {
-            deltaT = (cfl*h)/max(Up_time);
-            runTime.setDeltaT(deltaT);
-        }
-
-        t += deltaT; tstep++;
-
-        Info<< "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value()
-            << " s" << nl << "Time = " << t.value() << " s" << endl;
+        mech.time(runTime, deltaT, max(Up_time));
 
         lm.oldTime();
         F.oldTime();
@@ -96,8 +86,8 @@ int main(int argc, char *argv[])
             model.writeOutput();
         }
 
-        Info<< "Percent completed = "
-            << (t.value()/runTime.endTime().value())*100 << "%" << endl;
+        Info<< "Simulation completed = "
+            << (runTime.value()/runTime.endTime().value())*100 << "%" << endl;
     }
 
     Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"

@@ -99,8 +99,8 @@ solidModel::solidModel
     lambda_(nu_*E_/((1.0 + nu_)*(1.0 - 2.0*nu_))),
     kappa_(lambda_ + (2.0/3.0)*mu_),
 
-    Up_ (sqrt((lambda_+2.0*mu_)/rho_)),
-    Us_ (sqrt(mu_/rho_))
+    Up_(sqrt((lambda_+2.0*mu_)/rho_)),
+    Us_(sqrt(mu_/rho_))
 {
     p_.write();
 }

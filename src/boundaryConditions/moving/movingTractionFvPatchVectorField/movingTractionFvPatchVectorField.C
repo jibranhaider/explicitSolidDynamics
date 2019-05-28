@@ -130,20 +130,11 @@ void movingTractionFvPatchVectorField::updateCoeffs()
     const fvsPatchField<vector>& t_M_ =
         patch().lookupPatchField<surfaceVectorField, vector>("t_M");
 
-    const fvsPatchField<tensor>& nCn_ =
-        patch().lookupPatchField<surfaceTensorField, tensor>("nCn");
-
-    const fvsPatchField<tensor>& iMnCn_ =
-        patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
-
-    const fvPatchField<scalar>& Up_ =
-        patch().lookupPatchField<volScalarField, scalar>("Up");
-
-    const fvPatchField<scalar>& Us_ =
-        patch().lookupPatchField<volScalarField, scalar>("Us");
+    const fvsPatchField<tensor>& S_lm_ =
+        patch().lookupPatchField<surfaceTensorField, tensor>("S_lm");
 
     fvsPatchField<vector> t_C(lm_M_);
-    t_C = t_M_ + ((Up_*nCn_ + Us_*iMnCn_) & (lm_P_ - lm_M_));
+    t_C = t_M_ + (S_lm_ & (lm_P_ - lm_M_));
 
     this->operator==(t_C);
     fixedValueFvPatchVectorField::updateCoeffs();

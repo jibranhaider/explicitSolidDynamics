@@ -53,17 +53,7 @@ int main(int argc, char *argv[])
 
     while (runTime.run())
     {
-        if (timeStepping == "variable")
-        {
-            deltaT = (cfl*h)/max(Up_time);
-            runTime.setDeltaT(deltaT);
-        }
-
-        runTime++;
-        t += deltaT; tstep++;
-
-        Info<< "\nTime Step =" << tstep << "\ndeltaT = " << deltaT.value()
-            << " s" << nl << "Time = " << t.value() << " s" << endl;
+        mech.time(runTime, deltaT, max(Up_time));
 
         lm.oldTime();
         F.oldTime();
@@ -98,8 +88,8 @@ int main(int argc, char *argv[])
             p.write();
         }
 
-        Info<< "Percent completed = "
-            << (t.value()/runTime.endTime().value())*100 << "%" << endl;
+        Info<< "Simulation completed = "
+            << (runTime.value()/runTime.endTime().value())*100 << "%" << endl;
     }
 
     Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"

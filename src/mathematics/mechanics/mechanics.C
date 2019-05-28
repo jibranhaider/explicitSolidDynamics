@@ -39,12 +39,85 @@ defineTypeNameAndDebug(mechanics, 0);
 
 mechanics::mechanics
 (
-    const fvMesh& vm,
+    const volTensorField& F,
     const dictionary& dict
 )
 :
-    mesh_(vm)
-{}
+    mesh_(F.mesh()),
+
+    op(mesh_),
+
+    N_(mesh_.Sf()/mesh_.magSf()),
+
+    n_
+    (
+        IOobject
+        (
+            "n",
+            F.time().timeName(),
+            F.db()
+        ),
+        mesh_.Sf()/mesh_.magSf()
+    ),
+
+    S_lm_
+    (
+        IOobject
+        (
+            "S_lm",
+            F.time().timeName(),
+            F.db()
+        ),
+        F.mesh(),
+        dimensionedTensor("S_lm", dimensionSet(0,1,-1,0,0,0,0), tensor::zero)
+    ),
+
+    S_t_
+    (
+        IOobject
+        (
+            "S_t",
+            F.time().timeName(),
+            F.db()
+        ),
+        F.mesh(),
+        dimensionedTensor("S_t", dimensionSet(0,-1,1,0,0,0,0), tensor::zero)
+    ),
+
+    timeStepping_(dict.lookup("timeStepping")),
+
+    cfl_(readScalar(dict.lookup("cfl"))),
+
+    tStep_(0),
+
+    stretch_
+    (
+        IOobject
+        (
+            "stretch",
+            F.time().timeName(),
+            F.db()
+        ),
+        F.mesh(),
+        dimensionedScalar("stretch", dimless, 1.0)
+    )
+
+{
+
+    if (timeStepping_ != "constant" && timeStepping_ != "variable")
+    {
+        FatalErrorIn("readControls.H")
+            << "Valid type entries are 'constant' or 'variable' for timeStepping"
+            << abort(FatalError);
+    }
+
+    if (cfl_ <= 0.0 || cfl_ > 1.0)
+    {
+        FatalErrorIn("readControls.H")
+            << "Valid type entries are '<= 1' or '> 0' for cfl"
+            << abort(FatalError);
+    }
+}
 
 
 // * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * * //
@@ -55,69 +128,73 @@ mechanics::~mechanics()
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-surfaceVectorField mechanics::spatialNormal()
+surfaceVectorField mechanics::spatialNormal(const volTensorField& F_)
 {
-    const objectRegistry& db = mesh_.thisDb();
-    const volTensorField& F_ = db.lookupObject<volTensorField>("F");
-
-    tmp<GeometricField<vector, fvsPatchField, surfaceMesh> > tsf
-    (
-        new GeometricField<vector, fvsPatchField, surfaceMesh>
-        (
-            IOobject("n", mesh_),
-            mesh_,
-            dimensioned<vector>("n", dimless, pTraits<vector>::one)
-        )
-    );
-    GeometricField<vector, fvsPatchField, surfaceMesh> n = tsf();
-
     surfaceTensorField FcInv = inv(fvc::interpolate(F_));
-    surfaceVectorField N = mesh_.Sf()/mesh_.magSf();
+    n_ = (FcInv.T() & N_)/(mag(FcInv.T() & N_));
 
-    n = (FcInv.T() & N)/(mag(FcInv.T() & N));
-    tsf.clear();
-
-    return n;
+    return n_;
 }
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-volScalarField mechanics::stretch()
+void mechanics::correct
+(
+    const GeometricField<scalar, fvPatchField, volMesh>& Up,
+    const GeometricField<scalar, fvPatchField, volMesh>& Us,
+    const GeometricField<tensor, fvPatchField, volMesh>& F
+)
 {
-    const objectRegistry& db = mesh_.thisDb();
-    const volTensorField& F_ = db.lookupObject<volTensorField>("F");
-    volTensorField C_ = F_.T() & F_;
+    // Spatial normals
+    surfaceTensorField FcInv = inv(fvc::interpolate(F));
+    surfaceVectorField n_ = (FcInv.T() & N_)/(mag(FcInv.T() & N_));
 
-    tmp<GeometricField<scalar, fvPatchField, volMesh> > tsf
-    (
-        new GeometricField<scalar, fvPatchField, volMesh>
-        (
-            IOobject("stretch", mesh_),
-            mesh_,
-            dimensioned<scalar>("stretch", dimless, pTraits<scalar>::one)
-        )
-    );
-    GeometricField<scalar, fvPatchField, volMesh> stretch = tsf();
-
-    operations op(mesh_);
-
-    forAll(mesh_.cells(), cellID)
+    // Stretch
+    volTensorField C_ = F.T() & F;
+    forAll(mesh_.cells(), cell)
     {
-        op.eigenStructure(C_[cellID]);
+        op.eigenStructure(C_[cell]);
         vector eigVal_ = op.eigenValue();
-        stretch[cellID] = min( eigVal_.x(), eigVal_.y());
-        stretch[cellID] = ::sqrt(min(stretch[cellID], eigVal_.z()));
+        stretch_[cell] = min( eigVal_.x(), eigVal_.y());
+        stretch_[cell] = ::sqrt(min(stretch_[cell], eigVal_.z()));
     }
-
-    tsf.clear();
 
     if (Pstream::parRun())
     {
-        stretch.correctBoundaryConditions();
+        stretch_.correctBoundaryConditions();
     }
 
-    return stretch;
+    // Stabilisation matrices
+    S_lm_ = fvc::interpolate(Up)*n_*n_ + fvc::interpolate(Us)*(I-(n_*n_));
+
+    S_t_ = (n_*n_)/fvc::interpolate(Up) + (I-(n_*n_))/fvc::interpolate(Us);
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+void mechanics::time
+(
+    Time& runTime,
+    dimensionedScalar& deltaT,
+    dimensionedScalar Up_time
+)
+{
+    const dimensionedScalar& h = op.minimumEdgeLength();
+
+    if (timeStepping_ == "variable")
+    {
+        deltaT = (cfl_*h)/Up_time;
+        runTime.setDeltaT(deltaT);
+    }
+
+    runTime++;
+    tStep_++;
+
+    Info<< "\nTime step =" << tStep_ << nl
+        << "Time increment = " << runTime.deltaTValue() << " s" << nl
+        << "Time = " << runTime.timeName() << " s" << endl;
 }
 
 
@@ -128,12 +205,12 @@ void mechanics::printCentroid() const
     vector sum = vector::zero;
     scalar vol = gSum(mesh_.V());
 
-    forAll(mesh_.cells(), cellID)
+    forAll(mesh_.cells(), cell)
     {
-        sum += mesh_.C()[cellID]*mesh_.V()[cellID];
+        sum += mesh_.C()[cell]*mesh_.V()[cell];
     }
 
-    if( Pstream::parRun() )
+    if (Pstream::parRun())
     {
         reduce(sum, sumOp<vector>());
     }

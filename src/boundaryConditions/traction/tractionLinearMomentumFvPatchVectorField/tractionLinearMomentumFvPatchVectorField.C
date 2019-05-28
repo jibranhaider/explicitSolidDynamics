@@ -160,28 +160,19 @@ void tractionLinearMomentumFvPatchVectorField::updateCoeffs()
     const fvsPatchField<vector>& t_M_ =
         patch().lookupPatchField<surfaceVectorField, vector>("t_M");
 
-    const fvsPatchField<tensor>& nCn_ =
-        patch().lookupPatchField<surfaceTensorField, tensor>("nCn");
-
-    const fvsPatchField<tensor>& iMnCn_ =
-        patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
-
-    const fvPatchField<scalar>& Up_ =
-        patch().lookupPatchField<volScalarField, scalar>("Up");
-
-    const fvPatchField<scalar>& Us_ =
-        patch().lookupPatchField<volScalarField, scalar>("Us");
+    const fvsPatchField<tensor>& S_t_ =
+        patch().lookupPatchField<surfaceTensorField, tensor>("S_t");
 
     fvsPatchField<vector> lm_C(lm_M_);
 
     if (loadingType_ == "none")
     {
-        lm_C = lm_M_ + (((nCn_/Up_) + (iMnCn_/Us_)) & (-t_M_));
+        lm_C = lm_M_ + (S_t_ & (-t_M_));
     }
 
     else if (loadingType_ == "traction")
     {
-        lm_C = lm_M_ + (((nCn_/Up_) + (iMnCn_/Us_)) & ((t_P_) - t_M_));
+        lm_C = lm_M_ + (S_t_ & ((t_P_) - t_M_));
     }
 
     else if (loadingType_ == "pressure")
@@ -189,7 +180,7 @@ void tractionLinearMomentumFvPatchVectorField::updateCoeffs()
         const fvsPatchField<vector>& n_ =
             patch().lookupPatchField<surfaceVectorField, vector>("n");
 
-        lm_C = lm_M_ + (((nCn_/Up_) + (iMnCn_/Us_)) & ((-p_P_*n_) - t_M_));
+        lm_C = lm_M_ + (S_t_ & ((-p_P_*n_) - t_M_));
     }
 
     else

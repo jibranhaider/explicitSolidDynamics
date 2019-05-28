@@ -13,19 +13,6 @@ IOdictionary mechanicalProperties
     )
 );
 
-// Run parameters dictionary
-IOdictionary runParameters
-(
-    IOobject
-    (
-        "runParameters",
-        runTime.constant(),
-        mesh,
-        IOobject::MUST_READ_IF_MODIFIED,
-        IOobject::NO_WRITE
-    )
-);
-
 // Control dictionary
 IOdictionary controlDict
 (
@@ -54,26 +41,6 @@ IOdictionary fvSolution
 
 
 Info << "Reading data from dictionaries ..." << endl;
-
-// Type of time stepping
-const word& timeStepping = controlDict.lookup("timeStepping");
-
-if (timeStepping != "constant" && timeStepping != "variable")
-{
-    FatalErrorIn("readControls.H")
-        << "Valid type entries are 'constant' or 'variable' for timeStepping"
-        << abort(FatalError);
-}
-
-// Courant-Friedrichs-Lewy Number
-const scalar& cfl = readScalar(controlDict.lookup("cfl"));
-
-if (cfl <= 0.0 || cfl > 1.0)
-{
-    FatalErrorIn("readControls.H")
-        << "Valid type entries are '<= 1' or '> 0' for cfl"
-        << abort(FatalError);
-}
 
 // Stabilisation parameter for near incompressibility
 const scalar& beta =

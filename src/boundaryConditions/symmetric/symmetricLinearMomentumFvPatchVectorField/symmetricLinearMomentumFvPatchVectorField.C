@@ -140,8 +140,8 @@ void symmetricLinearMomentumFvPatchVectorField::updateCoeffs()
     const fvsPatchField<vector>& t_M_ =
         patch().lookupPatchField<surfaceVectorField, vector>("t_M");
 
-    const fvsPatchField<tensor>& iMnCn_ =
-        patch().lookupPatchField<surfaceTensorField, tensor>("iMnCn");
+    const fvsPatchField<vector>& n_ =
+        patch().lookupPatchField<surfaceVectorField, vector>("n");
 
     const fvPatchField<scalar>& Us_ =
         patch().lookupPatchField<volScalarField, scalar>("Us");
@@ -154,7 +154,7 @@ void symmetricLinearMomentumFvPatchVectorField::updateCoeffs()
         ramp = 1.0;
     }
 
-    lm_C = iMnCn_ & (lm_M_ + (((ramp*t_P_) - t_M_)/Us_));
+    lm_C = (tensor::I - n_*n_) & (lm_M_ + (((ramp*t_P_) - t_M_)/Us_));
 
     this->operator==(lm_C);
     fixedValueFvPatchVectorField::updateCoeffs();
