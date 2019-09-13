@@ -98,15 +98,6 @@ movingTractionFvPatchVectorField::movingTractionFvPatchVectorField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void movingTractionFvPatchVectorField::autoMap
-(
-    const fvPatchFieldMapper& m
-)
-{
-    vectorField::autoMap(m);
-}
-
-
 void movingTractionFvPatchVectorField::rmap
 (
     const fvPatchVectorField& ptf,
@@ -145,7 +136,7 @@ void movingTractionFvPatchVectorField::write(Ostream& os) const
 {
     fvPatchVectorField::write(os);
     os.writeKeyword("lm_P_") << lm_P_ << token::END_STATEMENT << nl;
-    writeEntry("value", os);
+    writeEntry(os, "value", *this);
 }
 
 

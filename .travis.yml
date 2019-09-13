@@ -6,6 +6,8 @@ language: cpp
 
 matrix:
   include:
+  - name: "OpenFOAM 7"
+    env: OF_VERS=7
   - name: "OpenFOAM 6"
     env: OF_VERS=6
   - name: "OpenFOAM 5"

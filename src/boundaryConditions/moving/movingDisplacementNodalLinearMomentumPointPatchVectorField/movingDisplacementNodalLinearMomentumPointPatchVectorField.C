@@ -109,15 +109,6 @@ movingDisplacementNodalLinearMomentumPointPatchVectorField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void movingDisplacementNodalLinearMomentumPointPatchVectorField::autoMap
-(
-    const pointPatchFieldMapper& m
-)
-{
-    vectorField::autoMap(m);
-}
-
-
 void movingDisplacementNodalLinearMomentumPointPatchVectorField::rmap
 (
     const pointPatchVectorField& ptf,
@@ -158,7 +149,7 @@ void movingDisplacementNodalLinearMomentumPointPatchVectorField::write
     os.writeKeyword("density") << rho_ << token::END_STATEMENT << nl;
     os.writeKeyword("displacement") << uMax_ << token::END_STATEMENT << nl;
     os.writeKeyword("endTime") << tEnd_ << token::END_STATEMENT << nl;
-    writeEntry("value", os);
+    writeEntry(os, "value", *this);
 }
 
 

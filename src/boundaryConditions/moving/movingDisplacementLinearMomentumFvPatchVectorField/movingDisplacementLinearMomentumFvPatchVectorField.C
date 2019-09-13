@@ -109,15 +109,6 @@ movingDisplacementLinearMomentumFvPatchVectorField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void movingDisplacementLinearMomentumFvPatchVectorField::autoMap
-(
-    const fvPatchFieldMapper& m
-)
-{
-    vectorField::autoMap(m);
-}
-
-
 void movingDisplacementLinearMomentumFvPatchVectorField::rmap
 (
     const fvPatchVectorField& ptf,
@@ -161,7 +152,7 @@ void movingDisplacementLinearMomentumFvPatchVectorField::write
     os.writeKeyword("density") << rho_ << token::END_STATEMENT << nl;
     os.writeKeyword("displacement") << uMax_ << token::END_STATEMENT << nl;
     os.writeKeyword("endTime") << tEnd_ << token::END_STATEMENT << nl;
-    writeEntry("value", os);
+    writeEntry(os, "value", *this);
 }
 
 

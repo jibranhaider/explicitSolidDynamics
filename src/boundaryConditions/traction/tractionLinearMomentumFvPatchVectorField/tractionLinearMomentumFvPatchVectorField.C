@@ -128,15 +128,6 @@ tractionLinearMomentumFvPatchVectorField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void tractionLinearMomentumFvPatchVectorField::autoMap
-(
-    const fvPatchFieldMapper& m
-)
-{
-    vectorField::autoMap(m);
-}
-
-
 void tractionLinearMomentumFvPatchVectorField::rmap
 (
     const fvPatchVectorField& ptf,
@@ -205,7 +196,7 @@ void tractionLinearMomentumFvPatchVectorField::write(Ostream& os) const
         << nl;
     os.writeKeyword("traction") << t_P_ << token::END_STATEMENT << nl;
     os.writeKeyword("pressure") << p_P_ << token::END_STATEMENT << nl;
-    writeEntry("value", os);
+    writeEntry(os, "value", *this);
 }
 
 

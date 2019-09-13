@@ -1,13 +1,13 @@
 <hr> 
 
-<h1><p align="center"> ExplicitSolidDynamics toolkit for OpenFOAM 
+<h1><p align="center"> Cell centred explicit solid dynamics toolkit for OpenFOAM 
 </p></h1>
 
 <p align="center"> 
   <a href="https://travis-ci.org/jibranhaider/explicitSolidDynamics" target="_blank">
     <img alt="Travis (.org)" src="https://img.shields.io/travis/jibranhaider/explicitSolidDynamics.svg?label=Build"> &nbsp;
   </a>  
-  <img alt="OpenFOAM 6" src="https://img.shields.io/badge/OpenFOAM-v6_| v5_| v4-darkgreen.svg"> &nbsp;
+  <img alt="OpenFOAM 7" src="https://img.shields.io/badge/OpenFOAM-v7-darkgreen.svg"> &nbsp;
   <a href="https://github.com/jibranhaider/explicitSolidDynamics/blob/master/LICENSE">
     <img alt="GPLv3 license" src="https://img.shields.io/badge/License-GPLv3-orange.svg"> &nbsp;
   </a> 
@@ -108,7 +108,7 @@ If you are using this toolkit for your research then please cite the below menti
       title     = {{ExplicitSolidDynamics toolkit for OpenFOAM}},
       year      = {2019},
       doi       = {10.5281/zenodo.2577033},
-      url       = {https://github.com/jibranhaider/explicitSolidDynamics}}     
+      url       = {https://github.com/jibranhaider/explicitSolidDynamics}}
 
 <br/>
 
@@ -121,7 +121,7 @@ If you are using this toolkit for your research then please cite the below menti
       volume    = {340},
       pages     = {684--727},
       year      = {2018},
-      doi       = {10.1016/j.cma.2018.06.010}}        
+      doi       = {10.1016/j.cma.2018.06.010}}
 
 <br/>
 
@@ -135,20 +135,18 @@ If you are using this toolkit for your research then please cite the below menti
       number    = {3},
       pages     = {407--456},
       year      = {2017},
-      doi       = {10.1002/nme.5293}}         
+      doi       = {10.1002/nme.5293}}
 
 
 <br/>
 <hr> 
 
 ## 5. Authors and contributors
-This toolkit is developed and maintained by [Jibran Haider](http://jibranhaider.weebly.com/) (Swansea University). 
-
-This work would not have been possible without the support and guidance of the following individuals:
-* [Dr. Chun Hean Lee](https://www.gla.ac.uk/schools/engineering/staff/chunheanlee/)  (University of Glasgow) 
-* [Prof. Antonio J. Gil](https://www.swansea.ac.uk/staff/engineering/a.j.gil/)  (Swansea University)
-* [Prof. Javier Bonet](https://www.researchgate.net/profile/Javier_Bonet)  (Greenwich University)
-* [Prof. Antonio Huerta](https://www.lacan.upc.edu/huerta/)  (UPC BarcelonaTech)
+This toolkit is developed and maintained by [Jibran Haider](http://jibranhaider.weebly.com/). The following individuals are acknowledged for their support:
+* [Dr. Chun Hean Lee](https://www.gla.ac.uk/schools/engineering/staff/chunheanlee/)
+* [Prof. Antonio J. Gil](https://www.swansea.ac.uk/staff/engineering/a.j.gil/)
+* [Prof. Javier Bonet](https://www.researchgate.net/profile/Javier_Bonet)
+* [Prof. Antonio Huerta](https://www.lacan.upc.edu/huerta/)
 
 
 <br/>

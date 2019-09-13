@@ -167,12 +167,6 @@ public:
 
         // Mapping functions
 
-            //- Map (and resize as needed) from self given a mapping object
-            virtual void autoMap
-            (
-                const pointPatchFieldMapper&
-            );
-
             //- Reverse map the given fvPatchField onto this fvPatchField
             virtual void rmap
             (

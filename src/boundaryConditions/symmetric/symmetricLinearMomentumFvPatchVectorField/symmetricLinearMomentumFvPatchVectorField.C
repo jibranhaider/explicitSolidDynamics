@@ -108,15 +108,6 @@ symmetricLinearMomentumFvPatchVectorField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void symmetricLinearMomentumFvPatchVectorField::autoMap
-(
-    const fvPatchFieldMapper& m
-)
-{
-    vectorField::autoMap(m);
-}
-
-
 void symmetricLinearMomentumFvPatchVectorField::rmap
 (
     const fvPatchVectorField& ptf,
@@ -165,7 +156,7 @@ void symmetricLinearMomentumFvPatchVectorField::write(Ostream& os) const
 {
     fvPatchVectorField::write(os);
     os.writeKeyword("traction") << t_P_ << token::END_STATEMENT << nl;
-    writeEntry("value", os);
+    writeEntry(os, "value", *this);
 }
 
 

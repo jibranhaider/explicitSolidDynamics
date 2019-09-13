@@ -197,7 +197,7 @@ void tractionTractionFvPatchVectorField::write(Ostream& os) const
         << nl;
     os.writeKeyword("traction") << t_P_ << token::END_STATEMENT << nl;
     os.writeKeyword("pressure") << p_P_ << token::END_STATEMENT << nl;
-    writeEntry("value", os);
+    writeEntry(os, "value", *this);
 }
 
 
