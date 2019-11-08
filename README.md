@@ -70,27 +70,27 @@ Detailed instructions on the usage of the toolkit are provided on the [wiki](htt
 #### Implosion of a bottle
 The simulation can be seen [here](https://youtu.be/K6T6OTjlOzQ).
 
-<img src="/docs/results/implodingBottle/10.png" width="14%"> &nbsp; &nbsp;
-<img src="/docs/results/implodingBottle/20.png" width="14%"> &nbsp; &nbsp;
-<img src="/docs/results/implodingBottle/25.png" width="14%"> &nbsp; &nbsp;
-<img src="/docs/results/implodingBottle/30.png" width="14%"> &nbsp; &nbsp;
-<img src="/docs/results/implodingBottle/35.png" width="14%"> &nbsp; &nbsp;
-<img src="/docs/results/implodingBottle/40.png" width="14%">
+<img src="/docs/results/implodingBottle/deformation/10.png" width="14%"> &nbsp; &nbsp;
+<img src="/docs/results/implodingBottle/deformation/20.png" width="14%"> &nbsp; &nbsp;
+<img src="/docs/results/implodingBottle/deformation/25.png" width="14%"> &nbsp; &nbsp;
+<img src="/docs/results/implodingBottle/deformation/30.png" width="14%"> &nbsp; &nbsp;
+<img src="/docs/results/implodingBottle/deformation/35.png" width="14%"> &nbsp; &nbsp;
+<img src="/docs/results/implodingBottle/deformation/40.png" width="14%">
 
 <br/>
 
 #### Crushing of a thin cylinder
 The simulation can be seen [here](https://youtu.be/7_0i0FlCHtc).
 
-<img src="/docs/results/crushingCylinder/10.png" width="23%"> &nbsp; &nbsp;
-<img src="/docs/results/crushingCylinder/15.png" width="23%"> &nbsp; &nbsp;
-<img src="/docs/results/crushingCylinder/20.png" width="23%"> &nbsp; &nbsp;
-<img src="/docs/results/crushingCylinder/25.png" width="23%">
+<img src="/docs/results/crushingCylinder/deformation/10.png" width="23%"> &nbsp; &nbsp;
+<img src="/docs/results/crushingCylinder/deformation/15.png" width="23%"> &nbsp; &nbsp;
+<img src="/docs/results/crushingCylinder/deformation/20.png" width="23%"> &nbsp; &nbsp;
+<img src="/docs/results/crushingCylinder/deformation/25.png" width="23%">
 
-<img src="/docs/results/crushingCylinder/30.png" width="23%"> &nbsp; &nbsp;
-<img src="/docs/results/crushingCylinder/35.png" width="23%"> &nbsp; &nbsp;
-<img src="/docs/results/crushingCylinder/40.png" width="23%"> &nbsp; &nbsp;
-<img src="/docs/results/crushingCylinder/50.png" width="23%">
+<img src="/docs/results/crushingCylinder/deformation/30.png" width="23%"> &nbsp; &nbsp;
+<img src="/docs/results/crushingCylinder/deformation/35.png" width="23%"> &nbsp; &nbsp;
+<img src="/docs/results/crushingCylinder/deformation/40.png" width="23%"> &nbsp; &nbsp;
+<img src="/docs/results/crushingCylinder/deformation/50.png" width="23%">
 
 
 <br/>
