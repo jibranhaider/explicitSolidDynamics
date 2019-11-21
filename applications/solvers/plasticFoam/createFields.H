@@ -54,7 +54,7 @@ surfaceVectorField xF = mesh.Cf();
 Info << "Creating mesh normal fields ..." << endl;
 
 // Material normals
-const surfaceVectorField N = Sf/mesh.magSf();
+const surfaceVectorField N = (Sf/mesh.magSf()).ref();
 
 // Spatial normals
 surfaceVectorField n = N;
@@ -160,7 +160,7 @@ volScalarField Us
 mech.correct(Up, Us, F);
 
 // Wave speed for time increment
-volScalarField Up_time = model.Up()/mech.stretch();
+volScalarField Up_time = (model.Up()/mech.stretch()).ref();
 
 
 Info << "Creating fields for gradient ..." << endl;
@@ -205,7 +205,7 @@ surfaceVectorField t_M
     IOobject("t_M", mesh),
     P_M & N
 );
-surfaceVectorField t_P = P_P & N;
+surfaceVectorField t_P = (P_P & N).ref();
 
 
 Info << "Creating fields for riemann solver ..." << endl;
@@ -214,7 +214,7 @@ surfaceTensorField S_lm = mech.Smatrix_lm();
 surfaceTensorField S_t = mech.Smatrix_t();
 
 // Contact traction
-surfaceVectorField tC = 0.5*(t_M + t_P) + (0.5*S_lm & (lm_P - lm_M));
+surfaceVectorField tC = (0.5*(t_M + t_P) + (0.5*S_lm & (lm_P - lm_M))).ref();
 
 volVectorField t_b
 (
@@ -230,7 +230,7 @@ volVectorField t_b
 );
 
 // Contact linear momentum
-surfaceVectorField lmC = 0.5*(lm_M + lm_P) + (0.5*S_t & (t_P - t_M));
+surfaceVectorField lmC = (0.5*(lm_M + lm_P) + (0.5*S_t & (t_P - t_M))).ref();
 
 volVectorField lm_b
 (
