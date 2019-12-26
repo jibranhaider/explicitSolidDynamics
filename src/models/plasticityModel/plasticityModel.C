@@ -184,7 +184,7 @@ void plasticityModel::correct()
 
     if (model_ == "vonMisesPlasticity")
     {
-        const volTensorField Finv_ = inv(F_);
+      const volTensorField Finv_ = inv(F_).ref();
 
         p_ = kappa_*(log(J_)/J_);
         b_ = F_ & CpInv_ & F_.T();

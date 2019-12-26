@@ -21,40 +21,40 @@ forAll(mesh.boundary(), patchi)
     if (mesh.boundary()[patchi].coupled())
     {
         const vectorField lm_nei =
-            lm.boundaryField()[patchi].patchNeighbourField();
+          lm.boundaryField()[patchi].patchNeighbourField().ref();
 
         const tensorField P_nei =
-            P.boundaryField()[patchi].patchNeighbourField();
+          P.boundaryField()[patchi].patchNeighbourField().ref();
 
         const vectorField Px_nei =
-            Px.boundaryField()[patchi].patchNeighbourField();
+          Px.boundaryField()[patchi].patchNeighbourField().ref();
 
         const vectorField Py_nei =
-            Py.boundaryField()[patchi].patchNeighbourField();
+          Py.boundaryField()[patchi].patchNeighbourField().ref();
 
         const vectorField Pz_nei =
-            Pz.boundaryField()[patchi].patchNeighbourField();
+          Pz.boundaryField()[patchi].patchNeighbourField().ref();
 
         const tensorField lmGrad_nei =
-            lmGrad.boundaryField()[patchi].patchNeighbourField();
+          lmGrad.boundaryField()[patchi].patchNeighbourField().ref();
 
         const tensorField PxGrad_nei =
-            PxGrad.boundaryField()[patchi].patchNeighbourField();
+          PxGrad.boundaryField()[patchi].patchNeighbourField().ref();
 
         const tensorField PyGrad_nei =
-            PyGrad.boundaryField()[patchi].patchNeighbourField();
+          PyGrad.boundaryField()[patchi].patchNeighbourField().ref();
 
         const tensorField PzGrad_nei =
-            PzGrad.boundaryField()[patchi].patchNeighbourField();
+          PzGrad.boundaryField()[patchi].patchNeighbourField().ref();
 
         const vectorField C_nei =
-            C.boundaryField()[patchi].patchNeighbourField();
+          C.boundaryField()[patchi].patchNeighbourField().ref();
 
         const scalarField Up_nei =
-            Up.boundaryField()[patchi].patchNeighbourField();
+          Up.boundaryField()[patchi].patchNeighbourField().ref();
 
         const scalarField Us_nei =
-            Us.boundaryField()[patchi].patchNeighbourField();
+          Us.boundaryField()[patchi].patchNeighbourField().ref();
 
         forAll(mesh.boundary()[patchi], facei)
         {
