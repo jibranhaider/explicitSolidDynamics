@@ -17,8 +17,8 @@
   <a href="https://doi.org/10.5281/zenodo.2577032">
     <img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.2577032.svg"> &nbsp;
   </a>
-  <a href="https://jibranhaider.weebly.com/research.html">
-    <img alt="Website" src="https://img.shields.io/website-up-down-green-red/https/jibranhaider.weebly.com/research.html.svg?label=Website">
+  <a href="https://jibranhaider.com/research/explicit-solid-dynamics-in-openfoam">
+    <img alt="Website" src="https://img.shields.io/website?down_message=red&label=Website&up_color=green&url=https%3A%2F%2Fimg.shields.io%2Fwebsite%3Furl%3Dhttps%253A%252F%252Fjibranhaider.com%252Fresearch%252Fexplicit-solid-dynamics-in-openfoam">
   </a>   
 </p>
 
