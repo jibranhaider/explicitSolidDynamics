@@ -1,16 +1,16 @@
-<hr> 
+<hr>
 
-<h1><p align="center"> Cell centred explicit solid dynamics toolkit for OpenFOAM 
+<h1><p align="center"> Cell centred explicit solid dynamics toolkit for OpenFOAM
 </p></h1>
 
-<p align="center"> 
+<p align="center">
   <a href="https://travis-ci.org/jibranhaider/explicitSolidDynamics" target="_blank">
     <img alt="Travis (.org)" src="https://img.shields.io/travis/jibranhaider/explicitSolidDynamics.svg?label=Build"> &nbsp;
-  </a>  
+  </a>
   <img alt="OpenFOAM 7" src="https://img.shields.io/badge/OpenFOAM-v7-darkgreen.svg"> &nbsp;
   <a href="https://github.com/jibranhaider/explicitSolidDynamics/blob/master/LICENSE">
     <img alt="GPLv3 license" src="https://img.shields.io/badge/License-GPLv3-orange.svg"> &nbsp;
-  </a> 
+  </a>
   <a href="https://github.com/jibranhaider/explicitSolidDynamics/wiki">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-Wiki-red.svg?label=Documentation"> &nbsp;
   </a>
@@ -19,11 +19,11 @@
   </a>
   <a href="https://jibranhaider.com/research/explicit-solid-dynamics-in-openfoam">
     <img alt="Website" src="https://img.shields.io/website?down_message=red&label=Website&up_color=green&url=https%3A%2F%2Fimg.shields.io%2Fwebsite%3Furl%3Dhttps%253A%252F%252Fjibranhaider.com%252Fresearch%252Fexplicit-solid-dynamics-in-openfoam">
-  </a>   
+  </a>
 </p>
 
 
-<p align="center">   
+<p align="center">
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/jibranhaider/explicitSolidDynamics.svg?label=Latest%20commit"> &nbsp;
   <a href="https://www.codacy.com/app/jibranhaider/explicitSolidDynamics?utm_source=github.com?&amp;utm_medium=referral&amp;utm_content=jibranhaider/explicitSolidDynamics&amp;utm_campaign=Badge_Grad">
     <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/8d44ec596cb64da28c1713e7f88051be.svg?color=darkgreen&label=Code%20quality"> &nbsp; </a>
@@ -31,31 +31,31 @@
     <img alt="GitHub open issues" src="https://img.shields.io/github/issues-raw/jibranhaider/explicitSolidDynamics.svg?label=Open%20issues&color=green"> &nbsp;
   </a>
   <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/jibranhaider/explicitSolidDynamics.svg?color=lightgrey"> &nbsp;
-  <img alt="GitHub repo size in bytes" src="https://img.shields.io/github/repo-size/jibranhaider/explicitSolidDynamics.svg?label=Repository%20size&color=lightgrey"> &nbsp; 
+  <img alt="GitHub repo size in bytes" src="https://img.shields.io/github/repo-size/jibranhaider/explicitSolidDynamics.svg?label=Repository%20size&color=lightgrey"> &nbsp;
   <a href="https://openfoam.org/dev/coding-style-guide">
-  <img alt="Code style" src="https://img.shields.io/badge/Coding_style-OpenFOAM-yellow.svg"> 
-  </a>  
+  <img alt="Code style" src="https://img.shields.io/badge/Coding_style-OpenFOAM-yellow.svg">
+  </a>
 </p>
 
 
 <br/>
 
-## 1. Introduction    
+## 1. Introduction
 
 <p align="justify">
-This novel toolkit is based on a cell centred Finite Volume Method to predict large deformation in solids. The governing equations comprise of first order hyperbolic conservation laws for linear momentum and deformation gradient tensor of the system. This helps to bridge the gap between Computational Fluid Dynamics and Computational Solid Dynamics. The governing equations are spatially discretised using a low order cell centred Finite Volume Method along with an upwind Riemann solver. 
-</p> 
+This novel toolkit is based on a cell centred Finite Volume Method to predict large deformation in solids. The governing equations comprise of first order hyperbolic conservation laws for linear momentum and deformation gradient tensor of the system. This helps to bridge the gap between Computational Fluid Dynamics and Computational Solid Dynamics. The governing equations are spatially discretised using a low order cell centred Finite Volume Method along with an upwind Riemann solver.
+</p>
 
 #### Key features
-* Second order accuracy for velocities and stresses/strains. 
-* Parallelised C++ implementation within [OpenFOAM](http://openfoam.org/) code. 
-* Robust methodology with practical applications. 
+* Second order accuracy for velocities and stresses/strains.
+* Parallelised C++ implementation within [OpenFOAM](http://openfoam.org/) code.
+* Robust methodology with practical applications.
 
-More details about this work can be found [here](http://jibranhaider.weebly.com/research.html).
+More details about this work can be found [here](https://jibranhaider.com/research/explicit-solid-dynamics-in-openfoam/).
 
 
 <br/>
-<hr> 
+<hr>
 
 ## 2. How to use this toolkit?
 
@@ -63,7 +63,7 @@ Detailed instructions on the usage of the toolkit are provided on the [wiki](htt
 
 
 <br/>
-<hr> 
+<hr>
 
 ## 3. Applications
 
@@ -94,7 +94,7 @@ The simulation can be seen [here](https://youtu.be/7_0i0FlCHtc).
 
 
 <br/>
-<hr> 
+<hr>
 
 ## 4. How to cite this work?
 If you are using this toolkit for your research then please cite the below mentioned work.
@@ -139,10 +139,10 @@ If you are using this toolkit for your research then please cite the below menti
 
 
 <br/>
-<hr> 
+<hr>
 
 ## 5. Authors and contributors
-This toolkit is developed and maintained by [Jibran Haider](http://jibranhaider.weebly.com/). The following individuals are acknowledged for their support:
+This toolkit is developed and maintained by [Jibran Haider](https://jibranhaider.com/). The following individuals are acknowledged for their support:
 * [Dr. Chun Hean Lee](https://www.gla.ac.uk/schools/engineering/staff/chunheanlee/)
 * [Prof. Antonio J. Gil](https://www.swansea.ac.uk/staff/engineering/a.j.gil/)
 * [Prof. Javier Bonet](https://www.researchgate.net/profile/Javier_Bonet)
@@ -150,14 +150,14 @@ This toolkit is developed and maintained by [Jibran Haider](http://jibranhaider.
 
 
 <br/>
-<hr> 
+<hr>
 
 ## 6. License
-This toolkit is released under the GNU General Public License (version 3). More details can be found in the [LICENSE](LICENSE) file. 
+This toolkit is released under the GNU General Public License (version 3). More details can be found in the [LICENSE](LICENSE) file.
 
 
 <br/>
-<hr> 
+<hr>
 
 ## 7. Disclaimer
 This offering is not approved or endorsed by OpenCFD Limited, producer and distributor of the OpenFOAM software via www.openfoam.com, and owner of the OPENFOAM®  and OpenCFD®  trade marks.
